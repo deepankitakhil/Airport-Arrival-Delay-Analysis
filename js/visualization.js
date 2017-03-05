@@ -17,12 +17,18 @@ function init() {
         .projection(projection);
 
     queue()
-        .defer(d3.json, '/Airport-Arrival-Delay-Analysis/data/states.json')
-        .defer(d3.json, '/Airport-Arrival-Delay-Analysis/data/top200airports.json')
+        .defer(d3.json, './data/states.json')
+        .defer(d3.json, './data/top200airports.json')
         .await(createMap);
 
-}
+    queue()
+        .defer(d3.json, './data/states.json')
+        .await(displayConnectedGraph);
 
+    queue()
+        .defer(d3.json, './data/top200airports.json')
+        .await(configureSearch);
+}
 function createMap(error, states, airport_data) {
 
     var airport_length = airport_data.features.length;
@@ -45,7 +51,7 @@ function createMap(error, states, airport_data) {
         .data(states.features)
         .enter()
         .append('path')
-        .attr("d",path)
+        .attr("d", path)
         .attr("class", "states");
 
     svg.selectAll('.cities')
@@ -70,5 +76,13 @@ function createMap(error, states, airport_data) {
             d3.select(this).style("fill-opacity", .5);
             tooltip.classed('hidden', true);
         });
+
+}
+
+function displayConnectedGraph(error, source_destination_list) {
+    console.log("inside display connected graph");
+}
+
+function configureSearch(error, airports_list) {
 
 }
