@@ -17,6 +17,18 @@
         stroke: #fff;
         stroke-width: 2px;
     }
+    .hidden {
+        display: none;
+    }
+    div.tooltip {
+        color: #222;
+        background-color: #fff;
+        padding: .5em;
+        text-shadow: #f5f5f5 0 1px 0;
+        border-radius: 2px;
+        opacity: 0.9;
+        position: absolute;
+    }
 
 </style>
 <body>
@@ -43,7 +55,8 @@
         .await(createMap);
 
     function createMap(error, states, airport_data) {
-
+        var tooltip = d3.select('body').append('div')
+            .attr('class', 'hidden tooltip');
         var airport_length = airport_data.features.length;
         var passenger_traffic = [];
         for (var index = 0; index < airport_length; index++) {
@@ -54,7 +67,7 @@
         var min_passenger_value = Math.min.apply(Math, passenger_traffic);
         var max_passenger_value = Math.max.apply(Math, passenger_traffic);
 
-        var airport_radius = d3.scaleQuantile()
+        var airport_radius = d3.scalePow()
             .domain([min_passenger_value, max_passenger_value])
             .range([10, 30]);
 
@@ -72,7 +85,21 @@
             .attr("d", path.pointRadius(function (d) {
                 return airport_radius(d.properties.TOT_ENP);
             }))
-            .attr('class', 'cities');
+            .attr('class', 'cities')
+            .on("mousemove",function (d) {
+                var mouse = d3.mouse(svg.node()).map(function(d) {
+                    return parseInt(d);
+                });
+                tooltip.classed('hidden', false)
+                    .attr('style', 'left:' + (mouse[0] + 15) +
+                        'px; top:' + (mouse[1] - 35) + 'px')
+                    .html(d.properties.NAME);
+            })
+            .on('mouseout', function() {
+            tooltip.classed('hidden', true);
+            });
+
+
 
     }
 
