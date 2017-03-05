@@ -24,6 +24,10 @@ function init() {
     queue()
         .defer(d3.json, './data/states.json')
         .await(displayConnectedGraph);
+
+    queue()
+        .defer(d3.json, './data/top200airports.json')
+        .await(configureSearch);
 }
 function createMap(error, states, airport_data) {
 
@@ -77,4 +81,8 @@ function createMap(error, states, airport_data) {
 
 function displayConnectedGraph() {
     console.log("inside display connected graph");
+}
+
+function configureSearch(error, airports_list) {
+
 }
