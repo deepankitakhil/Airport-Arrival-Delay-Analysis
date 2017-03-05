@@ -1,11 +1,11 @@
 .states {
-    fill: #e5e5e5;
+    fill: #DFDFDF;
     stroke: #fff;
     stroke-width: 1px;
 }
 
 .cities {
-    fill: red;
+    fill: steelblue;
     fill-opacity: 0.5;
     stroke: #fff;
     stroke-width: 2px;

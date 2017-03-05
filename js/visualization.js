@@ -44,9 +44,10 @@ function createMap(error, states, airport_data) {
     svg.selectAll("path")
         .data(states.features)
         .enter()
-        .append("path")
-        .attr("d", path)
-        .style("fill", "steelblue");
+        .append('path')
+        .attr("d",path)
+        .attr("class", "states");
+
 
     svg.selectAll('.cities')
         .data(airport_data.features)
