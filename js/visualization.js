@@ -79,7 +79,7 @@ function createMap(error, states, airport_data) {
 
 }
 
-function displayConnectedGraph() {
+function displayConnectedGraph(error, source_destination_list) {
     console.log("inside display connected graph");
 }
 
