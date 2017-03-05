@@ -35,7 +35,7 @@ function createMap(error, states, airport_data) {
     var min_passenger_value = Math.min.apply(Math, passenger_traffic);
     var max_passenger_value = Math.max.apply(Math, passenger_traffic);
 
-    var airport_radius = d3.scaleSqrt()
+    var airport_radius = d3.scalePow()
         .domain([min_passenger_value, max_passenger_value])
         .range([10, 30]);
 
