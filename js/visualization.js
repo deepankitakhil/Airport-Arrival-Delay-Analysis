@@ -27,6 +27,8 @@ function createMap(error, states, airport_data) {
 
     var airport_length = airport_data.features.length;
     var passenger_traffic = [];
+    var tooltip = d3.select('body').append('div')
+        .attr('class', 'hidden tooltip');
     for (var index = 0; index < airport_length; index++) {
         var pop = airport_data.features[index].properties.TOT_ENP;
         passenger_traffic.push(Number(pop));
@@ -50,9 +52,23 @@ function createMap(error, states, airport_data) {
         .data(airport_data.features)
         .enter()
         .append('path')
-        .attr("d", path.pointRadius(function (d) {
-            return airport_radius(d.properties.TOT_ENP);
+        .attr("d", path.pointRadius(function (airport) {
+            return airport_radius(airport.properties.TOT_ENP);
         }))
-        .attr('class', 'cities');
+        .attr('class', 'cities')
+        .on("mousemove", function (d) {
+            d3.select(this).style("fill-opacity", 1);
+            var mouse = d3.mouse(svg.node()).map(function (value) {
+                return parseInt(value);
+            });
+            tooltip.classed('hidden', false)
+                .attr('style', 'left:' + (mouse[0] + 15) +
+                    'px; top:' + (mouse[1] - 35) + 'px')
+                .html(d.properties.NAME);
+        })
+        .on('mouseout', function () {
+            d3.select(this).style("fill-opacity", .5);
+            tooltip.classed('hidden', true);
+        });
 
 }
