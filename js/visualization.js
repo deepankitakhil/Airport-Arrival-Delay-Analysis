@@ -85,4 +85,6 @@ function displayConnectedGraph(error, source_destination_list) {
 
 function configureSearch(error, airports_list) {
 
+    
+
 }
