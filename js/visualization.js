@@ -128,24 +128,12 @@ function configureSearch(error, airports_list) {
 
         var filterText = d3.select('#filterCriteria').property('value');
         var result;
-        filteredAirportName = airport_name_list;
-        filteredAirportCode = airport_code_list;
+        var filteredAirportName = airport_name_list;
+        var filteredAirportCode = airport_code_list;
         if (filterText !== "") {
-            var filteredAirportName = airport_name_list.filter(function (airport) {
+            filteredAirportName = airport_name_list.filter(function (airport) {
                 return (airport.ID.toLowerCase().indexOf(filterText.toLowerCase()) === 0);
             });
         }
     }
-}
-
-function typeAirport(d) {
-    d[0] = +d.longitude;
-    d[1] = +d.latitude;
-    d.arcs = {type: "MultiLineString", coordinates: []};
-    return d;
-}
-
-function typeFlight(d) {
-    d.count = +d.count;
-    return d;
 }
