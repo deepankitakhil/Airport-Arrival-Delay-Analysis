@@ -102,6 +102,38 @@ function buildConnectedGraph(error, source_destination_list) {
 
 function configureSearch(error, airports_list) {
 
-    
+    var airport_length = airports_list.features.length;
+    var airport_name_list = [];
+    var airport_code_list = [];
+    var div = document.querySelector("#filterCriteria"),
+        frag = document.createDocumentFragment(),
+        select = document.createElement("select");
+    for (var index = 0; index < airport_length; index++) {
+        var airport_name = airports_list.features[index].properties.NAME;
+        airport_name_list.push({ID: String(airport_name)});
+        var airport_code = airports_list.features[index].properties.LOCID;
+        airport_code_list.push({ID: String(airport_code)});
+    }
+    filterResult();
 
+    d3.select('#filterCriteria').on('keyup', filterResult);
+
+    function filterResult() {
+
+        var filterText = d3.select('#filterCriteria').property('value');
+        var result;
+        filteredAirportName = airport_name_list;
+        filteredAirportCode = airport_code_list;
+        if (filterText !== "") {
+            var filteredAirportName = airport_name_list.filter(function (airport) {
+                return (airport.ID.toLowerCase().indexOf(filterText.toLowerCase()) === 0);
+            });
+        }
+
+        d3.select('#filteredList').html(
+            filteredAirportName.map(function (d) {
+                return d.ID;
+            }).join("<br/>")
+        );
+    }
 }
