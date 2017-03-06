@@ -13,7 +13,12 @@
 .hidden {
     display: none;
 }
-
+.arc {
+    pointer-events: none;
+    fill: none;
+    stroke: #000;
+    display: none;
+}
 .tooltip {
     color: #222;
     background-color: #fff;

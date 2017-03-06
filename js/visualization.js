@@ -3,6 +3,12 @@ var projection;
 var path;
 var height = 1000;
 var width = 1200;
+var linksByOrigin = {},
+    countByAirport = {};
+
+var arc={
+    type:"MultiLineString"
+};
 
 function init() {
     svg = d3.select('body').append('svg')
@@ -22,8 +28,8 @@ function init() {
         .await(createMap);
 
     queue()
-        .defer(d3.json, './data/states.json')
-        .await(displayConnectedGraph);
+        .defer(d3.csv, './data/flights-airport.csv')
+        .await(buildConnectedGraph);
 
     queue()
         .defer(d3.json, './data/top200airports.json')
@@ -71,6 +77,7 @@ function createMap(error, states, airport_data) {
                 .attr('style', 'left:' + (mouse[0] + 15) +
                     'px; top:' + (mouse[1] - 35) + 'px')
                 .html(d.properties.NAME);
+            //displayConnectedGraph(error, d.properties.NAME);
         })
         .on('mouseout', function () {
             d3.select(this).style("fill-opacity", .5);
@@ -79,8 +86,18 @@ function createMap(error, states, airport_data) {
 
 }
 
-function displayConnectedGraph(error, source_destination_list) {
-    console.log("inside display connected graph");
+function buildConnectedGraph(error, source_destination_list) {
+
+    source_destination_list.forEach(function(flight) {
+        var origin = flight.origin,
+            destination = flight.destination,
+            links = linksByOrigin[origin] || (linksByOrigin[origin] = []);
+        links.push({source: origin, target: destination});
+        countByAirport[origin] = (countByAirport[origin] || 0) + 1;
+        countByAirport[destination] = (countByAirport[destination] || 0) + 1;
+    });
+    console.log(String(linksByOrigin["JFK"].target));
+
 }
 
 function configureSearch(error, airports_list) {
