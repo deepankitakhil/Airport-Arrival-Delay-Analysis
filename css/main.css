@@ -16,6 +16,7 @@
 }
 
 .tooltip {
+    font-size: 200%;
     color: #222;
     background-color: #fff;
     padding: .5em;

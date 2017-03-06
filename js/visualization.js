@@ -71,9 +71,10 @@ function createMap(error, states, airport_data) {
                 return parseInt(value);
             });
             tooltip.classed('hidden', false)
-                .attr('style', 'left:' + (mouse[0] + 15) +
-                    'px; top:' + (mouse[1] - 35) + 'px')
+                .attr('style', 'left:' + (900) +
+                    'px; top:' + (200) + 'px;right:'+(100)+'px;')
                 .html(d.properties.NAME);
+
         })
         .on('mouseout', function () {
             d3.select(this).style("fill-opacity", .5);
