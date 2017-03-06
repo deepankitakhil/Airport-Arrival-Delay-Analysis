@@ -3,8 +3,8 @@ var projection;
 var path;
 var height = 1000;
 var width = 1200;
+var airportByID = d3.map();
 var origin_mapping = d3.map();
-var target_mapping = d3.map();
 
 function init() {
     svg = d3.select('body').append('svg')
@@ -24,8 +24,8 @@ function init() {
         .await(createMap);
 
     queue()
-        .defer(d3.json, './data/top200airports.json', typeAirport)
-        .defer(d3.csv, './data/flights-airport.csv', typeFlight)
+        .defer(d3.json, './data/top200airports.json')
+        .defer(d3.csv, './data/flights-airport.csv')
         .await(buildConnectedGraph);
 
     queue()
@@ -84,9 +84,6 @@ function createMap(error, states, airport_data) {
 
 function buildConnectedGraph(error, airports, source_destination_list) {
 
-    var airportByID = d3.map();
-    var source_coordinates = [];
-    var target_coordinates = [];
     var airport_length = airports.features.length;
     for (var index = 0; index < airport_length; index++) {
         var pop = airports.features[index].properties.LOCID;
@@ -96,18 +93,14 @@ function buildConnectedGraph(error, airports, source_destination_list) {
     source_destination_list.forEach(function (flight) {
         if (airportByID.has(flight.origin) && airportByID.has(flight.destination)) {
             if (origin_mapping.has(flight.origin)) {
+                source_coordinates = [];
                 source_coordinates = origin_mapping.get(flight.origin);
-                source_coordinates.push(airportByID.get(flight.origin));
+                source_coordinates.push(airportByID.get(flight.destination));
                 origin_mapping.set(flight.origin, source_coordinates);
             } else {
-                origin_mapping.set(flight.origin, airportByID.get(flight.origin));
-            }
-            if (target_mapping.has(flight.destination)) {
-                target_coordinates = target_mapping.get(flight.destination);
-                target_coordinates.push(airportByID.get(flight.destination));
-                target_mapping.set(flight.destination, target_coordinates);
-            } else {
-                target_mapping.set(flight.destination, airportByID.get(flight.destination));
+                source_coordinates = [];
+                source_coordinates.push(airportByID.get(flight.destination));
+                origin_mapping.set(flight.origin, source_coordinates);
             }
         }
     });
@@ -142,12 +135,6 @@ function configureSearch(error, airports_list) {
                 return (airport.ID.toLowerCase().indexOf(filterText.toLowerCase()) === 0);
             });
         }
-
-        /* d3.select('#filteredList').html(
-         filteredAirportName.map(function (d) {
-         return d.ID;
-         }).join("<br/>")
-         );*/
     }
 }
 
