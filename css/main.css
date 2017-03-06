@@ -10,15 +10,11 @@
     stroke: #fff;
     stroke-width: 2px;
 }
+
 .hidden {
     display: none;
 }
-.arc {
-    pointer-events: none;
-    fill: none;
-    stroke: #000;
-    display: none;
-}
+
 .tooltip {
     color: #222;
     background-color: #fff;
@@ -27,4 +23,22 @@
     border-radius: 2px;
     opacity: 0.9;
     position: absolute;
+}
+
+.airport-arc {
+    pointer-events: none;
+    fill: none;
+    stroke: #000;
+    display: none;
+}
+
+.airport:hover .airport-arc {
+    stroke: #f00;
+}
+
+.airport-cell {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: 0.1;
+    pointer-events: all;
 }

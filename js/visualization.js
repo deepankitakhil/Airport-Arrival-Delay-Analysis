@@ -3,12 +3,8 @@ var projection;
 var path;
 var height = 1000;
 var width = 1200;
-var linksByOrigin = {},
-    countByAirport = {};
-
-var arc={
-    type:"MultiLineString"
-};
+var origin_mapping = d3.map();
+var target_mapping = d3.map();
 
 function init() {
     svg = d3.select('body').append('svg')
@@ -28,7 +24,8 @@ function init() {
         .await(createMap);
 
     queue()
-        .defer(d3.csv, './data/flights-airport.csv')
+        .defer(d3.json, './data/top200airports.json', typeAirport)
+        .defer(d3.csv, './data/flights-airport.csv', typeFlight)
         .await(buildConnectedGraph);
 
     queue()
@@ -77,7 +74,6 @@ function createMap(error, states, airport_data) {
                 .attr('style', 'left:' + (mouse[0] + 15) +
                     'px; top:' + (mouse[1] - 35) + 'px')
                 .html(d.properties.NAME);
-            //displayConnectedGraph(error, d.properties.NAME);
         })
         .on('mouseout', function () {
             d3.select(this).style("fill-opacity", .5);
@@ -86,18 +82,35 @@ function createMap(error, states, airport_data) {
 
 }
 
-function buildConnectedGraph(error, source_destination_list) {
+function buildConnectedGraph(error, airports, source_destination_list) {
 
-    source_destination_list.forEach(function(flight) {
-        var origin = flight.origin,
-            destination = flight.destination,
-            links = linksByOrigin[origin] || (linksByOrigin[origin] = []);
-        links.push({source: origin, target: destination});
-        countByAirport[origin] = (countByAirport[origin] || 0) + 1;
-        countByAirport[destination] = (countByAirport[destination] || 0) + 1;
+    var airportByID = d3.map();
+    var source_coordinates = [];
+    var target_coordinates = [];
+    var airport_length = airports.features.length;
+    for (var index = 0; index < airport_length; index++) {
+        var pop = airports.features[index].properties.LOCID;
+        airportByID.set(String(pop), airports.features[index].geometry.coordinates);
+    }
+
+    source_destination_list.forEach(function (flight) {
+        if (airportByID.has(flight.origin) && airportByID.has(flight.destination)) {
+            if (origin_mapping.has(flight.origin)) {
+                source_coordinates = origin_mapping.get(flight.origin);
+                source_coordinates.push(airportByID.get(flight.origin));
+                origin_mapping.set(flight.origin, source_coordinates);
+            } else {
+                origin_mapping.set(flight.origin, airportByID.get(flight.origin));
+            }
+            if (target_mapping.has(flight.destination)) {
+                target_coordinates = target_mapping.get(flight.destination);
+                target_coordinates.push(airportByID.get(flight.destination));
+                target_mapping.set(flight.destination, target_coordinates);
+            } else {
+                target_mapping.set(flight.destination, airportByID.get(flight.destination));
+            }
+        }
     });
-    console.log(String(linksByOrigin["JFK"].target));
-
 }
 
 function configureSearch(error, airports_list) {
@@ -130,10 +143,22 @@ function configureSearch(error, airports_list) {
             });
         }
 
-        d3.select('#filteredList').html(
-            filteredAirportName.map(function (d) {
-                return d.ID;
-            }).join("<br/>")
-        );
+        /* d3.select('#filteredList').html(
+         filteredAirportName.map(function (d) {
+         return d.ID;
+         }).join("<br/>")
+         );*/
     }
+}
+
+function typeAirport(d) {
+    d[0] = +d.longitude;
+    d[1] = +d.latitude;
+    d.arcs = {type: "MultiLineString", coordinates: []};
+    return d;
+}
+
+function typeFlight(d) {
+    d.count = +d.count;
+    return d;
 }
