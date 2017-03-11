@@ -3,8 +3,6 @@ var projection;
 var path;
 var height = 1000;
 var width = 1200;
-var airportByID = d3.map();
-var origin_mapping = d3.map();
 
 function init() {
     svg = d3.select('body').append('svg')
@@ -22,11 +20,6 @@ function init() {
         .defer(d3.json, './data/states.json')
         .defer(d3.json, './data/top200airports.json')
         .await(createMap);
-
-    queue()
-        .defer(d3.json, './data/top200airports.json')
-        .defer(d3.csv, './data/flights-airport.csv')
-        .await(buildConnectedGraph);
 
     queue()
         .defer(d3.json, './data/top200airports.json')
@@ -72,7 +65,7 @@ function createMap(error, states, airport_data) {
             });
             tooltip.classed('hidden', false)
                 .attr('style', 'left:' + (900) +
-                    'px; top:' + (200) + 'px;right:'+(100)+'px;')
+                    'px; top:' + (200) + 'px;right:' + (100) + 'px;')
                 .html(d.properties.NAME);
 
         })
@@ -81,30 +74,6 @@ function createMap(error, states, airport_data) {
             tooltip.classed('hidden', true);
         });
 
-}
-
-function buildConnectedGraph(error, airports, source_destination_list) {
-
-    var airport_length = airports.features.length;
-    for (var index = 0; index < airport_length; index++) {
-        var pop = airports.features[index].properties.LOCID;
-        airportByID.set(String(pop), airports.features[index].geometry.coordinates);
-    }
-
-    source_destination_list.forEach(function (flight) {
-        if (airportByID.has(flight.origin) && airportByID.has(flight.destination)) {
-            if (origin_mapping.has(flight.origin)) {
-                source_coordinates = [];
-                source_coordinates = origin_mapping.get(flight.origin);
-                source_coordinates.push(airportByID.get(flight.destination));
-                origin_mapping.set(flight.origin, source_coordinates);
-            } else {
-                source_coordinates = [];
-                source_coordinates.push(airportByID.get(flight.destination));
-                origin_mapping.set(flight.origin, source_coordinates);
-            }
-        }
-    });
 }
 
 function configureSearch(error, airports_list) {
