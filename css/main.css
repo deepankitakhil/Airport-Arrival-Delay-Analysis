@@ -25,21 +25,3 @@
     opacity: 0.9;
     position: absolute;
 }
-
-.airport-arc {
-    pointer-events: none;
-    fill: none;
-    stroke: #000;
-    display: none;
-}
-
-.airport:hover .airport-arc {
-    stroke: #f00;
-}
-
-.airport-cell {
-    fill: none;
-    stroke: #000;
-    stroke-opacity: 0.1;
-    pointer-events: all;
-}
