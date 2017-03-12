@@ -58,7 +58,7 @@ function createMap(error, states, airport_data) {
             return airport_radius(airport.properties.TOT_ENP);
         }))
         .attr('class', 'cities')
-        .on("mousemove", function (d) {
+        .on("mousemove", function (airport) {
 
             d3.select(this).style("fill-opacity", 1);
             mouse = d3.mouse(svg.node()).map(function (value) {
@@ -67,7 +67,7 @@ function createMap(error, states, airport_data) {
             tooltip.classed('hidden', false)
                 .attr('style', 'left:' + (900) +
                     'px; top:' + (200) + 'px;right:' + (100) + 'px;')
-                .html(d.properties.NAME);
+                .html(airport.properties.NAME);
 
         })
         .on('mouseout', function () {
@@ -117,14 +117,14 @@ function createMap(error, states, airport_data) {
                     return airport_radius(airport.properties.TOT_ENP);
                 }))
                 .attr('class', 'highlighted_cities')
-                .on("mousemove", function (d) {
+                .on("mousemove", function (filteredAirport) {
                     mouse = d3.mouse(svg.node()).map(function (value) {
                         return parseInt(value);
                     });
                     tooltip.classed('hidden', false)
                         .attr('style', 'left:' + (900) +
                             'px; top:' + (200) + 'px;right:' + (100) + 'px;')
-                        .html(d.properties.NAME);
+                        .html(filteredAirport.properties.NAME);
 
                 })
                 .on('mouseout', function () {
