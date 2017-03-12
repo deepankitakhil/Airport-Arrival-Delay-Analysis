@@ -96,16 +96,7 @@ function createMap(error, states, airport_data) {
 
         svg.selectAll('.highlighted_cities').remove();
 
-        svg.selectAll('.cities')
-            .data(airport_data.features)
-            .enter()
-            .append('path')
-            .attr("d", path.pointRadius(function (airport) {
 
-                return airport_radius(airport.properties.TOT_ENP);
-            }))
-            .attr('class', 'cities')
-            ;
 
         var filteredAirportName_1 = [];
         var filterText = document.getElementById('filterCriteria').value;
