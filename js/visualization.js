@@ -24,6 +24,10 @@ function init() {
         .defer(d3.json, './data/top200airports.json')
         .await(createMap);
 
+    queue()
+        .defer(d3.json, './data/top200airports.json')
+        .await(configureSearch);
+
 }
 function createMap(error, states, airport_data) {
 
@@ -74,11 +78,12 @@ function createMap(error, states, airport_data) {
             d3.select(this).style("fill-opacity", .5);
             tooltip.classed('hidden', true);
         });
+}
 
+function configureSearch(error, airport_data) {
+
+    var airport_length = airport_data.features.length;
     var airport_name_list = [];
-    var div = document.querySelector("#filterCriteria"),
-        frag = document.createDocumentFragment(),
-        select = document.createElement("select");
     for (var index = 0; index < airport_length; index++) {
         var airport_name = airport_data.features[index].properties.NAME;
         airport_name_list.push({ID: String(airport_name)});
