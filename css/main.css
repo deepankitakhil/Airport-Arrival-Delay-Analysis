@@ -10,6 +10,12 @@
     stroke: #fff;
     stroke-width: 2px;
 }
+.highlighted_cities {
+    fill: red;
+    fill-opacity:1;
+    stroke: #fff;
+    stroke-width: 2px;
+}
 
 .hidden {
     display: none;
@@ -26,20 +32,3 @@
     position: absolute;
 }
 
-.airport-arc {
-    pointer-events: none;
-    fill: none;
-    stroke: #000;
-    display: none;
-}
-
-.airport:hover .airport-arc {
-    stroke: #f00;
-}
-
-.airport-cell {
-    fill: none;
-    stroke: #000;
-    stroke-opacity: 0.1;
-    pointer-events: all;
-}
