@@ -3,7 +3,6 @@ var projection;
 var path;
 var height = 1000;
 var width = 1200;
-var objectArray = [];
 var airport_radius;
 
 function init() {
@@ -32,7 +31,7 @@ function createMap(error, states, airport_data) {
     var passenger_traffic = [];
     var tooltip = d3.select('body').append('div')
         .attr('class', 'hidden tooltip');
-    for (var index = 0; index < airport_length; index++) {
+    for (index = 0; index < airport_length; index++) {
         var pop = airport_data.features[index].properties.TOT_ENP;
         passenger_traffic.push(Number(pop));
     }
@@ -61,14 +60,13 @@ function createMap(error, states, airport_data) {
         .attr('class', 'cities')
         .on("mousemove", function (d) {
 
-
             d3.select(this).style("fill-opacity", 1);
-            var mouse = d3.mouse(svg.node()).map(function (value) {
+            mouse = d3.mouse(svg.node()).map(function (value) {
                 return parseInt(value);
             });
             tooltip.classed('hidden', false)
                 .attr('style', 'left:' + (900) +
-                    'px; top:' + (200) + 'px;right:'+(100)+'px;')
+                    'px; top:' + (200) + 'px;right:' + (100) + 'px;')
                 .html(d.properties.NAME);
 
         })
@@ -78,17 +76,13 @@ function createMap(error, states, airport_data) {
         });
 
     var airport_name_list = [];
-    var airport_code_list = [];
     var div = document.querySelector("#filterCriteria"),
         frag = document.createDocumentFragment(),
         select = document.createElement("select");
     for (var index = 0; index < airport_length; index++) {
         var airport_name = airport_data.features[index].properties.NAME;
         airport_name_list.push({ID: String(airport_name)});
-        var airport_code = airport_data.features[index].properties.LOCID;
-        airport_code_list.push({ID: String(airport_code)});
     }
-
 
     d3.select('#filterCriteria').on('keyup', filterResult);
 
@@ -96,29 +90,24 @@ function createMap(error, states, airport_data) {
 
         svg.selectAll('.highlighted_cities').remove();
 
-
-
-        var filteredAirportName_1 = [];
+        var filteredAirportName = [];
         var filterText = document.getElementById('filterCriteria').value;
 
         if (filterText != null && filterText != "") {
-            filteredAirportName_1.push(airport_name_list.filter(function (airport) {
+            filteredAirportName.push(airport_name_list.filter(function (airport) {
                 return (airport.ID.toLowerCase().indexOf(filterText.toLowerCase()) === 0);
             }));
         }
 
-
-        if (filteredAirportName_1.length != 0){
-            var objectArray=[];
-            for (var i = 0; i < filteredAirportName_1[0].length; i++) {
-                    for (var j = 0; j < airport_data.features.length; j++) {
-
-                        if (airport_data.features[j].properties.NAME == filteredAirportName_1[0][i].ID) {
-                            objectArray.push(airport_data.features[j]);
-                        }
-
+        if (filteredAirportName.length != 0) {
+            var objectArray = [];
+            for (var filteredAirportListIndex = 0; filteredAirportListIndex < filteredAirportName[0].length; filteredAirportListIndex++) {
+                for (var airportDataListIndex = 0; airportDataListIndex < airport_data.features.length; airportDataListIndex++) {
+                    if (airport_data.features[airportDataListIndex].properties.NAME == filteredAirportName[0][filteredAirportListIndex].ID) {
+                        objectArray.push(airport_data.features[airportDataListIndex]);
                     }
                 }
+            }
             svg.selectAll('.highlighted_cities')
                 .data(objectArray)
                 .enter()
@@ -129,29 +118,20 @@ function createMap(error, states, airport_data) {
                 }))
                 .attr('class', 'highlighted_cities')
                 .on("mousemove", function (d) {
+                    mouse = d3.mouse(svg.node()).map(function (value) {
+                        return parseInt(value);
+                    });
+                    tooltip.classed('hidden', false)
+                        .attr('style', 'left:' + (900) +
+                            'px; top:' + (200) + 'px;right:' + (100) + 'px;')
+                        .html(d.properties.NAME);
 
-
-
-                var mouse = d3.mouse(svg.node()).map(function (value) {
-                    return parseInt(value);
-                });
-                tooltip.classed('hidden', false)
-                    .attr('style', 'left:' + (900) +
-                        'px; top:' + (200) + 'px;right:'+(100)+'px;')
-                    .html(d.properties.NAME);
-
-            })
+                })
                 .on('mouseout', function () {
-
                     tooltip.classed('hidden', true);
                 });
-
         }
-
-
-
     }
-
 }
 
 
