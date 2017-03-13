@@ -28,6 +28,10 @@ function init() {
         .defer(d3.json, './data/top200airports.json')
         .await(configureSearch);
 
+    queue()
+        .defer(d3.csv, './data/final_data.csv')
+        .await(configureCluster);
+
 }
 function createMap(error, states, airport_data) {
 
@@ -137,6 +141,32 @@ function configureSearch(error, airport_data) {
                 });
         }
     }
+}
+
+function configureCluster() {
+    function initialize() {
+        var num_clusters = 3;
+        var samples1 = d3.range(0, 40).map(function (d) {
+            return ['AIRPORT_ID-' + Math.floor(Math.random() * 50), Math.floor(Math.random() * 50)]
+        });
+        console.log(samples1);
+        var k = new KMeansClusterAlgorithm(num_clusters, samples1);
+        return k;
+    }
+
+    function step(k) {
+        k.recalculate_centroids();
+        k.update_clusters();
+    }
+
+    function run() {
+        var k = initialize();
+        for (var i = 0; i < 50; i++)
+            step(k);
+        k.log();
+    }
+
+    run();
 }
 
 
