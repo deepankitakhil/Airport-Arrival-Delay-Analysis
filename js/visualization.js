@@ -35,6 +35,8 @@ function init() {
 }
 function createMap(error, states, airport_data) {
 
+    if (error) throw error;
+
     var airport_length = airport_data.features.length;
     var passenger_traffic = [];
     var tooltip = d3.select('#us_map').append('div')
@@ -85,6 +87,8 @@ function createMap(error, states, airport_data) {
 }
 
 function configureSearch(error, airport_data) {
+
+    if (error) throw error;
 
     var tooltip = d3.select('#us_map').append('div')
         .attr('class', 'hidden tooltip');
@@ -146,6 +150,7 @@ function configureSearch(error, airport_data) {
 }
 
 function configureCluster(error, airport_delay_data) {
+    if (error) throw error;
     function initialize() {
         var num_clusters = 3;
         var samples1 = d3.range(0, 40).map(function (d) {
