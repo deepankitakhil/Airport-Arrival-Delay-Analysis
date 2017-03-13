@@ -6,14 +6,14 @@ var width = 1200;
 var airport_radius;
 
 function init() {
-    svg = d3.select('body').append('svg')
+    svg = d3.select('#us_map').append('svg')
         .attr('width', width)
         .attr('height', height);
 
 
     projection = d3.geoAlbers()
-        .scale(1100)
-        .translate([(width >> 1), (height >> 1)]);
+        .scale(1000)
+        .translate([(width/2.7), (height/3)]);
 
 
     path = d3.geoPath()
@@ -37,7 +37,7 @@ function createMap(error, states, airport_data) {
 
     var airport_length = airport_data.features.length;
     var passenger_traffic = [];
-    var tooltip = d3.select('body').append('div')
+    var tooltip = d3.select('#us_map').append('div')
         .attr('class', 'hidden tooltip');
     for (index = 0; index < airport_length; index++) {
         var pop = airport_data.features[index].properties.TOT_ENP;
@@ -73,8 +73,8 @@ function createMap(error, states, airport_data) {
                 return parseInt(value);
             });
             tooltip.classed('hidden', false)
-                .attr('style', 'left:' + (900) +
-                    'px; top:' + (200) + 'px;right:' + (100) + 'px;')
+                .attr('style', 'left:' + (300) +
+                    'px; top:' + (50) + 'px;right:' + (100) + 'px;')
                 .html(airport.properties.NAME);
 
         })
@@ -86,7 +86,7 @@ function createMap(error, states, airport_data) {
 
 function configureSearch(error, airport_data) {
 
-    var tooltip = d3.select('body').append('div')
+    var tooltip = d3.select('#us_map').append('div')
         .attr('class', 'hidden tooltip');
     var airport_length = airport_data.features.length;
     var airport_name_list = [];
@@ -133,8 +133,8 @@ function configureSearch(error, airport_data) {
                         return parseInt(value);
                     });
                     tooltip.classed('hidden', false)
-                        .attr('style', 'left:' + (900) +
-                            'px; top:' + (200) + 'px;right:' + (100) + 'px;')
+                        .attr('style', 'left:' + (300) +
+                            'px; top:' + (50) + 'px;right:' + (100) + 'px;')
                         .html(filteredAirport.properties.NAME);
 
                 })
