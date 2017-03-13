@@ -20,16 +20,16 @@ function init() {
         .projection(projection);
 
     queue()
-        .defer(d3.json, './data/states.json')
-        .defer(d3.json, './data/top200airports.json')
+        .defer(d3.json, './data/us_map_data.json')
+        .defer(d3.json, './data/filtered_airport_data.json')
         .await(createMap);
 
     queue()
-        .defer(d3.json, './data/top200airports.json')
+        .defer(d3.json, './data/filtered_airport_data.json')
         .await(configureSearch);
 
     queue()
-        .defer(d3.csv, './data/final_data.csv')
+        .defer(d3.csv, './data/airport_delay_data.csv')
         .await(configureCluster);
 
 }
@@ -145,7 +145,7 @@ function configureSearch(error, airport_data) {
     }
 }
 
-function configureCluster() {
+function configureCluster(error, airport_delay_data) {
     function initialize() {
         var num_clusters = 3;
         var samples1 = d3.range(0, 40).map(function (d) {
