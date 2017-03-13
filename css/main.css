@@ -15,11 +15,6 @@
     height: 100%;
 }
 
-
-#bottom {
-    bottom: 0;
-    background-color: green;
-}
 .states {
     fill: #DFDFDF;
     stroke: #fff;
@@ -44,6 +39,7 @@
 }
 
 .tooltip {
+    width: 400px;
     font-size: 200%;
     color: #222;
     background-color: #fff;
@@ -52,5 +48,6 @@
     border-radius: 2px;
     opacity: 0.9;
     position: absolute;
+    word-wrap: break-word;
 }
 
