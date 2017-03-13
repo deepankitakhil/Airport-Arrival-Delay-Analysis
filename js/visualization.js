@@ -69,7 +69,7 @@ function createMap(error, states, airport_data) {
         .on("mousemove", function (airport) {
 
             d3.select(this).style("fill-opacity", 1);
-            mouse = d3.mouse(svg.node()).map(function (value) {
+            d3.mouse(svg.node()).map(function (value) {
                 return parseInt(value);
             });
             tooltip.classed('hidden', false)
@@ -86,6 +86,8 @@ function createMap(error, states, airport_data) {
 
 function configureSearch(error, airport_data) {
 
+    var tooltip = d3.select('body').append('div')
+        .attr('class', 'hidden tooltip');
     var airport_length = airport_data.features.length;
     var airport_name_list = [];
     for (var index = 0; index < airport_length; index++) {
@@ -127,7 +129,7 @@ function configureSearch(error, airport_data) {
                 }))
                 .attr('class', 'highlighted_cities')
                 .on("mousemove", function (filteredAirport) {
-                    mouse = d3.mouse(svg.node()).map(function (value) {
+                    d3.mouse(svg.node()).map(function (value) {
                         return parseInt(value);
                     });
                     tooltip.classed('hidden', false)
