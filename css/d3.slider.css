@@ -1,31 +1,34 @@
+/*
+ * idea taken from https://github.com/leongersen/noUiSlider/
+ * */
 .d3slider {
-  z-index: 2;
+    z-index: 2;
     position: absolute;
-  background: none;
+    background: none;
 
 }
 
 .d3slider-rect-range {
-  fill: #777;
-  stroke: none;
+    fill: #777;
+    stroke: none;
 }
 
 .d3slider-rect-value {
-  fill: #006EE3;
-  stroke: none;
+    fill: #006EE3;
+    stroke: none;
 }
 
 .d3slider-axis {
-  position: relative;
-  z-index: 1;
-  cursor: pointer;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
 }
 
 .d3slider-axis path {
-  display: none;
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    display: none;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
 .d3slider-axis line {
@@ -35,85 +38,73 @@
 }
 
 .d3slider text {
-  font: 10px sans-serif;
+    font: 10px sans-serif;
 }
 
 .tick.minor text {
-  display: none;
+    display: none;
 }
 
 .tick line {
-  stroke-width: 1;
+    stroke-width: 1;
 }
+
 .tick.minor line {
-  stroke-width: 1;
-  stroke: #bbb;
+    stroke-width: 1;
+    stroke: #bbb;
 }
 
 .dragger rect {
-  fill: #71ACE3;
-  stroke: none;
-  z-index: 3;
+    fill: #71ACE3;
+    stroke: none;
+    z-index: 3;
 }
 
 .dragger line {
-  stroke: #aa0000;
-  fill: none;
+    stroke: #aa0000;
+    fill: none;
 }
 
 .dragger-outer {
-  fill: #fff;
-  stroke: #000;
+    fill: #fff;
+    stroke: #000;
 }
 
 .dragger-inner {
-  fill: #B30424;
-  stroke: none;
+    fill: #B30424;
+    stroke: none;
 }
 
-
-
-
-
-
-
 .dragger1 rect {
-  fill: #71ACE3;
-  stroke: none;
-  z-index: 3;
+    fill: #71ACE3;
+    stroke: none;
+    z-index: 3;
 }
 
 .dragger1 line {
-  stroke: #aa0000;
-  fill: none;
+    stroke: #aa0000;
+    fill: none;
 }
 
 .dragger1-outer {
-  fill: #fff;
-  stroke: #000;
+    fill: #fff;
+    stroke: #000;
 }
 
 .dragger1-inner {
-  fill: #B30424;
-  stroke: none;
+    fill: #B30424;
+    stroke: none;
 }
 
-
-
-
-
-
-
-
 .min-marker line {
-  stroke: #aa0000;
-  fill: none;
+    stroke: #aa0000;
+    fill: none;
 }
 
 .overlay {
-  fill: none;
-  pointer-events: all;
-  z-index: 1;
+    fill: none;
+    pointer-events: all;
+    z-index: 1;
 }
 
 
