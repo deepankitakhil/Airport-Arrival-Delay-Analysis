@@ -1,19 +1,30 @@
-#top
+#us_map
  {
     position:absolute;
     left:0;
     right: 0;
     width: 60%;
-    height: 100%;
+    height: 70%;
 }
-#bottom{
+#viz{
+
     position:absolute;
+    background: greenyellow;
     left:0;
     right: 0;
     width: 40%;
     margin-left: 60%;
     height: 100%;
 }
+#viz1{
+
+    position:absolute;
+    left:0;
+    right:0;
+    margin-left: 60%;
+    height: 100%;
+}
+
 
 .states {
     fill: #DFDFDF;
@@ -40,7 +51,7 @@
 
 .tooltip {
     width: 500px;
-    font-size: 200%;
+    font-size: 150%;
     color: #222;
     background-color: #fff;
     padding: .5em;
@@ -50,4 +61,14 @@
     position: absolute;
     word-wrap: break-word;
 }
+#slider{
+    left: 5%;
+    top: 80%;
 
+}
+#input
+{
+    position:absolute;
+    top: 90%;
+
+}

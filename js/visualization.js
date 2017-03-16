@@ -1,4 +1,5 @@
 var svg;
+var slider;
 var projection;
 var path;
 var height = 1000;
@@ -9,7 +10,6 @@ function init() {
     svg = d3.select('#us_map').append('svg')
         .attr('width', width)
         .attr('height', height);
-
 
     projection = d3.geoAlbers()
         .scale(1000)
@@ -51,7 +51,7 @@ function createMap(error, states, airport_data) {
         .domain([min_passenger_value, max_passenger_value])
         .range([10, 30]);
 
-    svg.selectAll("path")
+    svg.selectAll(".states")
         .data(states.features)
         .enter()
         .append('path')
@@ -82,6 +82,47 @@ function createMap(error, states, airport_data) {
             d3.select(this).style("fill-opacity", .5);
             tooltip.classed('hidden', true);
         });
+
+
+    var html5Slider = document.getElementById('viz1');
+    function timestamp(str){
+        return new Date(str).getTime();
+    }
+    var dateValues = [
+        document.getElementById('input-number'),
+        document.getElementById('input-select')
+    ];
+    noUiSlider.create(html5Slider, {
+        tooltips:true,
+        orientation:"vertical",
+        start: [ timestamp('2011'), timestamp('2015') ],
+        connect: true,
+        step: 7 * 24 * 60 * 60 * 1000,
+        range: {
+            min: timestamp('2011'),
+            max: timestamp('2017')
+
+        }
+    });
+
+    var
+
+        months = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+    function formatDate ( date ){
+        return months[date.getMonth()]+" "+date.getFullYear();
+    }
+    html5Slider.noUiSlider.on('update', function( values, handle ) {
+        dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+
+    });
+
+
+
 }
 
 function configureSearch(error, airport_data) {
