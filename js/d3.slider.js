@@ -1,5 +1,5 @@
 /*
-* idea taken from
+* idea taken from https://github.com/leongersen/noUiSlider/
 * */
 d3.slider = function module() {
   "use strict";
