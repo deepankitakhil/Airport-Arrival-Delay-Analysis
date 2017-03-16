@@ -5,35 +5,36 @@ var path;
 var height = 1000;
 var width = 1200;
 var airport_radius;
+var nested_data;
 
 function init() {
+    trigger_data_configuration();
     svg = d3.select('#us_map').append('svg')
         .attr('width', width)
         .attr('height', height);
 
     projection = d3.geoAlbers()
         .scale(1000)
-        .translate([(width/2.7), (height/3)]);
+        .translate([(width / 2.7), (height / 3)]);
 
 
     path = d3.geoPath()
         .projection(projection);
 
     queue()
-        .defer(d3.json, './data/states.json')
-        .defer(d3.json, './data/top200airports.json')
+        .defer(d3.json, './data/us_map_data.json')
+        .defer(d3.json, './data/filtered_airport_data.json')
         .await(createMap);
 
     queue()
-        .defer(d3.json, './data/top200airports.json')
+        .defer(d3.json, './data/filtered_airport_data.json')
         .await(configureSearch);
 
-    queue()
-        .defer(d3.csv, './data/final_data.csv')
-        .await(configureCluster);
-
 }
+
 function createMap(error, states, airport_data) {
+
+    if (error) throw error;
 
     var airport_length = airport_data.features.length;
     var passenger_traffic = [];
@@ -127,6 +128,8 @@ function createMap(error, states, airport_data) {
 
 function configureSearch(error, airport_data) {
 
+    if (error) throw error;
+
     var tooltip = d3.select('#us_map').append('div')
         .attr('class', 'hidden tooltip');
     var airport_length = airport_data.features.length;
@@ -184,32 +187,6 @@ function configureSearch(error, airport_data) {
                 });
         }
     }
-}
-
-function configureCluster() {
-    function initialize() {
-        var num_clusters = 3;
-        var samples1 = d3.range(0, 40).map(function (d) {
-            return ['AIRPORT_ID-' + Math.floor(Math.random() * 50), Math.floor(Math.random() * 50)]
-        });
-        console.log(samples1);
-        var k = new KMeansClusterAlgorithm(num_clusters, samples1);
-        return k;
-    }
-
-    function step(k) {
-        k.recalculate_centroids();
-        k.update_clusters();
-    }
-
-    function run() {
-        var k = initialize();
-        for (var i = 0; i < 50; i++)
-            step(k);
-        k.log();
-    }
-
-    run();
 }
 
 
