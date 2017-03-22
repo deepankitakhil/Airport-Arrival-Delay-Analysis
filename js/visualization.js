@@ -1,5 +1,4 @@
 var svg;
-var slider;
 var projection;
 var path;
 var height = 1000;
@@ -86,9 +85,11 @@ function createMap(error, states, airport_data) {
 
 
     var html5Slider = document.getElementById('viz1');
-    function timestamp(str){
+
+    function timestamp(str) {
         return new Date(str).getTime();
     }
+
     var dateValues = [
         document.getElementById('input-number'),
         document.getElementById('input-select')
@@ -101,35 +102,28 @@ function createMap(error, states, airport_data) {
             "August", "September", "October",
             "November", "December"
         ];
-    function formatDate ( date ){
-        return months[date.getMonth()]+", "+date.getFullYear();
+
+    function formatDate(date) {
+        return months[date.getMonth()] + ", " + date.getFullYear();
     }
-    function toFormat ( v ) {
+
+    function toFormat(v) {
         return formatDate(new Date(v));
     }
+
     noUiSlider.create(html5Slider, {
-        format:{to:toFormat,from: Number},
-        tooltips:[true,true],
-        orientation:"vertical",
-        start: [ timestamp('2011'), timestamp('2017') ],
+        format: {to: toFormat, from: Number},
+        tooltips: [true, true],
+        orientation: "vertical",
+        start: [timestamp('2011'), timestamp('2017')],
         connect: true,
         step: 7 * 24 * 60 * 60 * 1000,
         range: {
-            min: timestamp('2011-01-01')+ 7*24 * 60 * 60 * 1000,
+            min: timestamp('2011-01-01') + 7 * 24 * 60 * 60 * 1000,
             max: timestamp('2017')
 
         }
     });
-
-
-
-   // html5Slider.noUiSlider.on('update', function( values, handle ) {
-     //   dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
-
-    //);
-
-
-
 }
 
 function configureSearch(error, airport_data) {
@@ -154,17 +148,17 @@ function configureSearch(error, airport_data) {
         var filteredAirportName = [];
         var filterText = document.getElementById('filterCriteria').value;
 
-        if (filterText != null && filterText != "") {
+        if (filterText !== null && filterText !== "") {
             filteredAirportName.push(airport_name_list.filter(function (airport) {
                 return (airport.ID.toLowerCase().indexOf(filterText.toLowerCase()) === 0);
             }));
         }
 
-        if (filteredAirportName.length != 0) {
+        if (filteredAirportName.length !== 0) {
             var objectArray = [];
             for (var filteredAirportListIndex = 0; filteredAirportListIndex < filteredAirportName[0].length; filteredAirportListIndex++) {
                 for (var airportDataListIndex = 0; airportDataListIndex < airport_data.features.length; airportDataListIndex++) {
-                    if (airport_data.features[airportDataListIndex].properties.NAME == filteredAirportName[0][filteredAirportListIndex].ID) {
+                    if (airport_data.features[airportDataListIndex].properties.NAME === filteredAirportName[0][filteredAirportListIndex].ID) {
                         objectArray.push(airport_data.features[airportDataListIndex]);
                     }
                 }
