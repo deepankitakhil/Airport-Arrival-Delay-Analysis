@@ -18,7 +18,7 @@
 }
 #viz1{
 
-    position:absolute;
+    position:inherit;
     left:0;
     right:0;
     margin-left: 60%;

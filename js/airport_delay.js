@@ -22,18 +22,47 @@ function createAirportDelayObjectFromNest(error, airport_delay_data) {
 }
 
 function configureCluster(nested_data) {
-    console.log(nested_data);
+   console.log(nested_data);
+    len=nested_data.length;
+    expensesTotalByDay={}
+    for(l=0;l<len;l++){
+        expensesTotalByDay[nested_data[l].key]=0;
+        for(i=0;i<nested_data[l].values.length;i++){  //6
 
-    var expensesTotalByDay = d3.nest()
+            for(j=0;j<nested_data[l].values[i].values.length;j++){ //12
+
+                for(k=0;k<nested_data[l].values[i].values[j].values.length;k++){
+
+                    expensesTotalByDay[nested_data[l].key]+=Number(nested_data[l].values[i].values[j].values[k].arr_del15);
+
+                }
+
+            }
+
+
+        }
+    }
+
+    /*var expensesTotalByDay = d3.nest()
         .key(function (d) {
             return d.key;
         })
-        .rollup(function (v) {
-            return d3.sum(v, function (d) {
-                return d.key.arr_delay;
-            });
+        .rollup(function (d) {
+                var c=0;
+                for(i=0;i<d.values.length;i++){
+                    for(j=0;j<d.values[i].length;j++){
+                        for(k=0;k<d.values[i].values.length;k++){
+                            c=c+d.values[i].values[j].values[k].arr_delay;
+                        }
+                    }
+
+
+                }
+                return c;
+
+
         })
-        .entries(nested_data);
+        .entries(nested_data);*/
 
     console.log(expensesTotalByDay);
 

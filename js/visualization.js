@@ -93,19 +93,6 @@ function createMap(error, states, airport_data) {
         document.getElementById('input-number'),
         document.getElementById('input-select')
     ];
-    noUiSlider.create(html5Slider, {
-        tooltips:true,
-        orientation:"vertical",
-        start: [ timestamp('2011'), timestamp('2015') ],
-        connect: true,
-        step: 7 * 24 * 60 * 60 * 1000,
-        range: {
-            min: timestamp('2011'),
-            max: timestamp('2017')
-
-        }
-    });
-
     var
 
         months = [
@@ -115,12 +102,31 @@ function createMap(error, states, airport_data) {
             "November", "December"
         ];
     function formatDate ( date ){
-        return months[date.getMonth()]+" "+date.getFullYear();
+        return months[date.getMonth()]+", "+date.getFullYear();
     }
-    html5Slider.noUiSlider.on('update', function( values, handle ) {
-        dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+    function toFormat ( v ) {
+        return formatDate(new Date(v));
+    }
+    noUiSlider.create(html5Slider, {
+        format:{to:toFormat,from: Number},
+        tooltips:[true,true],
+        orientation:"vertical",
+        start: [ timestamp('2011'), timestamp('2017') ],
+        connect: true,
+        step: 7 * 24 * 60 * 60 * 1000,
+        range: {
+            min: timestamp('2011-01-01')+ 7*24 * 60 * 60 * 1000,
+            max: timestamp('2017')
 
+        }
     });
+
+
+
+   // html5Slider.noUiSlider.on('update', function( values, handle ) {
+     //   dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+
+    //);
 
 
 
