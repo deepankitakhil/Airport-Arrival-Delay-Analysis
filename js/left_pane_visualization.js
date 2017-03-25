@@ -5,8 +5,7 @@ var height = 1000;
 var width = 1200;
 var airport_radius;
 
-function init() {
-    trigger_data_configuration();
+function left_pane_visualization_init() {
     svg = d3.select('#us_map').append('svg')
         .attr('width', width)
         .attr('height', height);
@@ -27,8 +26,6 @@ function init() {
     queue()
         .defer(d3.json, './data/filtered_airport_data.json')
         .await(configureSearch);
-
-    configureSlider();
 
 }
 
@@ -147,47 +144,4 @@ function configureSearch(error, airport_data) {
         }
     }
 }
-
-function configureSlider() {
-
-    var html5Slider = document.getElementById('viz1');
-
-    function timestamp(str) {
-        return new Date(str).getTime();
-    }
-
-    var dateValues = [
-        document.getElementById('input-number'),
-        document.getElementById('input-select')
-    ];
-    var months = [
-        "January", "February", "March",
-        "April", "May", "June", "July",
-        "August", "September", "October",
-        "November", "December"
-    ];
-
-    function formatDate(date) {
-        return months[date.getMonth()] + ", " + date.getFullYear();
-    }
-
-    function toFormat(v) {
-        return formatDate(new Date(v));
-    }
-
-    noUiSlider.create(html5Slider, {
-        format: {to: toFormat, from: Number},
-        tooltips: [true, true],
-        orientation: "vertical",
-        start: [timestamp('2011'), timestamp('2017')],
-        connect: true,
-        step: 7 * 24 * 60 * 60 * 1000,
-        range: {
-            min: timestamp('2011-01-01') + 7 * 24 * 60 * 60 * 1000,
-            max: timestamp('2017')
-
-        }
-    });
-}
-
 
