@@ -7,7 +7,8 @@
     <script src="./js/vo_airport_object.js"></script>
     <script src="./js/airport_delay.js"></script>
     <script src="./js/k_means_cluster.js"></script>
-    <script src="./js/visualization.js"></script>
+    <script src="js/left_pane_visualization.js"></script>
+    <script src="js/right_pane_visualization.js"></script>
     <script src="http://d3js.org/d3.v4.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src="http://d3js.org/queue.v1.min.js"></script>
@@ -20,7 +21,7 @@
     <link href="./css/nouislider.css" rel="stylesheet">
 
 </head>
-<body onload="init()">
+<body onload="left_pane_visualization_init()">
 
 
 <div id="us_map">
@@ -41,5 +42,8 @@
 <div id="slider"></div>
 <div id="viz2"></div>
 <div id="viz3"></div>
+<div id="viz"></div>
+<div id="viz1"></div>
+<script>right_pane_visualization_init()</script>
 </body>
 </html>

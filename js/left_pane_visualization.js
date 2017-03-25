@@ -5,8 +5,7 @@ var height = 1000;
 var width = 1200;
 var airport_radius;
 
-function init() {
-    trigger_data_configuration();
+function left_pane_visualization_init() {
     svg = d3.select('#us_map').append('svg')
         .attr('width', width)
         .attr('height', height);
@@ -81,82 +80,6 @@ function createMap(error, states, airport_data) {
             d3.select(this).style("fill-opacity", .5);
             tooltip.classed('hidden', true);
         });
-
-
-
-
-    var html5Slider = document.getElementById('slider');
-    function timestamp(str){
-        return new Date(str).getTime();
-    }
-
-    var dateValues =[];
-
-    var months = [
-            "January", "February", "March",
-            "April", "May", "June", "July",
-            "August", "September", "October",
-            "November", "December"
-        ];
-
-    function formatDate(date) {
-        return months[date.getMonth()] + ", " + date.getFullYear();
-    }
-
-    function toFormat(v) {
-        return formatDate(new Date(v));
-    }
-
-    noUiSlider.create(html5Slider, {
-        format: {to: toFormat, from: Number},
-        tooltips: [true, true],
-        orientation: "vertical",
-        start: [timestamp('2011'), timestamp('2017')],
-        connect: true,
-        step: 7 * 24 * 60 * 60 * 1000,
-        range: {
-            min: timestamp('2011-01-01') + 7 * 24 * 60 * 60 * 1000,
-            max: timestamp('2016-11-30'),
-
-        }
-    });
-    d3.json('./data/float.json', function(data) {
-        data = MG.convert.date(data, 'date');
-
-
-        MG.data_graphic({
-            title: "Changing Precision 1",
-            data: data,
-            decimals: 3,
-            width: 600,
-            height: 250,
-            right: 40,
-            xax_count:4,
-            target: '#chart_container'
-        });
-
-
-        /*MG.data_graphic({
-            title: "Custom Rollover Text",
-            description: "Here is an example of changing the rollover text. You could in theory actually update any DOM element with the data from that rollover - a title, for instance.",
-            data: data,
-            width: 600,
-            height: 200,
-            right: 40,
-            xax_count: 4,
-            mouseover: function(d, i) {
-                // custom format the rollover text, show days
-                var pf = d3.format('.0s');
-                d3.select('#custom-rollover svg .mg-active-datapoint')
-                    .text('Day ' + (i + 1) + '   ' + pf(d.value));
-            },
-
-        });*/
-    });
-    html5Slider.noUiSlider.on('update', function( values, handle ) {
-        dateValues[handle].innerHTML = formatDate(new Date(+values[handle]))});
-
-
 }
 
 function configureSearch(error, airport_data) {
@@ -221,5 +144,4 @@ function configureSearch(error, airport_data) {
         }
     }
 }
-
 

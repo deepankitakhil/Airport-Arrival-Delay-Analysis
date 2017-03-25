@@ -70,5 +70,4 @@ function filterDataForConsistency(dataByAirportID, filtered_airport_data) {
             filteredDataByAirportID.set(airport_name, dataByAirportID.get(airport_name));
         }
     }
-    console.log(filteredDataByAirportID);
 }
