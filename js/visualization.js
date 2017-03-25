@@ -4,7 +4,6 @@ var path;
 var height = 1000;
 var width = 1200;
 var airport_radius;
-var nested_data;
 
 function init() {
     trigger_data_configuration();
