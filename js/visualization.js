@@ -83,19 +83,16 @@ function createMap(error, states, airport_data) {
         });
 
 
-    var html5Slider = document.getElementById('viz1');
 
-    function timestamp(str) {
+
+    var html5Slider = document.getElementById('slider');
+    function timestamp(str){
         return new Date(str).getTime();
     }
 
-    var dateValues = [
-        document.getElementById('input-number'),
-        document.getElementById('input-select')
-    ];
-    var
+    var dateValues =[];
 
-        months = [
+    var months = [
             "January", "February", "March",
             "April", "May", "June", "July",
             "August", "September", "October",
@@ -119,14 +116,46 @@ function createMap(error, states, airport_data) {
         step: 7 * 24 * 60 * 60 * 1000,
         range: {
             min: timestamp('2011-01-01') + 7 * 24 * 60 * 60 * 1000,
-            max: timestamp('2017')
+            max: timestamp('2016-11-30'),
 
         }
     });
-    html5Slider.noUiSlider.on('update', function( values, handle ) {
-       dateValues[handle].innerHTML = formatDate(new Date(+values[handle]))}
+    d3.json('./data/float.json', function(data) {
+        data = MG.convert.date(data, 'date');
 
-    );
+
+        MG.data_graphic({
+            title: "Changing Precision 1",
+            data: data,
+            decimals: 3,
+            width: 600,
+            height: 250,
+            right: 40,
+            xax_count:4,
+            target: '#chart_container'
+        });
+
+
+        /*MG.data_graphic({
+            title: "Custom Rollover Text",
+            description: "Here is an example of changing the rollover text. You could in theory actually update any DOM element with the data from that rollover - a title, for instance.",
+            data: data,
+            width: 600,
+            height: 200,
+            right: 40,
+            xax_count: 4,
+            mouseover: function(d, i) {
+                // custom format the rollover text, show days
+                var pf = d3.format('.0s');
+                d3.select('#custom-rollover svg .mg-active-datapoint')
+                    .text('Day ' + (i + 1) + '   ' + pf(d.value));
+            },
+
+        });*/
+    });
+    html5Slider.noUiSlider.on('update', function( values, handle ) {
+        dateValues[handle].innerHTML = formatDate(new Date(+values[handle]))});
+
 
 }
 

@@ -6,26 +6,6 @@
     width: 60%;
     height: 70%;
 }
-#viz{
-
-    position:absolute;
-    background: greenyellow;
-    left:0;
-    right: 0;
-    width: 40%;
-    margin-left: 60%;
-    height: 100%;
-}
-#viz1{
-
-    position:inherit;
-    left:0;
-    right:0;
-    margin-left: 60%;
-    height: 100%;
-}
-
-
 .states {
     fill: #DFDFDF;
     stroke: #fff;
@@ -61,14 +41,61 @@
     position: absolute;
     word-wrap: break-word;
 }
-#slider{
-    left: 5%;
-    top: 80%;
-
-}
 #input
 {
     position:absolute;
     top: 90%;
 
 }
+
+#slider{
+
+    position:absolute;
+    left:0;
+    right:0;
+    margin-left: 59%;
+    height: 100%;
+}
+#chart_container{
+
+    position:absolute;
+
+    left:0;
+    right: 0;
+    width: 40%;
+    margin-left: 60%;
+    height: 33.33%;
+}
+#chart{
+    position: relative;
+}
+#y_axis {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+}
+#viz2{
+
+    position:absolute;
+    background: rebeccapurple;
+    left:0;
+    right: 0;
+    width: 40%;
+    margin-left: 60%;
+    height: 33.33%;
+    top: 33.33%;
+}
+#viz3{
+
+    position:absolute;
+    background:orangered;
+    left:0;
+    right: 0;
+    width: 40%;
+    margin-left: 60%;
+    height: 33.33%;
+    top: 66.66%;
+}
+
+
