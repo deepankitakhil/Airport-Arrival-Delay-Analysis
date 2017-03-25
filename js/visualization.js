@@ -123,6 +123,11 @@ function createMap(error, states, airport_data) {
 
         }
     });
+    html5Slider.noUiSlider.on('update', function( values, handle ) {
+       dateValues[handle].innerHTML = formatDate(new Date(+values[handle]))}
+
+    );
+
 }
 
 function configureSearch(error, airport_data) {
