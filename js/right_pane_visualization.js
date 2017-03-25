@@ -6,7 +6,7 @@ function right_pane_visualization_init() {
 
 function configureSlider() {
 
-    var html5Slider = document.getElementById('viz1');
+    var html5Slider = document.getElementById('slider');
 
     function timestamp(str) {
         return new Date(str).getTime();
@@ -41,4 +41,20 @@ function configureSlider() {
 
         }
     });
+    d3.json('data/float.json', function(data) {
+        data = MG.convert.date(data, 'date');
+
+        MG.data_graphic({
+            title: "Changing Precision 1",
+            
+            data: data,
+            decimals: 3,
+            width: 600,
+            height: 250,
+            right: 40,
+            xax_count: 4,
+            target: '#chart_container'
+        });
+})
 }
+
