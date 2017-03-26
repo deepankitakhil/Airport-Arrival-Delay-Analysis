@@ -1,6 +1,6 @@
 function right_pane_visualization_init() {
     configureSlider();
-    trigger_data_configuration();
+    triggerDataConfiguration();
 }
 
 function configureSlider() {
@@ -40,12 +40,12 @@ function configureSlider() {
 
         }
     });
-    d3.json('data/float.json', function(data) {
+    d3.json('data/float.json', function (data) {
         data = MG.convert.date(data, 'date');
 
         MG.data_graphic({
-            title: "Changing Precision 1",
-            
+            title: "Delay Trend",
+
             data: data,
             decimals: 3,
             width: 600,
@@ -54,6 +54,6 @@ function configureSlider() {
             xax_count: 4,
             target: '#chart_container'
         });
-})
+    })
 }
 
