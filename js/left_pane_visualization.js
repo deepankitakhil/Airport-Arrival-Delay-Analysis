@@ -4,7 +4,7 @@ var path;
 var height = 1000;
 var width = 1200;
 var airport_radius;
-
+var selected_airport;
 function left_pane_visualization_init() {
     svg = d3.select('#us_map').append('svg')
         .attr('width', width)
@@ -79,6 +79,10 @@ function createMap(error, states, airport_data) {
         .on('mouseout', function () {
             d3.select(this).style("fill-opacity", .5);
             tooltip.classed('hidden', true);
+        })
+        .on('click',function(airport){
+            selected_airport=airport.properties.LOCID;
+
         });
 }
 

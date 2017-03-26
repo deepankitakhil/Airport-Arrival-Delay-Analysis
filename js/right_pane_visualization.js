@@ -6,7 +6,7 @@ function right_pane_visualization_init() {
 function configureSlider() {
 
     var html5Slider = document.getElementById('slider');
-
+    var dateValues=[];
     function timestamp(str) {
         return new Date(str).getTime();
     }
@@ -36,11 +36,11 @@ function configureSlider() {
         step: 7 * 24 * 60 * 60 * 1000,
         range: {
             min: timestamp('2011-01-01') + 7 * 24 * 60 * 60 * 1000,
-            max: timestamp('2017')
+            max: timestamp('2016-11-30')
 
         }
     });
-    d3.json('data/float.json', function (data) {
+    d3.json('data/float.json', function(data) {
         data = MG.convert.date(data, 'date');
 
         MG.data_graphic({
@@ -54,6 +54,13 @@ function configureSlider() {
             xax_count: 4,
             target: '#chart_container'
         });
-    })
+
+})
+    html5Slider.noUiSlider.on('update', function( values, handle ) {
+        dateValues=values;
+        console.log(dateValues);
+    });
+
+
 }
 
