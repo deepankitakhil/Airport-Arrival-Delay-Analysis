@@ -7,7 +7,7 @@ function right_pane_visualization_init() {
 function configureSlider() {
 
     var html5Slider = document.getElementById('slider');
-
+    var dateValues=[];
     function timestamp(str) {
         return new Date(str).getTime();
     }
@@ -37,7 +37,7 @@ function configureSlider() {
         step: 7 * 24 * 60 * 60 * 1000,
         range: {
             min: timestamp('2011-01-01') + 7 * 24 * 60 * 60 * 1000,
-            max: timestamp('2017')
+            max: timestamp('2016-11-30')
 
         }
     });
@@ -46,7 +46,7 @@ function configureSlider() {
 
         MG.data_graphic({
             title: "Changing Precision 1",
-            
+
             data: data,
             decimals: 3,
             width: 600,
@@ -55,6 +55,13 @@ function configureSlider() {
             xax_count: 4,
             target: '#chart_container'
         });
+
 })
+    html5Slider.noUiSlider.on('update', function( values, handle ) {
+        dateValues=values;
+        console.log(dateValues);
+    });
+
+
 }
 
