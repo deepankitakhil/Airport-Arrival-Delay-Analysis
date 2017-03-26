@@ -1,7 +1,6 @@
 function right_pane_visualization_init() {
     configureSlider();
-    trigger_data_configuration();
-    configureCluster(filteredDataByAirportID);
+    triggerDataConfiguration();
 }
 
 function configureSlider() {
@@ -45,7 +44,7 @@ function configureSlider() {
         data = MG.convert.date(data, 'date');
 
         MG.data_graphic({
-            title: "Changing Precision 1",
+            title: "Delay Trend",
 
             data: data,
             decimals: 3,

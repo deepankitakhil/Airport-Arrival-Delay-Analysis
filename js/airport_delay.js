@@ -1,76 +1,136 @@
-function configureCluster(filtered_data) {
-    console.log(filtered_data);
-    var dataLength = filtered_data.size();
-    var input = filtered_data.entries();
-    var airportWiseDelayData = {};
-    var airportIDIndex, year, month, carrier;
-    for (airportIDIndex = 0; airportIDIndex < dataLength; airportIDIndex++) {
-        airportWiseDelayData[input[airportIDIndex].key] = 0;
-        var yearWiseData = input[airportIDIndex].value.values;
-        for (year = 0; year < yearWiseData.length; year++) {
-            var monthWiseData = yearWiseData[year].values;
-            for (month = 0; month < monthWiseData.length; month++) {
-                var multipleFlightEntryData = monthWiseData[month].values;
-                for (var flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
-                    airportWiseDelayData[input[airportIDIndex].key] += Number(multipleFlightEntryData[flightEntryIndex].arr_del15);
+var delayDataForClustering = [];
+var delayDataForTrend = d3.map();
+function configureCluster(airportID, dateRange) {
+    var startDate = dateRange[0].split(',');
+    var endDate = dateRange[1].split(',');
+    var airportData;
+
+    Object.keys(filteredDataByAirportID)
+        .sort()
+        .forEach(function (airportCode) {
+            var key = airportCode.substr(1);
+            airportData = filteredDataByAirportID.get(key);
+            delayDataForTrend.set(key, []);
+            var sum = 0;
+            var startMonth = Number(startDate[0].trim());
+            var startYear = Number(startDate[1].trim());
+            var endMonth = Number(endDate[0].trim());
+            var endYear = Number(endDate[1].trim());
+            var startYearCalculationDone = false;
+            for (var year = startYear; year < endYear; year++) {
+                if (airportData.has(year)) {
+                    var yearWiseData = airportData.get(year);
+                    if (!startYearCalculationDone) {
+                        for (var month = startMonth; month <= 12; month++) {
+                            var monthlySum = 0;
+                            if (yearWiseData.has(month)) {
+                                var previousMonthlySum = 0;
+                                var multipleFlightEntryData = yearWiseData.get(month).entries();
+                                for (var flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
+                                    for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
+                                        sum += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                        monthlySum += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                        previousMonthlySum = monthlySum;
+                                    }
+                                }
+                                var dataSet = delayDataForTrend.get(key);
+                                dataSet.push(["year: " + year, "month:" + month, "data:" + monthlySum]);
+                                delayDataForTrend.set(key, dataSet);
+                            } else {
+                                var dataSet = delayDataForTrend.get(key);
+                                dataSet.push(["year: " + year, "month:" + month, "data:" + previousMonthlySum]);
+                                delayDataForTrend.set(key, dataSet);
+                            }
+                        }
+                        startYearCalculationDone = true;
+                    }
+                    else {
+                        var yearWiseData = airportData.get(year);
+                        for (month = 1; month <= 12; month++) {
+                            var monthlySum = 0;
+                            if (yearWiseData.has(month)) {
+                                var previousMonthlySum = 0;
+                                var multipleFlightEntryData = yearWiseData.get(month).entries();
+                                for (flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
+                                    for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
+                                        sum += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                        monthlySum += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                        previousMonthlySum = monthlySum;
+                                    }
+                                }
+                                var dataSet = delayDataForTrend.get(key);
+                                dataSet.push(["year: " + year, "month:" + month, "data:" + monthlySum]);
+                                delayDataForTrend.set(key, dataSet);
+                            }
+                            else {
+                                var dataSet = delayDataForTrend.get(key);
+                                dataSet.push(["year: " + year, "month:" + month, "data:" + previousMonthlySum]);
+                                delayDataForTrend.set(key, dataSet);
+                            }
+                        }
+                    }
+                } else {
                 }
             }
-        }
-    }
-    console.log(airportWiseDelayData);
+            if (startYearCalculationDone)
+                startMonth = 1;
 
+            if (year === endYear) {
+                if (airportData.has(year)) {
+                    var yearWiseData = airportData.get(year);
+                    for (month = startMonth; month <= endMonth; month++) {
+                        var monthlySum = 0;
+                        if (yearWiseData.has(month)) {
+                            var previousMonthlySum = 0;
+                            var multipleFlightEntryData = yearWiseData.get(month).entries();
+                            for (flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
+                                for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
+                                    sum += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                    monthlySum += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                    previousMonthlySum = monthlySum;
+                                }
+                            }
+                            var dataSet = delayDataForTrend.get(key);
+                            dataSet.push(["year: " + year, "month:" + month, "data:" + monthlySum]);
+                            delayDataForTrend.set(key, dataSet);
+                        }
+                        else {
+                            var dataSet = delayDataForTrend.get(key);
+                            dataSet.push(["year: " + year, "month:" + month, "data:" + previousMonthlySum]);
+                            delayDataForTrend.set(key, dataSet);
+                        }
+                    }
+                }
+            }
+            delayDataForClustering.push([key, sum]);
+        });
+
+    kMeansCluster();
+    delayTrend();
 }
 
-function calculateDelayByYearMonth(sMonth, sYear, eMonth, eYear) {
-    var expensesTotalByMonth = {};
-    var dataLength = 0;
-    var input = filteredDataByAirportID;
+function kMeansCluster() {
+    run();
+}
 
-    for (var airportIDIndex = 0; airportIDIndex < dataLength; airportIDIndex++) {
-        expensesTotalByMonth[input[airportIDIndex].key] = 0;
-        var yearWiseData = input[airportIDIndex].value.values;
-        var startYear = sYear, endYear = eYear, startMonth = sMonth, endMonth = eMonth;
-        var startYearCalculationDone = false;
-        while (startYear < endYear) {
-            var monthWiseData = yearWiseData[startYear - 2011].values;
-            if (monthWiseData.length < endMonth)
-                endMonth = monthWiseData.length;
-            if (!startYearCalculationDone) {
-                for (var month = startMonth; month <= endMonth; month++) {
-                    var multipleFlightEntryData = monthWiseData[month - 1].values;
-                    for (var flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
-                        expensesTotalByMonth[input[airportIDIndex].key] += Number(multipleFlightEntryData[flightEntryIndex].arr_del15);
-                    }
-                }
-                startYearCalculationDone = true;
-                startYear++;
-            }
-            else {
-                var monthWiseData = yearWiseData[startYear - 2011].values;
-                for (month = 0; month < monthWiseData.length; month++) {
-                    var multipleFlightEntryData = monthWiseData[month].values;
-                    for (flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
-                        expensesTotalByMonth[input[airportIDIndex].key] += Number(multipleFlightEntryData[flightEntryIndex].arr_del15);
-                    }
-                }
-                startYear++;
-            }
-        }
-        if (startYearCalculationDone)
-            startMonth = 1;
+function delayTrend() {
+    console.log(delayDataForTrend);
+}
 
-        if (startYear === endYear) {
-            var monthWiseData = yearWiseData[startYear - 2011].values;
-            if (monthWiseData.length < endMonth)
-                endMonth = monthWiseData.length;
-            for (month = startMonth; month <= endMonth; month++) {
-                var multipleFlightEntryData = monthWiseData[month - 1].values;
-                for (flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
-                    expensesTotalByMonth[input[airportIDIndex].key] += Number(multipleFlightEntryData[flightEntryIndex].arr_del15);
-                }
-            }
-            startYear++;
-        }
-    }
-    console.log(expensesTotalByMonth);
+function run() {
+    var k = initialize();
+    for (var i = 0; i < 50; i++)
+        step(k);
+    k.log();
+}
+
+function initialize() {
+    var num_clusters = 10;
+    var k = new KMeansClusterAlgorithm(num_clusters, delayDataForClustering);
+    return k;
+}
+
+function step(k) {
+    k.recalculate_centroids();
+    k.update_clusters();
 }

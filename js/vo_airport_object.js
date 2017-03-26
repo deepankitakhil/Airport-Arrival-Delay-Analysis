@@ -1,7 +1,21 @@
 var dataByAirportID = d3.map();
 var filteredDataByAirportID = d3.map();
+var monthToNumber = {
+    'January': 1,
+    'February': 2,
+    'March': 3,
+    'April': 4,
+    'May': 5,
+    'June': 6,
+    'July': 7,
+    'August': 8,
+    'September': 9,
+    'October': 10,
+    'November': 11,
+    'December': 12
+};
 
-function trigger_data_configuration() {
+function triggerDataConfiguration() {
     queue()
         .defer(d3.csv, './data/airport_delay_data.csv')
         .defer(d3.json, './data/filtered_airport_data.json')
@@ -13,6 +27,8 @@ function createAirportDelayObjectFromCustomMap(error, airport_delay_data, filter
     if (error) throw  error;
     mapDataToKeyValuePair(airport_delay_data);
     filterDataForConsistency(dataByAirportID, filtered_airport_data);
+    var dateRange = ["1, 2011", "12, 2016"];
+    configureCluster("JFK", dateRange);
 }
 
 function mapDataToKeyValuePair(airport_delay_data) {
