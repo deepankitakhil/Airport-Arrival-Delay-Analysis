@@ -1,6 +1,6 @@
 var delayDataForClustering = [];
 var delayDataForTrend = d3.map();
-function configureCluster(airportID, dateRange) {
+function buildDataForVisualization(dateRange) {
     var startDate = dateRange[0].split(',');
     var endDate = dateRange[1].split(',');
     var airportData;

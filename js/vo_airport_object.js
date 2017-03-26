@@ -28,7 +28,7 @@ function createAirportDelayObjectFromCustomMap(error, airport_delay_data, filter
     mapDataToKeyValuePair(airport_delay_data);
     filterDataForConsistency(dataByAirportID, filtered_airport_data);
     var dateRange = ["1, 2011", "12, 2016"];
-    configureCluster("JFK", dateRange);
+    buildDataForVisualization(dateRange);
 }
 
 function mapDataToKeyValuePair(airport_delay_data) {
