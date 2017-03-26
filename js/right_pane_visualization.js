@@ -1,3 +1,4 @@
+var dateValues = [];
 function right_pane_visualization_init() {
     configureSlider();
     triggerDataConfiguration();
@@ -6,7 +7,7 @@ function right_pane_visualization_init() {
 function configureSlider() {
 
     var html5Slider = document.getElementById('slider');
-    var dateValues=[];
+
     function timestamp(str) {
         return new Date(str).getTime();
     }
@@ -40,7 +41,7 @@ function configureSlider() {
 
         }
     });
-    d3.json('data/float.json', function(data) {
+    d3.json('data/float.json', function (data) {
         data = MG.convert.date(data, 'date');
 
         MG.data_graphic({
@@ -55,12 +56,10 @@ function configureSlider() {
             target: '#chart_container'
         });
 
-})
-    html5Slider.noUiSlider.on('update', function( values, handle ) {
-        dateValues=values;
-        console.log(dateValues);
+    })
+    html5Slider.noUiSlider.on('update', function (values, handle) {
+        dateValues = values;
+        buildDataForVisualization(dateValues);
     });
-
-
 }
 
