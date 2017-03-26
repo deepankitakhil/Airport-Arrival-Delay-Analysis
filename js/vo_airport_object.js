@@ -13,6 +13,7 @@ function createAirportDelayObjectFromCustomMap(error, airport_delay_data, filter
     if (error) throw  error;
     mapDataToKeyValuePair(airport_delay_data);
     filterDataForConsistency(dataByAirportID, filtered_airport_data);
+    configureCluster(filteredDataByAirportID);
 }
 
 function mapDataToKeyValuePair(airport_delay_data) {

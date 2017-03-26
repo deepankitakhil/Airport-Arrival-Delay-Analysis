@@ -1,7 +1,6 @@
 function right_pane_visualization_init() {
     configureSlider();
     trigger_data_configuration();
-    configureCluster(filteredDataByAirportID);
 }
 
 function configureSlider() {
