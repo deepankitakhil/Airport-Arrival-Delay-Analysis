@@ -42,6 +42,7 @@ function configureSlider() {
     });
     d3.json('data/float.json', function(data) {
         data = MG.convert.date(data, 'date');
+        
 
         MG.data_graphic({
             title: "Delay Trend",
@@ -59,6 +60,8 @@ function configureSlider() {
     html5Slider.noUiSlider.on('update', function( values, handle ) {
         dateValues=values;
         console.log(dateValues);
+        buildDataForVisualization(dateValues);
+
     });
 
 
