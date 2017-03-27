@@ -14,7 +14,6 @@ var monthToNumber = {
     'December': 12
 };
 function right_pane_visualization_init() {
-    configureSlider();
     triggerDataConfiguration();
 }
 
