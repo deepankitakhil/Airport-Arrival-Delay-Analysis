@@ -4,7 +4,7 @@ function buildDataForVisualization(dateRange) {
     var startDate = dateRange[0].split(',');
     var endDate = dateRange[1].split(',');
     var airportData;
-
+    delayDataForClustering = [];
     Object.keys(filteredDataByAirportID)
         .sort()
         .forEach(function (airportCode) {

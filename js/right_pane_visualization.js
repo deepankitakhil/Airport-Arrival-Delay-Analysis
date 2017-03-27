@@ -1,3 +1,18 @@
+var dateValues = [];
+var monthToNumber = {
+    'January': 1,
+    'February': 2,
+    'March': 3,
+    'April': 4,
+    'May': 5,
+    'June': 6,
+    'July': 7,
+    'August': 8,
+    'September': 9,
+    'October': 10,
+    'November': 11,
+    'December': 12
+};
 function right_pane_visualization_init() {
     configureSlider();
     triggerDataConfiguration();
@@ -42,7 +57,6 @@ function configureSlider() {
     });
     d3.json('data/float.json', function(data) {
         data = MG.convert.date(data, 'date');
-        
 
         MG.data_graphic({
             title: "Delay Trend",
@@ -56,12 +70,15 @@ function configureSlider() {
             target: '#chart_container'
         });
 
-})
-    html5Slider.noUiSlider.on('update', function( values, handle ) {
-        dateValues=values;
-        console.log(dateValues);
-        buildDataForVisualization(dateValues);
-
+    });
+    html5Slider.noUiSlider.on('update', function (values, handle) {
+        dateValues = values;
+        var startDate = dateValues[0].split(",");
+        var endDate = dateValues[1].split(",");
+        var startMonth = monthToNumber[startDate[0].trim()];
+        var endMonth = monthToNumber[endDate[0].trim()];
+        var dateRange = [startMonth + "," + startDate[1].trim(), endMonth + "," + endDate[1].trim()];
+        buildDataForVisualization(dateRange);
     });
 
 
