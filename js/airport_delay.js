@@ -121,7 +121,7 @@ function run() {
     var k = initialize();
     for (var i = 0; i < 50; i++)
         step(k);
-    k.log();
+    k.updateClusterInformation();
 }
 
 function initialize() {

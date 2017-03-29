@@ -1,7 +1,8 @@
 /*
-Idea taken from https://bl.ocks.org/mtaptich/7af7a88b73496dc991b3
+ Idea taken from https://bl.ocks.org/mtaptich/7af7a88b73496dc991b3
  */
-
+var airportToClusterMapping = d3.map();
+var clusterToAirportMapping = d3.map();
 class KMeansClusterAlgorithm {
     constructor(number_of_cluster, data) {
         this.number_of_cluster = number_of_cluster;
@@ -95,16 +96,21 @@ class KMeansClusterAlgorithm {
         }
     }
 
-    log() {
-        for (var clusterIndex = 0; clusterIndex < this.number_of_cluster; clusterIndex++) {
-            console.log("Cluster ", clusterIndex, " includes:");
-            for (var dataIndex = 0; dataIndex < this.total_data; dataIndex++) {
-                if (this.data[dataIndex].get_cluster == clusterIndex) {
-                    console.log("(", this.data[dataIndex].get_airport_id, ", ", this.data[dataIndex].get_delay, ")")
-                }
-                console.log();
+    updateClusterInformation() {
+        for (var dataIndex = 0; dataIndex < this.total_data; dataIndex++) {
+            airportToClusterMapping.set(this.data[dataIndex].get_airport_id, this.data[dataIndex]);
+            if (clusterToAirportMapping.has(this.data[dataIndex].get_cluster)) {
+                var dataSet = clusterToAirportMapping.get(this.data[dataIndex].get_cluster);
+                dataSet.add(this.data[dataIndex]);
+                clusterToAirportMapping.set(this.data[dataIndex].get_cluster, dataSet);
+            } else {
+                var dataSet = d3.set();
+                dataSet.add(this.data[dataIndex]);
+                clusterToAirportMapping.set(this.data[dataIndex].get_cluster, dataSet);
             }
         }
+        console.log(airportToClusterMapping);
+        console.log(clusterToAirportMapping);
     }
 }
 
