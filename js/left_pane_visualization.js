@@ -81,9 +81,15 @@ function createMap(error, states, airport_data) {
             tooltip.classed('hidden', true);
         })
         .on('click',function(airport){
-            selected_airport=airport.properties.LOCID;
+            d3.selectAll(".highlighted_cities").remove();
+            window.selected_airport = airport.properties.LOCID;
+            d3.selectAll('.cities').style("fill", "steelblue");
+            d3.selectAll('.cities').style("fill-opacity", 0.5);
+            d3.select(this).style("fill", "black");
+            displayVisualization();
 
         });
+
 }
 
 function configureSearch(error, airport_data) {

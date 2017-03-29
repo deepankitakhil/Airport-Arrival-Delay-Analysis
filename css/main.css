@@ -24,7 +24,12 @@
     stroke: #fff;
     stroke-width: 2px;
 }
-
+.selected_city{
+    fill: yellow;
+    fill-opacity:1;
+    stroke: #fff;
+    stroke-width: 2px;
+}
 .hidden {
     display: none;
 }

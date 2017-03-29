@@ -78,8 +78,12 @@ function configureSlider() {
         var endMonth = monthToNumber[endDate[0].trim()];
         var dateRange = [startMonth + "," + startDate[1].trim(), endMonth + "," + endDate[1].trim()];
         buildDataForVisualization(dateRange);
+        displayVisualization();
     });
 
+}
 
+function displayVisualization(){
+    console.log(delayDataForClustering);
 }
 
