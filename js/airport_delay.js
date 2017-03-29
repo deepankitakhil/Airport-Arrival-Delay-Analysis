@@ -34,11 +34,11 @@ function buildDataForVisualization(dateRange) {
                                     }
                                 }
                                 var dataSet = delayDataForTrend.get(key);
-                                dataSet.push(["year: " + year, "month:" + month, "data:" + monthlyDelayedFlightCount]);
+                                buildData(dataSet, year, month, monthlyDelayedFlightCount);
                                 delayDataForTrend.set(key, dataSet);
                             } else {
                                 var dataSet = delayDataForTrend.get(key);
-                                dataSet.push(["year: " + year, "month:" + month, "data:" + previousMonthlySum]);
+                                buildData(dataSet, year, month, previousMonthlySum);
                                 delayDataForTrend.set(key, dataSet);
                             }
                         }
@@ -59,12 +59,12 @@ function buildDataForVisualization(dateRange) {
                                     }
                                 }
                                 var dataSet = delayDataForTrend.get(key);
-                                dataSet.push(["year: " + year, "month:" + month, "data:" + monthlyDelayedFlightCount]);
+                                buildData(dataSet, year, month, monthlyDelayedFlightCount);
                                 delayDataForTrend.set(key, dataSet);
                             }
                             else {
                                 var dataSet = delayDataForTrend.get(key);
-                                dataSet.push(["year: " + year, "month:" + month, "data:" + previousMonthlySum]);
+                                buildData(dataSet, year, month, previousMonthlySum);
                                 delayDataForTrend.set(key, dataSet);
                             }
                         }
@@ -91,11 +91,12 @@ function buildDataForVisualization(dateRange) {
                                 }
                             }
                             var dataSet = delayDataForTrend.get(key);
-                            dataSet.push(["year: " + year, "month:" + month, "data:" + monthlyDelayedFlightCount]);
+                            buildData(dataSet, year, month, monthlyDelayedFlightCount);
                             delayDataForTrend.set(key, dataSet);
                         }
                         else {
                             var dataSet = delayDataForTrend.get(key);
+                            buildData(dataSet, year, month, previousMonthlySum);
                             dataSet.push(["year: " + year, "month:" + month, "data:" + previousMonthlySum]);
                             delayDataForTrend.set(key, dataSet);
                         }
@@ -107,6 +108,13 @@ function buildDataForVisualization(dateRange) {
 
     kMeansCluster();
     delayTrend();
+}
+
+function buildData(dataSet, year, month, monthlyDelayedFlightCount) {
+    if (month < 9)
+        dataSet.push(["date: " + year + "0" + month, "data:" + monthlyDelayedFlightCount]);
+    else
+        dataSet.push(["date: " + year + "" + month, "data:" + monthlyDelayedFlightCount]);
 }
 
 function kMeansCluster() {
