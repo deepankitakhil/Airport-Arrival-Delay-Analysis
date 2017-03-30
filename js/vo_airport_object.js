@@ -1,5 +1,6 @@
 var dataByAirportID = d3.map();
 var filteredDataByAirportID = d3.map();
+var airportNameByID = d3.map();
 
 function triggerDataConfiguration() {
     queue()
@@ -24,7 +25,9 @@ function mapDataToKeyValuePair(airport_delay_data) {
         var airportID = airport_delay_data[rowIndex].airport;
         var year = airport_delay_data[rowIndex].year;
         var month = airport_delay_data[rowIndex].month;
+        var airportName = airport_delay_data[rowIndex].airport_name;
         var carrier = airport_delay_data[rowIndex].carrier;
+        airportNameByID.set(airportID, airportName);
         if (dataByAirportID.has(airportID)) {
             var dataByYear = dataByAirportID.get(airportID);
             if (dataByYear.has(year)) {

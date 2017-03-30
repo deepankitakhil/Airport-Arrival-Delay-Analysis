@@ -27,7 +27,7 @@ class KMeansClusterAlgorithm {
     initialize_datapoints() {
 
         for (var dataIndex = 0; dataIndex < this.total_data; dataIndex++) {
-            var newPoint = new FlightDelayDataPoint(this.samples[dataIndex][0], this.samples[dataIndex][1]);
+            var newPoint = new FlightDelayDataPoint(this.samples[dataIndex][0], this.samples[dataIndex][1], this.samples[dataIndex][2]);
 
             if (dataIndex <= this.number_of_cluster) {
                 newPoint.set_cluster(dataIndex);
@@ -61,7 +61,7 @@ class KMeansClusterAlgorithm {
                 current_position = [this.centroids[clusterIndex].delay];
 
             for (var dataIndex = 0; dataIndex < this.data.length; dataIndex++) {
-                if (this.data[dataIndex].get_cluster == clusterIndex) {
+                if (this.data[dataIndex].get_cluster === clusterIndex) {
                     totalY += this.data[dataIndex].get_delay;
                     totalInCluster += 1;
                 }
@@ -72,7 +72,7 @@ class KMeansClusterAlgorithm {
             }
 
 
-            if (this.centroids[clusterIndex].delay != current_position[0]) {
+            if (this.centroids[clusterIndex].delay !== current_position[0]) {
                 this.isStillMoving = 1;
             }
         }
@@ -117,8 +117,9 @@ class KMeansClusterAlgorithm {
 }
 
 class FlightDelayDataPoint {
-    constructor(airportID, delay) {
+    constructor(airportID, airportName, delay) {
         this.airportID = airportID;
+        this.airportName = airportName;
         this.delay = delay;
     }
 
@@ -126,8 +127,16 @@ class FlightDelayDataPoint {
         this.airportID = airportID;
     }
 
+    set_airport_name(airportName){
+        this.airportName = airportName;
+    }
+
     get get_airport_id() {
         return this.airportID;
+    }
+
+    get get_airport_name(){
+        return this.airportName;
     }
 
     set_delay(delay) {

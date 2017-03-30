@@ -103,7 +103,7 @@ function buildDataForVisualization(dateRange) {
                     }
                 }
             }
-            delayDataForClustering.push([key, delayedFlightCount]);
+            delayDataForClustering.push([key, airportNameByID.get(key), delayedFlightCount]);
         });
 
     kMeansCluster();

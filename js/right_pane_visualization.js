@@ -87,7 +87,12 @@ function displayVisualization() {
     if (selected_airport === undefined) {
         console.log("no airport selected");
     } else {
-        console.log(clusterToAirportMapping.get(airportToClusterMapping.get(selected_airport).get_cluster));
+        var cluster = clusterToAirportMapping.get(airportToClusterMapping.get(selected_airport).get_cluster);
+        var maxLength = cluster.length > 5 ? 5 : cluster.length;
+
+        for (var index = 0; index < maxLength; index++) {
+            console.log(cluster[index].get_airport_name);
+        }
     }
 }
 
