@@ -1,4 +1,3 @@
-var dateValues = [];
 var monthToNumber = {
     'January': 1,
     'February': 2,

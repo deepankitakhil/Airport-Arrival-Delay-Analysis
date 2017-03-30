@@ -97,15 +97,20 @@ class KMeansClusterAlgorithm {
     }
 
     updateClusterInformation() {
+        airportToClusterMapping.clear();
+        clusterToAirportMapping.clear();
+        console.log(this.total_data);
         for (var dataIndex = 0; dataIndex < this.total_data; dataIndex++) {
             airportToClusterMapping.set(this.data[dataIndex].get_airport_id, this.data[dataIndex]);
             if (clusterToAirportMapping.has(this.data[dataIndex].get_cluster)) {
                 var dataSet = clusterToAirportMapping.get(this.data[dataIndex].get_cluster);
-                dataSet.add(this.data[dataIndex]);
-                clusterToAirportMapping.set(this.data[dataIndex].get_cluster, dataSet);
+                if (!dataSet.includes(this.data[dataIndex])) {
+                    dataSet.push(this.data[dataIndex]);
+                    clusterToAirportMapping.set(this.data[dataIndex].get_cluster, dataSet);
+                }
             } else {
-                var dataSet = d3.set();
-                dataSet.add(this.data[dataIndex]);
+                var dataSet = [];
+                dataSet.push(this.data[dataIndex]);
                 clusterToAirportMapping.set(this.data[dataIndex].get_cluster, dataSet);
             }
         }
