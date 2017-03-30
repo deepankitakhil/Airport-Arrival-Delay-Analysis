@@ -19,7 +19,8 @@ function right_pane_visualization_init() {
 function configureSlider() {
 
     var html5Slider = document.getElementById('slider');
-    var dateValues=[];
+    var dateValues = [];
+
     function timestamp(str) {
         return new Date(str).getTime();
     }
@@ -53,7 +54,7 @@ function configureSlider() {
 
         }
     });
-    d3.json('data/float.json', function(data) {
+    d3.json('data/float.json', function (data) {
         data = MG.convert.date(data, 'date');
 
         MG.data_graphic({
@@ -82,7 +83,11 @@ function configureSlider() {
 
 }
 
-function displayVisualization(){
-    console.log(delayDataForClustering);
+function displayVisualization() {
+    if (selected_airport === undefined) {
+        console.log("no airport selected");
+    } else {
+        console.log(clusterToAirportMapping.get(airportToClusterMapping.get(selected_airport).get_cluster));
+    }
 }
 

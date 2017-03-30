@@ -99,7 +99,6 @@ class KMeansClusterAlgorithm {
     updateClusterInformation() {
         airportToClusterMapping.clear();
         clusterToAirportMapping.clear();
-        console.log(this.total_data);
         for (var dataIndex = 0; dataIndex < this.total_data; dataIndex++) {
             airportToClusterMapping.set(this.data[dataIndex].get_airport_id, this.data[dataIndex]);
             if (clusterToAirportMapping.has(this.data[dataIndex].get_cluster)) {
@@ -114,8 +113,6 @@ class KMeansClusterAlgorithm {
                 clusterToAirportMapping.set(this.data[dataIndex].get_cluster, dataSet);
             }
         }
-        console.log(airportToClusterMapping);
-        console.log(clusterToAirportMapping);
     }
 }
 
