@@ -111,10 +111,7 @@ function buildDataForVisualization(dateRange) {
 }
 
 function buildData(dataSet, year, month, monthlyDelayedFlightCount) {
-    if (month < 9)
-        dataSet.push(["date: " + year + "0" + month, "data:" + monthlyDelayedFlightCount]);
-    else
-        dataSet.push(["date: " + year + "" + month, "data:" + monthlyDelayedFlightCount]);
+    dataSet.push([Date.parse(year + "-" + month), +monthlyDelayedFlightCount]);
 }
 
 function kMeansCluster() {
