@@ -12,8 +12,6 @@ var monthToNumber = {
     'November': 11,
     'December': 12
 };
-
-var similar_airports=[];
 function right_pane_visualization_init() {
     triggerDataConfiguration();
 }
@@ -55,21 +53,6 @@ function configureSlider() {
             max: timestamp('2016-11-30')
 
         }
-    });
-    d3.json('data/float.json', function (data) {
-        data = MG.convert.date(data, 'date');
-
-        MG.data_graphic({
-            title: "Delay Trend",
-            data: data,
-            decimals: 3,
-            width: 600,
-            height: 250,
-            right: 40,
-            xax_count: 4,
-            target: '#chart_container'
-        });
-
     });
     html5Slider.noUiSlider.on('update', function (values, handle) {
         dateValues = values;
@@ -125,11 +108,7 @@ function displayVisualization() {
             similar_airports.push({'Similar Airports':cluster[index].get_airport_name})
 
         }
-        //console.log(similar_airports);
-        tabulate(similar_airports,['Similar Airports']);
-
-
-
+        tabulate(similar_airports,["Similar Airports"]);
     }
 
 }
