@@ -54,22 +54,6 @@ function configureSlider() {
 
         }
     });
-    d3.json('data/float.json', function (data) {
-        data = MG.convert.date(data, 'date');
-
-        MG.data_graphic({
-            title: "Delay Trend",
-
-            data: data,
-            decimals: 3,
-            width: 600,
-            height: 250,
-            right: 40,
-            xax_count: 4,
-            target: '#chart_container'
-        });
-
-    });
     html5Slider.noUiSlider.on('update', function (values, handle) {
         dateValues = values;
         var startDate = dateValues[0].split(",");
