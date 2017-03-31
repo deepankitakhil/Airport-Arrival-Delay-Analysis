@@ -12,6 +12,8 @@ var monthToNumber = {
     'November': 11,
     'December': 12
 };
+
+var similar_airports=[];
 function right_pane_visualization_init() {
     triggerDataConfiguration();
 }
@@ -59,7 +61,6 @@ function configureSlider() {
 
         MG.data_graphic({
             title: "Delay Trend",
-
             data: data,
             decimals: 3,
             width: 600,
@@ -82,17 +83,54 @@ function configureSlider() {
     });
 
 }
+//Table for Similar Airports
+function tabulate(data,columns) {
+    $("#viz2 tr").remove();
+    table = d3.select("#viz2").attr("class","table-title");
+    thead = table.append('thead');
+    tbody = table.append('tbody');
+    thead.append("tr")
+        .selectAll('th')
+        .data(columns).enter()
+        .append('th')
+        .text(function (column) { return column; });
+    var rows = tbody.selectAll('tr')
+        .data(data)
+        .enter()
+        .append('tr');
+    var cells = rows.selectAll('td')
+        .data(function (row) {
 
+            return columns.map(function (column) {
+                return {column: column, value: row[column]};
+            });
+        })
+        .enter()
+        .append('td')
+        .text(function (d) { return d.value; });
+
+    return table;
+
+
+}
 function displayVisualization() {
     if (selected_airport === undefined) {
-        console.log("no airport selected");
+        //console.log("no airport selected");
     } else {
         var cluster = clusterToAirportMapping.get(airportToClusterMapping.get(selected_airport).get_cluster);
         var maxLength = cluster.length > 5 ? 5 : cluster.length;
-
+        similar_airports=[];
         for (var index = 0; index < maxLength; index++) {
-            console.log(cluster[index].get_airport_name);
+
+            similar_airports.push({'Similar Airports':cluster[index].get_airport_name})
+
         }
+        //console.log(similar_airports);
+        tabulate(similar_airports,['Similar Airports']);
+
+
+
     }
+
 }
 

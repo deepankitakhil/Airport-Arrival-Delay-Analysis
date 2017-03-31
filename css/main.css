@@ -80,10 +80,22 @@
     bottom: 0;
     width: 40px;
 }
-#viz2{
+th {
+    text-align: center;
 
+    font-size: 30px;
+
+
+}
+td{
+
+    font-size: 20px;
+    padding: 1px;
+}
+#viz2{
+    border-top: double;
+    border-bottom: double;
     position:absolute;
-    background: rebeccapurple;
     left:0;
     right: 0;
     width: 40%;
@@ -94,7 +106,6 @@
 #viz3{
 
     position:absolute;
-    background:orangered;
     left:0;
     right: 0;
     width: 40%;
