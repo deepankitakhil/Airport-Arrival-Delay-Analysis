@@ -1,9 +1,9 @@
 /*
  Idea taken from : http://www.highcharts.com/demo/line-time-series
  */
-function init_time_Series() {
+function display_time_Series() {
     $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=usdeur.json&callback=?', function (data) {
-
+        console.log(data);
         Highcharts.chart('chart_container', {
             chart: {
                 zoomType: 'x'
