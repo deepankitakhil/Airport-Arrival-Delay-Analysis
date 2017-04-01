@@ -6,6 +6,15 @@ function display_time_Series() {
     Highcharts.chart('chart_container', {
         chart: {
             zoomType: 'x',
+            resetZoomButton: {
+                position: {
+                    align: 'right', // by default
+                    verticalAlign: 'top', // by default
+                    x: -10,
+                    y: 10
+                },
+                relativeTo: 'chart'
+            }
         },
         title: {
             text: 'Airport Arrival Delay over time'
