@@ -1,27 +1,34 @@
 /*
- Idea taken from : http://www.highcharts.com/demo/line-time-series
+ Source : http://www.highcharts.com/demo/line-time-series
  */
 function display_time_Series() {
     var data = delayDataForTrend.get(selected_airport);
-    console.log(data);
+    //console.log(data);
     Highcharts.chart('chart_container', {
         chart: {
-            zoomType: 'x'
+            zoomType: 'x',
         },
         title: {
             text: 'Airport Arrival Delay over time'
         },
+        exporting: { enabled: false },   // To remove download button
         subtitle: {
             text: document.ontouchstart === undefined ?
                 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
         },
         xAxis: {
-            type: 'datetime'
+
+            type: 'datetime',
+
+
+        },
+        scrollbar: {
+            enabled: true
         },
         yAxis: {
             title: {
                 text: 'Airport Delay'
-            }
+            },
         },
         legend: {
             enabled: false
@@ -49,7 +56,10 @@ function display_time_Series() {
                         lineWidth: 1
                     }
                 },
-                threshold: null
+                threshold: null,
+                scrollbar: {
+                    enabled: true
+                },
             }
         },
 
@@ -57,6 +67,22 @@ function display_time_Series() {
             type: 'area',
             name: 'Airport Delay',
             data: data
-        }]
+        }],
+        scrollbar: {
+            enabled:true,
+            barBackgroundColor: 'gray',
+            barBorderRadius: 7,
+            barBorderWidth: 0,
+            buttonBackgroundColor: 'gray',
+            buttonBorderWidth: 0,
+            buttonArrowColor: 'yellow',
+            buttonBorderRadius: 7,
+            rifleColor: 'yellow',
+            trackBackgroundColor: 'white',
+            trackBorderWidth: 1,
+            trackBorderColor: 'silver',
+            trackBorderRadius: 7
+        }
+
     });
 }

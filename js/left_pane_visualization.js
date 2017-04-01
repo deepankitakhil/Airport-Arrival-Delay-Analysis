@@ -83,9 +83,15 @@ function createMap(error, states, airport_data) {
         .on('click',function(airport){
             d3.selectAll(".highlighted_cities").remove();
             window.selected_airport = airport.properties.LOCID;
+            d3.selectAll('.cities').on('mouseout', function () {
+                d3.select(this).style("fill-opacity", .5);
+                tooltip.classed('hidden', true);
+            });
             d3.selectAll('.cities').style("fill", "steelblue");
             d3.selectAll('.cities').style("fill-opacity", 0.5);
             d3.select(this).style("fill", "black");
+            d3.select(this).style("fill-opacity", 1);
+            d3.select(this).on('mouseout',"");
             displayVisualization();
 
         });
@@ -139,6 +145,7 @@ function configureSearch(error, airport_data) {
                 }))
                 .attr('class', 'highlighted_cities')
                 .on("mousemove", function (filteredAirport) {
+
                     d3.mouse(svg.node()).map(function (value) {
                         return parseInt(value);
                     });
@@ -149,7 +156,20 @@ function configureSearch(error, airport_data) {
 
                 })
                 .on('mouseout', function () {
+
                     tooltip.classed('hidden', true);
+                })
+                .on('click',function(airport){
+                    d3.selectAll('.cities').style("fill", "steelblue");
+                    d3.selectAll('.cities').style("fill-opacity", 0.5);
+                    d3.selectAll(".highlighted_cities").remove();
+                    d3.selectAll('.highlighted_cities').style("fill", "steelblue");
+                    d3.selectAll('.highlighted_cities').style("fill-opacity", 0.5);
+                    d3.select(this).style("fill", "black");
+                    d3.select(this).style("fill-opacity", 1);
+                    window.selected_airport = airport.properties.LOCID;
+                    displayVisualization();
+
                 });
         }
     }

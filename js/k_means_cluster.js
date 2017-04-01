@@ -1,5 +1,5 @@
 /*
- Idea taken from https://bl.ocks.org/mtaptich/7af7a88b73496dc991b3
+ Source: https://bl.ocks.org/mtaptich/7af7a88b73496dc991b3
  */
 var airportToClusterMapping = d3.map();
 var clusterToAirportMapping = d3.map();

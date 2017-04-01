@@ -97,7 +97,7 @@ function buildDataForVisualization(dateRange) {
                         else {
                             var dataSet = delayDataForTrend.get(key);
                             buildData(dataSet, year, month, previousMonthlySum);
-                            dataSet.push(["year: " + year, "month:" + month, "data:" + previousMonthlySum]);
+                            //dataSet.push(["year: " + year, "month:" + month, "data:" + previousMonthlySum]);
                             delayDataForTrend.set(key, dataSet);
                         }
                     }
