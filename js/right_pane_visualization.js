@@ -68,8 +68,8 @@ function configureSlider() {
 }
 //Table for Similar Airports
 function tabulate(data, columns) {
-    $("#viz2 tr").remove();
-    table = d3.select("#viz2").attr("class", "table-title");
+    $("#similar_airport tr").remove();
+    table = d3.select("#similar_airport").attr("class", "table-title");
     thead = table.append('thead');
     tbody = table.append('tbody');
     thead.append("tr")
