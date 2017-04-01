@@ -162,7 +162,6 @@ function configureSearch(error, airport_data) {
                 .on('click',function(airport){
                     d3.selectAll('.cities').style("fill", "steelblue");
                     d3.selectAll('.cities').style("fill-opacity", 0.5);
-                    d3.selectAll(".highlighted_cities").remove();
                     d3.selectAll('.highlighted_cities').style("fill", "steelblue");
                     d3.selectAll('.highlighted_cities').style("fill-opacity", 0.5);
                     d3.select(this).style("fill", "black");
