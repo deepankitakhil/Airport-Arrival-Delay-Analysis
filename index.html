@@ -17,15 +17,13 @@
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src="http://d3js.org/queue.v1.min.js"></script>
     <script src="https://d3js.org/d3-collection.v1.min.js"></script>
-    <script src="./js/metricsgraphics.js"></script>
     <script src="./js/jquery-3.2.0.min.js"></script>
     <link href="./css/metricsgraphics.css" rel="stylesheet">
     <script src="./js/nouislider.js"></script>
     <link href="./css/main.css" rel="stylesheet">
     <link href="./css/nouislider.css" rel="stylesheet">
     <link href="./css/table_style.css" rel="stylesheet">
-    <script src="http://code.highcharts.com/stock/highstock.js"></script>
-    <script type="text/javascript" src="https://www.highcharts.com/samples/data/usdeur.js"></script>
+    <script src="https://www.highcharts.com/samples/data/usdeur.js"></script>
 
 </head>
 <body onload="left_pane_visualization_init()">
@@ -33,20 +31,16 @@
 
 <div id="us_map">
     Search US Airports by Name:
-    <input type="text" id="filterCriteria"/>
-    <div id="filteredList"></div>
+    <input type="text" id="airport_search_container"/>
+    <div id="filtered_airport"></div>
 
-</div>
-<div id="input">
-    <h3 id="input-select"/>
-    <h3 id="input-number"/>
 </div>
 <div id="chart_container">
 </div>
 
 <div id="slider"></div>
-<div id="similar_airport"></div>
 <div id="time_series"></div>
+<div id="similar_airport_container"></div>
 <script>right_pane_visualization_init();
 </script>
 </body>

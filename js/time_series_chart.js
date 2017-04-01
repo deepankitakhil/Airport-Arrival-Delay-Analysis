@@ -3,7 +3,6 @@
  */
 function display_time_Series() {
     var data = delayDataForTrend.get(selected_airport);
-    //console.log(data);
     Highcharts.chart('chart_container', {
         chart: {
             zoomType: 'x',
@@ -11,7 +10,7 @@ function display_time_Series() {
         title: {
             text: 'Airport Arrival Delay over time'
         },
-        exporting: { enabled: false },   // To remove download button
+        exporting: {enabled: false},   // To remove download button
         subtitle: {
             text: document.ontouchstart === undefined ?
                 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
@@ -69,7 +68,7 @@ function display_time_Series() {
             data: data
         }],
         scrollbar: {
-            enabled:true,
+            enabled: true,
             barBackgroundColor: 'gray',
             barBorderRadius: 7,
             barBorderWidth: 0,
