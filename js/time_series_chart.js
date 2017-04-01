@@ -18,11 +18,9 @@ function display_time_Series() {
         xAxis: {
 
             type: 'datetime',
-
-
-        },
-        scrollbar: {
-            enabled: true
+            scrollbar: {
+                enabled: true
+            }
         },
         yAxis: {
             title: {
@@ -55,10 +53,7 @@ function display_time_Series() {
                         lineWidth: 1
                     }
                 },
-                threshold: null,
-                scrollbar: {
-                    enabled: true
-                },
+                threshold: null
             }
         },
 
@@ -66,22 +61,6 @@ function display_time_Series() {
             type: 'area',
             name: 'Airport Delay',
             data: data
-        }],
-        scrollbar: {
-            enabled: true,
-            barBackgroundColor: 'gray',
-            barBorderRadius: 7,
-            barBorderWidth: 0,
-            buttonBackgroundColor: 'gray',
-            buttonBorderWidth: 0,
-            buttonArrowColor: 'yellow',
-            buttonBorderRadius: 7,
-            rifleColor: 'yellow',
-            trackBackgroundColor: 'white',
-            trackBorderWidth: 1,
-            trackBorderColor: 'silver',
-            trackBorderRadius: 7
-        }
-
+        }]
     });
 }

@@ -103,7 +103,7 @@ td{
     height: 33.33%;
     top: 40%
 }
-#airline_delay_trend{
+#airline_delay_trend_container{
     position:absolute;
     left:0;
     right: 0;
@@ -111,6 +111,20 @@ td{
     margin-left: 60%;
     height: 33.33%;
     top: 66.66%;
+}
+
+rect.background {
+    fill: white;
+}
+
+.axis {
+    shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
 }
 
 
