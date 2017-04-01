@@ -108,9 +108,13 @@ function displayVisualization() {
         var maxLength = cluster.length > 5 ? 5 : cluster.length;
         var similar_airports = [];
         for (var index = 0; index < maxLength; index++) {
-
-            similar_airports.push({'Similar Airports': cluster[index].get_airport_name})
-
+            if (selected_airport === cluster[index].get_airport_id) {
+                console.log("same airport detected. Ignoring them");
+                maxLength += 1;
+            } else {
+                var cityStateAirportName = cluster[index].get_airport_name;
+                similar_airports.push({'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1)})
+            }
         }
         display_time_Series();
         tabulate(similar_airports, ["Similar Airports"]);
