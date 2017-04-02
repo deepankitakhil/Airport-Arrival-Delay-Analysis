@@ -5,6 +5,8 @@ var height = 1000;
 var width = 1200;
 var airport_radius;
 var selected_airport;
+var airportInformationByAirportName = d3.map();
+
 function left_pane_visualization_init() {
     svg = d3.select('#us_map').append('svg')
         .attr('width', width)
@@ -37,9 +39,11 @@ function createMap(error, states, airport_data) {
     var passenger_traffic = [];
     var tooltip = d3.select('#us_map').append('div')
         .attr('class', 'hidden tooltip');
-    for (index = 0; index < airport_length; index++) {
-        var pop = airport_data.features[index].properties.TOT_ENP;
-        passenger_traffic.push(Number(pop));
+    for (var index = 0; index < airport_length; index++) {
+        var airportInformation = airport_data.features[index];
+        airportInformationByAirportName.set(airportInformation.properties.NAME, airportInformation);
+        var totalENP = airportInformation.properties.TOT_ENP;
+        passenger_traffic.push(Number(totalENP));
     }
 
     var min_passenger_value = Math.min.apply(Math, passenger_traffic);
@@ -80,7 +84,7 @@ function createMap(error, states, airport_data) {
             d3.select(this).style("fill-opacity", .5);
             tooltip.classed('hidden', true);
         })
-        .on('click',function(airport){
+        .on('click', function (airport) {
             d3.selectAll(".highlighted_cities").remove();
             window.selected_airport = airport.properties.LOCID;
             d3.selectAll('.cities').on('mouseout', function () {
@@ -91,7 +95,7 @@ function createMap(error, states, airport_data) {
             d3.selectAll('.cities').style("fill-opacity", 0.5);
             d3.select(this).style("fill", "black");
             d3.select(this).style("fill-opacity", 1);
-            d3.select(this).on('mouseout',"");
+            d3.select(this).on('mouseout', "");
             displayVisualization();
 
         });
@@ -159,7 +163,7 @@ function configureSearch(error, airport_data) {
 
                     tooltip.classed('hidden', true);
                 })
-                .on('click',function(airport){
+                .on('click', function (airport) {
                     d3.selectAll('.cities').style("fill", "steelblue");
                     d3.selectAll('.cities').style("fill-opacity", 0.5);
                     d3.selectAll('.highlighted_cities').style("fill", "steelblue");

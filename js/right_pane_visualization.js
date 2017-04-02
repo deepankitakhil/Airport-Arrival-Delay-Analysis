@@ -69,9 +69,9 @@ function configureSlider() {
 //Table for Similar Airports
 function tabulate(data, columns) {
     $("#similar_airport_container tr").remove();
-    table = d3.select("#similar_airport_container").attr("class", "table-title");
-    thead = table.append('thead');
-    tbody = table.append('tbody');
+    var table = d3.select("#similar_airport_container").attr("class", "table-title");
+    var thead = table.append('thead');
+    var tbody = table.append('tbody');
     thead.append("tr")
         .selectAll('th')
         .data(columns).enter()
@@ -98,8 +98,8 @@ function tabulate(data, columns) {
 
     return table;
 
-
 }
+
 function displayVisualization() {
     if (selected_airport === undefined) {
         console.log("no airport selected");
