@@ -1,4 +1,5 @@
 var svg;
+var tooltip;
 var projection;
 var path;
 var height = 1000;
@@ -37,7 +38,7 @@ function createMap(error, states, airport_data) {
 
     var airport_length = airport_data.features.length;
     var passenger_traffic = [];
-    var tooltip = d3.select('#us_map').append('div')
+    tooltip = d3.select('#us_map').append('div')
         .attr('class', 'hidden tooltip');
     for (var index = 0; index < airport_length; index++) {
         var airportInformation = airport_data.features[index];

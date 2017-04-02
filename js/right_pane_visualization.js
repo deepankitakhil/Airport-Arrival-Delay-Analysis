@@ -99,7 +99,6 @@ function tabulate(data, columns) {
                 highlightAirport(airportName.value);
             }
         );
-
     return table;
 
 }
@@ -131,6 +130,14 @@ function displayVisualization() {
 
 function highlightAirport(airportData) {
     var selectedAirportID = airportData.substr(airportData.indexOf(":") + 1);
-    console.log(airportInformationByAirportID.get(selectedAirportID));
+    console.log(selectedAirportID);
+    svg.selectAll('.selected_cities_from_table')
+        .data(airportInformationByAirportID.get(selectedAirportID))
+        .enter()
+        .attr("d", path.pointRadius(function (airport) {
+            console.log(airport.properties);
+            return airport_radius(airport.properties.TOT_ENP);
+        }))
+        .attr('class', 'selected_cities_from_table');
 }
 
