@@ -62,10 +62,10 @@ function buildDataForVisualization(dateRange) {
         });
 
     kMeansCluster();
-    delayTrend();
+    debugDelayTrendData();
 }
 
-function buildData(dataSet, year, month, monthlyDelayedFlightCount) {
+function formatData(dataSet, year, month, monthlyDelayedFlightCount) {
     dataSet.push([Date.parse(year + "-" + month), +monthlyDelayedFlightCount]);
 }
 
@@ -73,7 +73,7 @@ function kMeansCluster() {
     run();
 }
 
-function delayTrend() {
+function debugDelayTrendData() {
     console.log(airportDelayDataForTimeSeries);
     console.log(airportDelayCountForTimeSeries);
     console.log(weatherDelayDataForTimeSeries);
@@ -149,36 +149,36 @@ function buildTimeSeriesData(startMonth, endMonth, yearWiseData, delayedFlightCo
             }
 
             var airportDelayDataSet = airportDelayDataForTimeSeries.get(key);
-            buildData(airportDelayDataSet, year, month, monthlyAirportDelayData);
+            formatData(airportDelayDataSet, year, month, monthlyAirportDelayData);
             airportDelayDataForTimeSeries.set(key, airportDelayDataSet);
 
             var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
-            buildData(weatherDelayDataSet, year, month, monthlyWeatherDelayData);
+            formatData(weatherDelayDataSet, year, month, monthlyWeatherDelayData);
             weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
 
             var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
-            buildData(airportDelayCountSet, year, month, monthlyAirportDelayCount);
+            formatData(airportDelayCountSet, year, month, monthlyAirportDelayCount);
             airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
 
             var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
-            buildData(weatherDelayCountSet, year, month, monthlyWeatherDelayCount);
+            formatData(weatherDelayCountSet, year, month, monthlyWeatherDelayCount);
             weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
 
         } else {
             var airportDelayDataSet = airportDelayDataForTimeSeries.get(key);
-            buildData(airportDelayDataSet, year, month, previousMonthlyAirportDelayData);
+            formatData(airportDelayDataSet, year, month, previousMonthlyAirportDelayData);
             airportDelayDataForTimeSeries.set(key, airportDelayDataSet);
 
             var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
-            buildData(weatherDelayDataSet, year, month, previousMonthlyWeatherDelayData);
+            formatData(weatherDelayDataSet, year, month, previousMonthlyWeatherDelayData);
             weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
 
             var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
-            buildData(airportDelayCountSet, year, month, previousMonthlyAirportDelayCount);
+            formatData(airportDelayCountSet, year, month, previousMonthlyAirportDelayCount);
             airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
 
             var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
-            buildData(weatherDelayCountSet, year, month, previousMonthlyWeatherDelayCount);
+            formatData(weatherDelayCountSet, year, month, previousMonthlyWeatherDelayCount);
             weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
         }
     }
