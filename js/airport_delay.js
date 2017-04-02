@@ -1,7 +1,12 @@
 var airportDelayCountDataForClustering = [];
 var airportDelayDataForClustering = [];
+
+
 var airportDelayDataForTimeSeries = d3.map();
 var weatherDelayDataForTimeSeries = d3.map();
+
+var airportDelayCountForTimeSeries = d3.map();
+var weatherDelayCountForTimeSeries = d3.map();
 
 function buildDataForVisualization(dateRange) {
     var startDate = dateRange[0].split(',');
@@ -13,8 +18,13 @@ function buildDataForVisualization(dateRange) {
         .forEach(function (airportCode) {
             var key = airportCode.substr(1);
             airportData = filteredDataByAirportID.get(key);
+
             airportDelayDataForTimeSeries.set(key, []);
             weatherDelayDataForTimeSeries.set(key, []);
+
+            airportDelayCountForTimeSeries.set(key, []);
+            weatherDelayCountForTimeSeries.set(key, []);
+
             var delayedFlightCount = 0;
             var flightsDelayPerAirport = 0;
             var startMonth = Number(startDate[0].trim());
@@ -27,20 +37,44 @@ function buildDataForVisualization(dateRange) {
                     var yearWiseData = airportData.get(year);
                     if (!startYearCalculationDone) {
                         for (var month = startMonth; month <= 12; month++) {
+
                             var monthlyAirportDelayData = 0;
                             var monthlyWeatherDelayData = 0;
+
+                            var monthlyAirportDelayCount = 0;
+                            var monthlyWeatherDelayCount = 0;
+
+
                             if (yearWiseData.has(month)) {
+
                                 var previousMonthlyAirportDelayData = 0;
                                 var previousMonthlyWeatherDelayData = 0;
+
+                                var previousMonthlyAirportDelayCount = 0;
+                                var previousMonthlyWeatherDelayCount = 0;
+
                                 var multipleFlightEntryData = yearWiseData.get(month).entries();
                                 for (var flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
                                     for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
+
                                         delayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+
                                         flightsDelayPerAirport += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
+
                                         monthlyAirportDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
+
                                         monthlyWeatherDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_delay);
+
+                                        monthlyAirportDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+
+                                        monthlyWeatherDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_ct);
+
                                         previousMonthlyAirportDelayData = monthlyAirportDelayData;
                                         previousMonthlyWeatherDelayData = monthlyWeatherDelayData;
+
+                                        previousMonthlyAirportDelayCount = monthlyAirportDelayCount;
+                                        previousMonthlyWeatherDelayCount = monthlyWeatherDelayCount;
+
                                     }
                                 }
 
@@ -51,6 +85,14 @@ function buildDataForVisualization(dateRange) {
                                 var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
                                 buildData(weatherDelayDataSet, year, month, monthlyWeatherDelayData);
                                 weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
+
+                                var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
+                                buildData(airportDelayCountSet, year, month, monthlyAirportDelayCount);
+                                airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
+
+                                var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
+                                buildData(weatherDelayCountSet, year, month, monthlyWeatherDelayCount);
+                                weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
 
                             } else {
                                 var airportDelayDataSet = airportDelayDataForTimeSeries.get(key);
@@ -60,6 +102,14 @@ function buildDataForVisualization(dateRange) {
                                 var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
                                 buildData(weatherDelayDataSet, year, month, previousMonthlyWeatherDelayData);
                                 weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
+
+                                var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
+                                buildData(airportDelayCountSet, year, month, previousMonthlyAirportDelayCount);
+                                airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
+
+                                var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
+                                buildData(weatherDelayCountSet, year, month, previousMonthlyWeatherDelayCount);
+                                weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
                             }
                         }
                         startYearCalculationDone = true;
@@ -69,18 +119,39 @@ function buildDataForVisualization(dateRange) {
                         for (month = 1; month <= 12; month++) {
                             var monthlyAirportDelayData = 0;
                             var monthlyWeatherDelayData = 0;
+
+                            var monthlyAirportDelayCount = 0;
+                            var monthlyWeatherDelayCount = 0;
+
                             if (yearWiseData.has(month)) {
+
                                 var previousMonthlyAirportDelayData = 0;
                                 var previousMonthlyWeatherDelayData = 0;
+
+                                var previousMonthlyAirportDelayCount = 0;
+                                var previousMonthlyWeatherDelayCount = 0;
+
                                 var multipleFlightEntryData = yearWiseData.get(month).entries();
                                 for (flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
                                     for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
+
                                         delayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+
                                         flightsDelayPerAirport += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
+
                                         monthlyAirportDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
+
                                         monthlyWeatherDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_delay);
+
+                                        monthlyAirportDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+
+                                        monthlyWeatherDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_ct);
+
                                         previousMonthlyAirportDelayData = monthlyAirportDelayData;
                                         previousMonthlyWeatherDelayData = monthlyWeatherDelayData;
+
+                                        previousMonthlyAirportDelayCount = monthlyAirportDelayCount;
+                                        previousMonthlyWeatherDelayCount = monthlyWeatherDelayCount;
                                     }
                                 }
                                 var airportDelayDataSet = airportDelayDataForTimeSeries.get(key);
@@ -90,6 +161,14 @@ function buildDataForVisualization(dateRange) {
                                 var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
                                 buildData(weatherDelayDataSet, year, month, monthlyWeatherDelayData);
                                 weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
+
+                                var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
+                                buildData(airportDelayCountSet, year, month, monthlyAirportDelayCount);
+                                airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
+
+                                var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
+                                buildData(weatherDelayCountSet, year, month, monthlyWeatherDelayCount);
+                                weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
                             }
                             else {
                                 var airportDelayDataSet = airportDelayDataForTimeSeries.get(key);
@@ -99,6 +178,14 @@ function buildDataForVisualization(dateRange) {
                                 var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
                                 buildData(weatherDelayDataSet, year, month, previousMonthlyWeatherDelayData);
                                 weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
+
+                                var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
+                                buildData(airportDelayCountSet, year, month, previousMonthlyAirportDelayCount);
+                                airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
+
+                                var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
+                                buildData(weatherDelayCountSet, year, month, previousMonthlyWeatherDelayCount);
+                                weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
                             }
                         }
                     }
@@ -114,18 +201,37 @@ function buildDataForVisualization(dateRange) {
                     for (month = startMonth; month <= endMonth; month++) {
                         var monthlyAirportDelayData = 0;
                         var monthlyWeatherDelayData = 0;
+
+                        var monthlyAirportDelayCount = 0;
+                        var monthlyWeatherDelayCount = 0;
                         if (yearWiseData.has(month)) {
                             var previousMonthlyAirportDelayData = 0;
                             var previousMonthlyWeatherDelayData = 0;
+
+                            var previousMonthlyAirportDelayCount = 0;
+                            var previousMonthlyWeatherDelayCount = 0;
+
                             var multipleFlightEntryData = yearWiseData.get(month).entries();
                             for (flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
                                 for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
+
                                     delayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+
                                     flightsDelayPerAirport += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
+
                                     monthlyAirportDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
+
                                     monthlyWeatherDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_delay);
+
+                                    monthlyAirportDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+
+                                    monthlyWeatherDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_ct);
+
                                     previousMonthlyAirportDelayData = monthlyAirportDelayData;
                                     previousMonthlyWeatherDelayData = monthlyWeatherDelayData;
+
+                                    previousMonthlyAirportDelayCount = monthlyAirportDelayCount;
+                                    previousMonthlyWeatherDelayCount = monthlyWeatherDelayCount;
                                 }
                             }
                             var airportDelayDataSet = airportDelayDataForTimeSeries.get(key);
@@ -135,6 +241,14 @@ function buildDataForVisualization(dateRange) {
                             var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
                             buildData(weatherDelayDataSet, year, month, monthlyWeatherDelayData);
                             weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
+
+                            var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
+                            buildData(airportDelayCountSet, year, month, monthlyAirportDelayCount);
+                            airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
+
+                            var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
+                            buildData(weatherDelayCountSet, year, month, monthlyWeatherDelayCount);
+                            weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
                         }
                         else {
                             var airportDelayDataSet = airportDelayDataForTimeSeries.get(key);
@@ -144,6 +258,14 @@ function buildDataForVisualization(dateRange) {
                             var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
                             buildData(weatherDelayDataSet, year, month, previousMonthlyWeatherDelayData);
                             weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
+
+                            var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
+                            buildData(airportDelayCountSet, year, month, previousMonthlyAirportDelayCount);
+                            airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
+
+                            var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
+                            buildData(weatherDelayCountSet, year, month, previousMonthlyWeatherDelayCount);
+                            weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
                         }
                     }
                 }
@@ -166,7 +288,9 @@ function kMeansCluster() {
 
 function delayTrend() {
     console.log(airportDelayDataForTimeSeries);
+    console.log(airportDelayCountForTimeSeries);
     console.log(weatherDelayDataForTimeSeries);
+    console.log(weatherDelayCountForTimeSeries);
 }
 
 function run() {
