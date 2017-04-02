@@ -5,7 +5,7 @@ var height = 1000;
 var width = 1200;
 var airport_radius;
 var selected_airport;
-var airportInformationByAirportName = d3.map();
+var airportInformationByAirportID = d3.map();
 
 function left_pane_visualization_init() {
     svg = d3.select('#us_map').append('svg')
@@ -41,7 +41,7 @@ function createMap(error, states, airport_data) {
         .attr('class', 'hidden tooltip');
     for (var index = 0; index < airport_length; index++) {
         var airportInformation = airport_data.features[index];
-        airportInformationByAirportName.set(airportInformation.properties.NAME, airportInformation);
+        airportInformationByAirportID.set(airportInformation.properties.LOCID, airportInformation);
         var totalENP = airportInformation.properties.TOT_ENP;
         passenger_traffic.push(Number(totalENP));
     }

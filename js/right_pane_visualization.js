@@ -68,7 +68,8 @@ function configureSlider() {
 }
 //Table for Similar Airports
 function tabulate(data, columns) {
-    $("#similar_airport_container tr").remove();
+    console.log(data);
+    $("#similar_airport_container").find("tr").remove();
     var table = d3.select("#similar_airport_container").attr("class", "table-title");
     var thead = table.append('thead');
     var tbody = table.append('tbody');
@@ -87,14 +88,17 @@ function tabulate(data, columns) {
         .data(function (row) {
 
             return columns.map(function (column) {
-                return {column: column, value: row[column]};
+                return {column: column, value: row[column] + ':' + row['Similar Airport ID']};
             });
         })
         .enter()
         .append('td')
         .text(function (d) {
-            return d.value;
-        });
+            return d.value.substr(0, d.value.indexOf(':'));
+        }).on("click", function (airportName) {
+                highlightAirport(airportName.value);
+            }
+        );
 
     return table;
 
@@ -113,12 +117,20 @@ function displayVisualization() {
                 maxLength += 1;
             } else {
                 var cityStateAirportName = cluster[index].get_airport_name;
-                similar_airports.push({'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1)})
+                similar_airports.push({
+                    'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1),
+                    'Similar Airport ID': cluster[index].get_airport_id
+                })
             }
         }
         display_time_Series();
         tabulate(similar_airports, ["Similar Airports"]);
     }
 
+}
+
+function highlightAirport(airportData) {
+    var selectedAirportID = airportData.substr(airportData.indexOf(":") + 1);
+    console.log(airportInformationByAirportID.get(selectedAirportID));
 }
 
