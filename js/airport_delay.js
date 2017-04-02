@@ -38,12 +38,14 @@ function buildDataForVisualization(dateRange) {
                 if (airportData.has(year)) {
                     var yearWiseData = airportData.get(year);
                     if (!startYearCalculationDone) {
-                        result = buildTimeSeriesData(startMonth, 12, yearWiseData, delayedFlightCount, flightsDelayPerAirport, key, year);
+                        result = buildData(startMonth, 12, yearWiseData, delayedFlightCount, flightsDelayPerAirport, key, year, NaN, NaN, NaN, NaN);
                         startYearCalculationDone = true;
                     }
                     else {
                         var yearWiseData = airportData.get(year);
-                        result = buildTimeSeriesData(1, 12, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year);
+                        result = buildData(1, 12, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year,
+                            result.previousMonthlyAirportDelayData, result.previousMonthlyWeatherDelayData, result.previousMonthlyAirportDelayCount,
+                            result.previousMonthlyWeatherDelayCount);
                     }
                 } else {
                 }
@@ -54,7 +56,14 @@ function buildDataForVisualization(dateRange) {
             if (year === endYear) {
                 if (airportData.has(year)) {
                     var yearWiseData = airportData.get(year);
-                    result = buildTimeSeriesData(startMonth, endMonth, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year);
+                    result = buildData(startMonth, endMonth, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year,
+                        result.previousMonthlyAirportDelayData, result.previousMonthlyWeatherDelayData, result.previousMonthlyAirportDelayCount,
+                        result.previousMonthlyWeatherDelayCount);
+                }
+                else {
+                    result = buildData(startMonth, endMonth, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year,
+                        result.previousMonthlyAirportDelayData, result.previousMonthlyWeatherDelayData, result.previousMonthlyAirportDelayCount,
+                        result.previousMonthlyWeatherDelayCount);
                 }
             }
             airportDelayCountDataForClustering.push([key, airportNameByID.get(key), result.delayedFlightCount]);
@@ -99,7 +108,8 @@ function step(k) {
 }
 
 
-function buildTimeSeriesData(startMonth, endMonth, yearWiseData, delayedFlightCount, flightsDelayPerAirport, key, year) {
+function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, flightsDelayPerAirport, key, year, previousMonthlyAirportDelayData,
+                   previousMonthlyWeatherDelayData, previousMonthlyAirportDelayCount, previousMonthlyWeatherDelayCount) {
     for (var month = startMonth; month <= endMonth; month++) {
 
         var monthlyAirportDelayData = 0;
@@ -108,11 +118,11 @@ function buildTimeSeriesData(startMonth, endMonth, yearWiseData, delayedFlightCo
         var monthlyAirportDelayCount = 0;
         var monthlyWeatherDelayCount = 0;
 
-        var previousMonthlyAirportDelayData;
-        var previousMonthlyWeatherDelayData;
+        var previousMonthlyAirportDelayData = previousMonthlyAirportDelayData;
+        var previousMonthlyWeatherDelayData = previousMonthlyWeatherDelayData;
 
-        var previousMonthlyAirportDelayCount;
-        var previousMonthlyWeatherDelayCount;
+        var previousMonthlyAirportDelayCount = previousMonthlyAirportDelayCount;
+        var previousMonthlyWeatherDelayCount = previousMonthlyWeatherDelayCount;
 
 
         if (yearWiseData.has(month)) {
@@ -184,7 +194,11 @@ function buildTimeSeriesData(startMonth, endMonth, yearWiseData, delayedFlightCo
     }
     return {
         delayedFlightCount,
-        flightsDelayPerAirport
+        flightsDelayPerAirport,
+        previousMonthlyAirportDelayData,
+        previousMonthlyWeatherDelayData,
+        previousMonthlyAirportDelayCount,
+        previousMonthlyWeatherDelayCount
 
     };
 }
