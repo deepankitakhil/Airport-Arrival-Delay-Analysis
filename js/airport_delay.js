@@ -1,5 +1,7 @@
 var delayDataForClustering = [];
-var delayDataForTrend = d3.map();
+var airportDelayDataForTimeSeries = d3.map();
+var weatherDelayDataForTimeSeries = d3.map();
+
 function buildDataForVisualization(dateRange) {
     var startDate = dateRange[0].split(',');
     var endDate = dateRange[1].split(',');
@@ -10,7 +12,8 @@ function buildDataForVisualization(dateRange) {
         .forEach(function (airportCode) {
             var key = airportCode.substr(1);
             airportData = filteredDataByAirportID.get(key);
-            delayDataForTrend.set(key, []);
+            airportDelayDataForTimeSeries.set(key, []);
+            weatherDelayDataForTimeSeries.set(key, []);
             var delayedFlightCount = 0;
             var startMonth = Number(startDate[0].trim());
             var startYear = Number(startDate[1].trim());
@@ -22,24 +25,26 @@ function buildDataForVisualization(dateRange) {
                     var yearWiseData = airportData.get(year);
                     if (!startYearCalculationDone) {
                         for (var month = startMonth; month <= 12; month++) {
-                            var monthlyDelayedFlightCount = 0;
+                            var monthlyAirportDelayData = 0;
+                            var monthlyWeatherDelayData = 0;
                             if (yearWiseData.has(month)) {
-                                var previousMonthlySum = 0;
+                                var previousMonthlyAirportDelayData = 0;
                                 var multipleFlightEntryData = yearWiseData.get(month).entries();
                                 for (var flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
                                     for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
                                         delayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
-                                        monthlyDelayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
-                                        previousMonthlySum = monthlyDelayedFlightCount;
+                                        monthlyAirportDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                        monthlyWeatherDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                        previousMonthlyAirportDelayData = monthlyAirportDelayData;
                                     }
                                 }
-                                var dataSet = delayDataForTrend.get(key);
-                                buildData(dataSet, year, month, monthlyDelayedFlightCount);
-                                delayDataForTrend.set(key, dataSet);
+                                var dataSet = airportDelayDataForTimeSeries.get(key);
+                                buildData(dataSet, year, month, monthlyAirportDelayData);
+                                airportDelayDataForTimeSeries.set(key, dataSet);
                             } else {
-                                var dataSet = delayDataForTrend.get(key);
-                                buildData(dataSet, year, month, previousMonthlySum);
-                                delayDataForTrend.set(key, dataSet);
+                                var dataSet = airportDelayDataForTimeSeries.get(key);
+                                buildData(dataSet, year, month, previousMonthlyAirportDelayData);
+                                airportDelayDataForTimeSeries.set(key, dataSet);
                             }
                         }
                         startYearCalculationDone = true;
@@ -47,25 +52,25 @@ function buildDataForVisualization(dateRange) {
                     else {
                         var yearWiseData = airportData.get(year);
                         for (month = 1; month <= 12; month++) {
-                            var monthlyDelayedFlightCount = 0;
+                            var monthlyAirportDelayData = 0;
                             if (yearWiseData.has(month)) {
-                                var previousMonthlySum = 0;
+                                var previousMonthlyAirportDelayData = 0;
                                 var multipleFlightEntryData = yearWiseData.get(month).entries();
                                 for (flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
                                     for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
                                         delayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
-                                        monthlyDelayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
-                                        previousMonthlySum = monthlyDelayedFlightCount;
+                                        monthlyAirportDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                        previousMonthlyAirportDelayData = monthlyAirportDelayData;
                                     }
                                 }
-                                var dataSet = delayDataForTrend.get(key);
-                                buildData(dataSet, year, month, monthlyDelayedFlightCount);
-                                delayDataForTrend.set(key, dataSet);
+                                var dataSet = airportDelayDataForTimeSeries.get(key);
+                                buildData(dataSet, year, month, monthlyAirportDelayData);
+                                airportDelayDataForTimeSeries.set(key, dataSet);
                             }
                             else {
-                                var dataSet = delayDataForTrend.get(key);
-                                buildData(dataSet, year, month, previousMonthlySum);
-                                delayDataForTrend.set(key, dataSet);
+                                var dataSet = airportDelayDataForTimeSeries.get(key);
+                                buildData(dataSet, year, month, previousMonthlyAirportDelayData);
+                                airportDelayDataForTimeSeries.set(key, dataSet);
                             }
                         }
                     }
@@ -79,26 +84,25 @@ function buildDataForVisualization(dateRange) {
                 if (airportData.has(year)) {
                     var yearWiseData = airportData.get(year);
                     for (month = startMonth; month <= endMonth; month++) {
-                        var monthlyDelayedFlightCount = 0;
+                        var monthlyAirportDelayData = 0;
                         if (yearWiseData.has(month)) {
-                            var previousMonthlySum = 0;
+                            var previousMonthlyAirportDelayData = 0;
                             var multipleFlightEntryData = yearWiseData.get(month).entries();
                             for (flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
                                 for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
                                     delayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
-                                    monthlyDelayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
-                                    previousMonthlySum = monthlyDelayedFlightCount;
+                                    monthlyAirportDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                                    previousMonthlyAirportDelayData = monthlyAirportDelayData;
                                 }
                             }
-                            var dataSet = delayDataForTrend.get(key);
-                            buildData(dataSet, year, month, monthlyDelayedFlightCount);
-                            delayDataForTrend.set(key, dataSet);
+                            var dataSet = airportDelayDataForTimeSeries.get(key);
+                            buildData(dataSet, year, month, monthlyAirportDelayData);
+                            airportDelayDataForTimeSeries.set(key, dataSet);
                         }
                         else {
-                            var dataSet = delayDataForTrend.get(key);
-                            buildData(dataSet, year, month, previousMonthlySum);
-                            //dataSet.push(["year: " + year, "month:" + month, "data:" + previousMonthlySum]);
-                            delayDataForTrend.set(key, dataSet);
+                            var dataSet = airportDelayDataForTimeSeries.get(key);
+                            buildData(dataSet, year, month, previousMonthlyAirportDelayData);
+                            airportDelayDataForTimeSeries.set(key, dataSet);
                         }
                     }
                 }
@@ -119,7 +123,7 @@ function kMeansCluster() {
 }
 
 function delayTrend() {
-    console.log(delayDataForTrend);
+    console.log(airportDelayDataForTimeSeries);
 }
 
 function run() {

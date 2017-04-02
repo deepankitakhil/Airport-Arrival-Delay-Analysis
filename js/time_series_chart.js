@@ -2,7 +2,7 @@
  Source : http://www.highcharts.com/demo/line-time-series
  */
 function display_time_Series() {
-    var data = delayDataForTrend.get(selected_airport);
+    var data = airportDelayDataForTimeSeries.get(selected_airport);
     Highcharts.chart('chart_container', {
         chart: {
             zoomType: 'x',
