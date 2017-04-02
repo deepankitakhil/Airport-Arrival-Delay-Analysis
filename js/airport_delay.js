@@ -130,7 +130,7 @@ function run() {
 }
 
 function initialize() {
-    var num_clusters = 10;
+    var num_clusters = 15;
     var k = new KMeansClusterAlgorithm(num_clusters, delayDataForClustering);
     return k;
 }

@@ -69,9 +69,9 @@ function configureSlider() {
 //Table for Similar Airports
 function tabulate(data, columns) {
     $("#similar_airport_container tr").remove();
-    table = d3.select("#similar_airport_container").attr("class", "table-title");
-    thead = table.append('thead');
-    tbody = table.append('tbody');
+    var table = d3.select("#similar_airport_container").attr("class", "table-title");
+    var thead = table.append('thead');
+    var tbody = table.append('tbody');
     thead.append("tr")
         .selectAll('th')
         .data(columns).enter()
@@ -98,8 +98,8 @@ function tabulate(data, columns) {
 
     return table;
 
-
 }
+
 function displayVisualization() {
     if (selected_airport === undefined) {
         console.log("no airport selected");
@@ -108,9 +108,13 @@ function displayVisualization() {
         var maxLength = cluster.length > 5 ? 5 : cluster.length;
         var similar_airports = [];
         for (var index = 0; index < maxLength; index++) {
-
-            similar_airports.push({'Similar Airports': cluster[index].get_airport_name})
-
+            if (selected_airport === cluster[index].get_airport_id) {
+                console.log("same airport detected. Ignoring them");
+                maxLength += 1;
+            } else {
+                var cityStateAirportName = cluster[index].get_airport_name;
+                similar_airports.push({'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1)})
+            }
         }
         display_time_Series();
         tabulate(similar_airports, ["Similar Airports"]);

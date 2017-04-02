@@ -1,11 +1,11 @@
-#us_map
- {
-    position:absolute;
-    left:0;
+#us_map {
+    position: absolute;
+    left: 0;
     right: 0;
     width: 60%;
     height: 70%;
 }
+
 .states {
     fill: #DFDFDF;
     stroke: #fff;
@@ -18,18 +18,21 @@
     stroke: #fff;
     stroke-width: 2px;
 }
+
 .highlighted_cities {
     fill: red;
-    fill-opacity:1;
+    fill-opacity: 1;
     stroke: #fff;
     stroke-width: 2px;
 }
-.selected_city{
+
+.selected_city {
     fill: yellow;
-    fill-opacity:1;
+    fill-opacity: 1;
     stroke: #fff;
     stroke-width: 2px;
 }
+
 .hidden {
     display: none;
 }
@@ -46,66 +49,65 @@
     position: absolute;
     word-wrap: break-word;
 }
-#input
-{
-    position:absolute;
-    top: 90%;
 
+#input {
+    position: absolute;
+    top: 90%;
 }
 
-#slider{
-
-    position:absolute;
-    left:0;
-    right:0;
+#slider {
+    position: absolute;
+    left: 0;
+    right: 0;
     margin-left: 59%;
     height: 100%;
 }
-#chart_container{
 
-    position:absolute;
-
-    left:0;
+#chart_container {
+    position: absolute;
+    left: 0;
     right: 0;
     width: 40%;
     margin-left: 60%;
-    height: 40%
+    height: 33.33%
 }
-#chart{
+
+#chart {
     position: relative;
 }
+
 #y_axis {
     position: absolute;
     top: 0;
     bottom: 0;
     width: 40px;
 }
+
 th {
     text-align: center;
-
     font-size: 30px;
-
-
 }
-td{
 
+td {
     font-size: 20px;
     padding: 1px;
 }
-#similar_airport_container{
+
+#similar_airport_container {
     border-top: double;
     border-bottom: double;
-    position:absolute;
-    left:0;
+    position: absolute;
+    left: 0;
     right: 0;
     width: 40%;
     margin-left: 60%;
     height: 33.33%;
-    top: 40%
+    top: 33.33%
 }
-#airline_delay_trend_container{
-    position:absolute;
-    left:0;
+
+#airline_delay_trend_container {
+    position: absolute;
+    left: 0;
     right: 0;
     width: 40%;
     margin-left: 60%;
@@ -126,5 +128,3 @@ rect.background {
     fill: none;
     stroke: #000;
 }
-
-
