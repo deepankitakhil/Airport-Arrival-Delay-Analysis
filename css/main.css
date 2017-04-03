@@ -62,11 +62,18 @@
     margin-left: 59%;
     height: 100%;
 }
-
+#drop-down{
+    margin-left: 60%;
+    position: absolute;
+    left: 2%;
+    right: 0;
+    height:4%;
+}
 #chart_container {
     position: absolute;
     left: 0;
     right: 0;
+    top: 4%;
     width: 40%;
     margin-left: 60%;
     height: 33.33%
@@ -102,7 +109,7 @@ td {
     width: 40%;
     margin-left: 60%;
     height: 33.33%;
-    top: 33.33%
+    top: 37.33%
 }
 
 #airline_delay_trend_container {
@@ -112,11 +119,11 @@ td {
     width: 40%;
     margin-left: 60%;
     height: 33.33%;
-    top: 66.66%;
+    top: 70.66%;
 }
 
 rect.background {
-    fill: white;
+    fill: blue;
 }
 
 .axis {
