@@ -12,7 +12,7 @@ var weatherDelayCountForTimeSeries = d3.map();
 var securityDelayCountForTimeSeries = d3.map();
 var lateAircraftDelayCountForTimeSeries = d3.map();
 
-//nas, late_aircraft
+//nas
 
 function buildDataForVisualization(dateRange) {
     var startDate = dateRange[0].split(',');
@@ -205,70 +205,40 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
                 }
             }
 
-            var airportDelayDataSet = airportDelayDataForTimeSeries.get(key);
-            formatData(airportDelayDataSet, year, month, monthlyAirportDelayData);
-            airportDelayDataForTimeSeries.set(key, airportDelayDataSet);
+            appendDelayData(airportDelayDataForTimeSeries, monthlyAirportDelayData, key, year, month);
 
-            var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
-            formatData(weatherDelayDataSet, year, month, monthlyWeatherDelayData);
-            weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
+            appendDelayData(weatherDelayDataForTimeSeries, monthlyWeatherDelayData, key, year, month);
 
-            var securityDelayDataSet = securityDelayDataForTimeSeries.get(key);
-            formatData(securityDelayDataSet, year, month, monthlySecurityDelayData);
-            securityDelayDataForTimeSeries.set(key, securityDelayDataSet);
+            appendDelayData(securityDelayDataForTimeSeries, monthlySecurityDelayData, key, year, month);
 
-            var lateCraftDelayDataSet = lateAircraftDelayDataForTimeSeries.get(key);
-            formatData(lateCraftDelayDataSet, year, month, monthlyLateAircraftDelayData);
-            lateAircraftDelayDataForTimeSeries.set(key, lateCraftDelayDataSet);
+            appendDelayData(lateAircraftDelayDataForTimeSeries, monthlyLateAircraftDelayData, key, year, month);
 
-            var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
-            formatData(airportDelayCountSet, year, month, monthlyAirportDelayCount);
-            airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
+            appendDelayData(airportDelayCountForTimeSeries, monthlyAirportDelayCount, key, year, month);
 
-            var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
-            formatData(weatherDelayCountSet, year, month, monthlyWeatherDelayCount);
-            weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
+            appendDelayData(weatherDelayCountForTimeSeries, monthlyWeatherDelayCount, key, year, month);
 
-            var securityDelayCountSet = securityDelayCountForTimeSeries.get(key);
-            formatData(securityDelayCountSet, year, month, monthlySecurityDelayCount);
-            securityDelayCountForTimeSeries.set(key, securityDelayCountSet);
+            appendDelayData(securityDelayCountForTimeSeries, monthlySecurityDelayCount, key, year, month);
 
-            var lateAircraftDelayCountSet = lateAircraftDelayCountForTimeSeries.get(key);
-            formatData(lateAircraftDelayCountSet, year, month, monthlyLateAircraftDelayCount);
-            lateAircraftDelayCountForTimeSeries.set(key, lateAircraftDelayCountSet);
+            appendDelayData(lateAircraftDelayCountForTimeSeries, monthlyLateAircraftDelayCount, key, year, month);
 
         } else {
-            var airportDelayDataSet = airportDelayDataForTimeSeries.get(key);
-            formatData(airportDelayDataSet, year, month, previousMonthlyAirportDelayData);
-            airportDelayDataForTimeSeries.set(key, airportDelayDataSet);
 
-            var weatherDelayDataSet = weatherDelayDataForTimeSeries.get(key);
-            formatData(weatherDelayDataSet, year, month, previousMonthlyWeatherDelayData);
-            weatherDelayDataForTimeSeries.set(key, weatherDelayDataSet);
+            appendDelayData(airportDelayDataForTimeSeries, previousMonthlyAirportDelayData, key, year, month);
 
-            var securityDelayDataSet = securityDelayDataForTimeSeries.get(key);
-            formatData(securityDelayDataSet, year, month, previousMonthlySecurityDelayData);
-            securityDelayDataForTimeSeries.set(key, securityDelayDataSet);
+            appendDelayData(weatherDelayDataForTimeSeries, previousMonthlyWeatherDelayData, key, year, month);
 
-            var lateCraftDelayDataSet = lateAircraftDelayDataForTimeSeries.get(key);
-            formatData(lateCraftDelayDataSet, year, month, previousMonthlyLateAircraftDelayData);
-            lateAircraftDelayDataForTimeSeries.set(key, lateCraftDelayDataSet);
+            appendDelayData(securityDelayDataForTimeSeries, previousMonthlySecurityDelayData, key, year, month);
 
-            var airportDelayCountSet = airportDelayCountForTimeSeries.get(key);
-            formatData(airportDelayCountSet, year, month, previousMonthlyAirportDelayCount);
-            airportDelayCountForTimeSeries.set(key, airportDelayCountSet);
+            appendDelayData(lateAircraftDelayDataForTimeSeries, previousMonthlyLateAircraftDelayData, key, year, month);
 
-            var weatherDelayCountSet = weatherDelayCountForTimeSeries.get(key);
-            formatData(weatherDelayCountSet, year, month, previousMonthlyWeatherDelayCount);
-            weatherDelayCountForTimeSeries.set(key, weatherDelayCountSet);
+            appendDelayData(airportDelayCountForTimeSeries, previousMonthlyAirportDelayCount, key, year, month);
 
-            var securityDelayCountSet = securityDelayCountForTimeSeries.get(key);
-            formatData(securityDelayCountSet, year, month, previousMonthlySecurityDelayCount);
-            securityDelayCountForTimeSeries.set(key, securityDelayCountSet);
+            appendDelayData(weatherDelayCountForTimeSeries, previousMonthlyWeatherDelayCount, key, year, month);
 
-            var lateAircraftDelayCountSet = lateAircraftDelayCountForTimeSeries.get(key);
-            formatData(lateAircraftDelayCountSet, year, month, previousMonthlyLateAircraftDelayCount);
-            lateAircraftDelayCountForTimeSeries.set(key, lateAircraftDelayCountSet);
+            appendDelayData(securityDelayCountForTimeSeries, previousMonthlySecurityDelayCount, key, year, month);
+
+            appendDelayData(lateAircraftDelayCountForTimeSeries, previousMonthlyLateAircraftDelayCount, key, year, month);
+
         }
     }
     return {
@@ -283,4 +253,10 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
         previousMonthlySecurityDelayCount,
         previousMonthlyLateAircraftDelayCount
     };
+}
+
+function appendDelayData(dataForTimeSeries, monthlyDelayData, key, year, month) {
+    var delayDataSet = dataForTimeSeries.get(key);
+    formatData(delayDataSet, year, month, monthlyDelayData);
+    dataForTimeSeries.set(key, delayDataSet);
 }
