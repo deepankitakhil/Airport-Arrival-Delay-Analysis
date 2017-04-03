@@ -1,3 +1,12 @@
+var NAS = "NAS";
+var SECURITY = "SECURITY";
+var LATE_AIRCRAFT = "LATE_AIRCRAFT";
+var WEATHER = "WEATHER";
+var CARRIER = "CARRIER";
+var TOTAL = "TOTAL";
+var COUNT = "COUNT";
+var MINUTES = "MINUTES";
+
 var airportDelayCountDataForClustering = [];
 var airportDelayDataForClustering = [];
 
@@ -13,6 +22,8 @@ var weatherDelayCountForTimeSeries = d3.map();
 var securityDelayCountForTimeSeries = d3.map();
 var lateAircraftDelayCountForTimeSeries = d3.map();
 var nasDelayCountForTimeSeries = d3.map();
+
+var airlineInformationByAirportID = d3.map();
 
 function buildDataForVisualization(dateRange) {
     var startDate = dateRange[0].split(',');
@@ -37,6 +48,9 @@ function buildDataForVisualization(dateRange) {
             lateAircraftDelayCountForTimeSeries.set(key, []);
             nasDelayCountForTimeSeries.set(key, []);
 
+            var airlineInformation = d3.map();
+            airlineInformationByAirportID.set(key, airlineInformation);
+
             var result;
             var delayedFlightCount = 0;
             var flightsDelayPerAirport = 0;
@@ -49,6 +63,9 @@ function buildDataForVisualization(dateRange) {
             for (var year = startYear; year < endYear; year++) {
                 if (airportData.has(year)) {
                     var yearWiseData = airportData.get(year);
+
+                    buildBarChartData(yearWiseData, airlineInformation);
+
                     if (!startYearCalculationDone) {
                         result = buildData(startMonth, 12, yearWiseData, delayedFlightCount, flightsDelayPerAirport, key, year,
                             NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN);
@@ -71,6 +88,7 @@ function buildDataForVisualization(dateRange) {
             if (year === endYear) {
                 if (airportData.has(year)) {
                     var yearWiseData = airportData.get(year);
+                    buildBarChartData(yearWiseData, airlineInformation);
                     result = buildData(startMonth, endMonth, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year,
                         result.previousMonthlyAirportDelayData, result.previousMonthlyWeatherDelayData,
                         result.previousMonthlySecurityDelayData, result.previousMonthlyLateAircraftDelayData,
@@ -90,7 +108,7 @@ function buildDataForVisualization(dateRange) {
             airportDelayCountDataForClustering.push([key, airportNameByID.get(key), result.delayedFlightCount]);
             airportDelayDataForClustering.push([key, airportNameByID.get(key), result.flightsDelayPerAirport / result.delayedFlightCount]);
         });
-
+    console.log(airlineInformationByAirportID);
     kMeansCluster();
 }
 
@@ -275,4 +293,61 @@ function appendDelayData(dataForTimeSeries, monthlyDelayData, key, year, month) 
     var delayDataSet = dataForTimeSeries.get(key);
     formatData(delayDataSet, year, month, monthlyDelayData);
     dataForTimeSeries.set(key, delayDataSet);
+}
+
+function buildBarChartData(yearWiseData, airlineInformation) {
+    var dataSize = yearWiseData.size();
+    for (var index = 1; index <= dataSize; index++) {
+        if (yearWiseData.has(index)) {
+            var airlinesCount = yearWiseData.get(index).keys().length;
+            for (var airlineIndex = 0; airlineIndex < airlinesCount; airlineIndex++) {
+                var airlineCode = yearWiseData.get(index).keys()[airlineIndex];
+                if (airlineInformation.has(airlineCode)) {
+                    var airlineDelay = airlineInformation.get(airlineCode);
+                    var airlineDelayByCount = airlineDelay.get(COUNT);
+                    var airlineDelayByMinutes = airlineDelay.get(MINUTES);
+                    var airlineDelay = yearWiseData.get(index).get(airlineCode)[0];
+
+                    airlineDelayByCount.set(NAS, airlineDelayByCount.get(NAS) + Number(airlineDelay.nas_ct));
+                    airlineDelayByCount.set(SECURITY, airlineDelayByCount.get(SECURITY) + Number(airlineDelay.security_ct));
+                    airlineDelayByCount.set(LATE_AIRCRAFT, airlineDelayByCount.get(LATE_AIRCRAFT) + Number(airlineDelay.late_aircraft_ct));
+                    airlineDelayByCount.set(WEATHER, airlineDelayByCount.get(WEATHER) + Number(airlineDelay.weather_ct));
+                    airlineDelayByCount.set(TOTAL, airlineDelayByCount.get(TOTAL) + Number(airlineDelay.arr_del15));
+                    airlineDelayByCount.set(CARRIER, airlineDelayByCount.get(CARRIER) + Number(airlineDelay.carrier_ct));
+
+                    airlineDelayByMinutes.set(NAS, airlineDelayByMinutes.get(NAS) + Number(airlineDelay.nas_delay));
+                    airlineDelayByMinutes.set(SECURITY, airlineDelayByMinutes.get(SECURITY) + Number(airlineDelay.security_delay));
+                    airlineDelayByMinutes.set(LATE_AIRCRAFT, airlineDelayByMinutes.get(LATE_AIRCRAFT) + Number(airlineDelay.late_aircraft_delay));
+                    airlineDelayByMinutes.set(WEATHER, airlineDelayByMinutes.get(WEATHER) + Number(airlineDelay.weather_delay));
+                    airlineDelayByMinutes.set(TOTAL, airlineDelayByMinutes.get(TOTAL) + Number(airlineDelay.arr_delay));
+                    airlineDelayByMinutes.set(CARRIER, airlineDelayByMinutes.get(CARRIER) + Number(airlineDelay.carrier_delay));
+
+                } else {
+                    var delayInformation = d3.map();
+                    loadDataStructureForBarChart(delayInformation);
+                    airlineInformation.set(airlineCode, delayInformation);
+                }
+            }
+        }
+    }
+}
+
+
+function loadDelayInformationMapWithDefaultValues(map) {
+    map.set(TOTAL, 0);
+    map.set(SECURITY, 0);
+    map.set(WEATHER, 0);
+    map.set(NAS, 0);
+    map.set(LATE_AIRCRAFT, 0);
+    map.set(CARRIER, 0);
+}
+
+function loadDataStructureForBarChart(delayInformation) {
+    var delayInformationByCount = d3.map();
+    var delayInformationByData = d3.map();
+
+    loadDelayInformationMapWithDefaultValues(delayInformationByCount);
+    loadDelayInformationMapWithDefaultValues(delayInformationByData);
+    delayInformation.set(COUNT, delayInformationByCount);
+    delayInformation.set(MINUTES, delayInformationByData);
 }
