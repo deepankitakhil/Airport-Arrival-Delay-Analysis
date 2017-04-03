@@ -16,12 +16,14 @@ var weatherDelayDataForTimeSeries = d3.map();
 var securityDelayDataForTimeSeries = d3.map();
 var lateAircraftDelayDataForTimeSeries = d3.map();
 var nasDelayDataForTimeSeries = d3.map();
+var carrierDelayDataForTimeSeries = d3.map();
 
 var airportDelayCountForTimeSeries = d3.map();
 var weatherDelayCountForTimeSeries = d3.map();
 var securityDelayCountForTimeSeries = d3.map();
 var lateAircraftDelayCountForTimeSeries = d3.map();
 var nasDelayCountForTimeSeries = d3.map();
+var carrierDelayCountForTimeSeries = d3.map();
 
 var airlineInformationByAirportID = d3.map();
 
@@ -41,12 +43,14 @@ function buildDataForVisualization(dateRange) {
             securityDelayDataForTimeSeries.set(key, []);
             lateAircraftDelayDataForTimeSeries.set(key, []);
             nasDelayDataForTimeSeries.set(key, []);
+            carrierDelayDataForTimeSeries.set(key, []);
 
             airportDelayCountForTimeSeries.set(key, []);
             weatherDelayCountForTimeSeries.set(key, []);
             securityDelayCountForTimeSeries.set(key, []);
             lateAircraftDelayCountForTimeSeries.set(key, []);
             nasDelayCountForTimeSeries.set(key, []);
+            carrierDelayCountForTimeSeries.set(key, []);
 
             var airlineInformation = d3.map();
             airlineInformationByAirportID.set(key, airlineInformation);
@@ -68,7 +72,7 @@ function buildDataForVisualization(dateRange) {
 
                     if (!startYearCalculationDone) {
                         result = buildData(startMonth, 12, yearWiseData, delayedFlightCount, flightsDelayPerAirport, key, year,
-                            NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN);
+                            NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN);
                         startYearCalculationDone = true;
                     }
                     else {
@@ -76,8 +80,10 @@ function buildDataForVisualization(dateRange) {
                         result = buildData(1, 12, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year,
                             result.previousMonthlyAirportDelayData, result.previousMonthlyWeatherDelayData,
                             result.previousMonthlySecurityDelayData, result.previousMonthlyLateAircraftDelayData,
+                            result.previousMonthlyNASDelayData, result.previousMonthlyCarrierDelayData,
                             result.previousMonthlyAirportDelayCount, result.previousMonthlyWeatherDelayCount,
-                            result.previousMonthlySecurityDelayCount, result.previousMonthlyLateAircraftDelayCount);
+                            result.previousMonthlySecurityDelayCount, result.previousMonthlyLateAircraftDelayCount,
+                            result.previousMonthlyNASDelayCount, result.previousMonthlyCarrierDelayCount);
                     }
                 } else {
                 }
@@ -92,17 +98,19 @@ function buildDataForVisualization(dateRange) {
                     result = buildData(startMonth, endMonth, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year,
                         result.previousMonthlyAirportDelayData, result.previousMonthlyWeatherDelayData,
                         result.previousMonthlySecurityDelayData, result.previousMonthlyLateAircraftDelayData,
-                        result.previousMonthlyNASDelayData, result.previousMonthlyAirportDelayCount,
-                        result.previousMonthlyWeatherDelayCount, result.previousMonthlySecurityDelayCount,
-                        result.previousMonthlyLateAircraftDelayCount, result.previousMonthlyNASDelayCount);
+                        result.previousMonthlyNASDelayData, result.previousMonthlyCarrierDelayData,
+                        result.previousMonthlyAirportDelayCount, result.previousMonthlyWeatherDelayCount,
+                        result.previousMonthlySecurityDelayCount, result.previousMonthlyLateAircraftDelayCount,
+                        result.previousMonthlyNASDelayCount, result.previousMonthlyCarrierDelayCount);
                 }
                 else {
                     result = buildData(startMonth, endMonth, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year,
                         result.previousMonthlyAirportDelayData, result.previousMonthlyWeatherDelayData,
                         result.previousMonthlySecurityDelayData, result.previousMonthlyLateAircraftDelayData,
-                        result.previousMonthlyNASDelayData, result.previousMonthlyAirportDelayCount,
-                        result.previousMonthlyWeatherDelayCount, result.previousMonthlySecurityDelayCount,
-                        result.previousMonthlyLateAircraftDelayCount, result.previousMonthlyNASDelayCount);
+                        result.previousMonthlyNASDelayData, result.previousMonthlyCarrierDelayData,
+                        result.previousMonthlyAirportDelayCount, result.previousMonthlyWeatherDelayCount,
+                        result.previousMonthlySecurityDelayCount, result.previousMonthlyLateAircraftDelayCount,
+                        result.previousMonthlyNASDelayCount, result.previousMonthlyCarrierDelayCount);
                 }
             }
             airportDelayCountDataForClustering.push([key, airportNameByID.get(key), result.delayedFlightCount]);
@@ -141,9 +149,9 @@ function step(k) {
 
 function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, flightsDelayPerAirport, key, year,
                    previousMonthlyAirportDelayData, previousMonthlyWeatherDelayData, previousMonthlySecurityDelayData,
-                   previousMonthlyLateAircraftDelayData, previousMonthlyNASDelayData,
+                   previousMonthlyLateAircraftDelayData, previousMonthlyNASDelayData, previousMonthlyCarrierDelayData,
                    previousMonthlyAirportDelayCount, previousMonthlyWeatherDelayCount, previousMonthlySecurityDelayCount,
-                   previousMonthlyLateAircraftDelayCount, previousMonthlyNASDelayCount) {
+                   previousMonthlyLateAircraftDelayCount, previousMonthlyNASDelayCount, previousMonthlyCarrierDelayCount) {
 
     for (var month = startMonth; month <= endMonth; month++) {
 
@@ -152,24 +160,28 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
         var monthlySecurityDelayData = 0;
         var monthlyLateAircraftDelayData = 0;
         var monthlyNASDelayData = 0;
+        var monthlyCarrierDelayData = 0;
 
         var monthlyAirportDelayCount = 0;
         var monthlyWeatherDelayCount = 0;
         var monthlySecurityDelayCount = 0;
         var monthlyLateAircraftDelayCount = 0;
         var monthlyNASDelayCount = 0;
+        var monthlyCarrierDelayCount = 0;
 
         var previousMonthlyAirportDelayData = previousMonthlyAirportDelayData;
         var previousMonthlyWeatherDelayData = previousMonthlyWeatherDelayData;
         var previousMonthlySecurityDelayData = previousMonthlySecurityDelayData;
         var previousMonthlyLateAircraftDelayData = previousMonthlyLateAircraftDelayData;
         var previousMonthlyNASDelayData = previousMonthlyNASDelayData;
+        var previousMonthlyCarrierDelayData = previousMonthlyCarrierDelayData;
 
         var previousMonthlyAirportDelayCount = previousMonthlyAirportDelayCount;
         var previousMonthlyWeatherDelayCount = previousMonthlyWeatherDelayCount;
         var previousMonthlySecurityDelayCount = previousMonthlySecurityDelayCount;
         var previousMonthlyLateAircraftDelayCount = previousMonthlyLateAircraftDelayCount;
         var previousMonthlyNASDelayCount = previousMonthlyNASDelayCount;
+        var previousMonthlyCarrierDelayCount = previousMonthlyCarrierDelayCount;
 
 
         if (yearWiseData.has(month)) {
@@ -179,12 +191,14 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
             previousMonthlySecurityDelayData = 0;
             previousMonthlyLateAircraftDelayData = 0;
             previousMonthlyNASDelayData = 0;
+            previousMonthlyCarrierDelayData = 0;
 
             previousMonthlyAirportDelayCount = 0;
             previousMonthlyWeatherDelayCount = 0;
             previousMonthlySecurityDelayCount = 0;
             previousMonthlyLateAircraftDelayCount = 0;
             previousMonthlyNASDelayCount = 0;
+            previousMonthlyCarrierDelayCount = 0;
 
             var multipleFlightEntryData = yearWiseData.get(month).entries();
             for (var flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
@@ -204,6 +218,8 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
 
                     monthlyNASDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].nas_delay);
 
+                    monthlyCarrierDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].carrier_delay);
+
                     monthlyAirportDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
 
                     monthlyWeatherDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_ct);
@@ -214,17 +230,21 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
 
                     monthlyNASDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].nas_ct);
 
+                    monthlyCarrierDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].carrier_ct);
+
                     previousMonthlyAirportDelayData = monthlyAirportDelayData;
                     previousMonthlyWeatherDelayData = monthlyWeatherDelayData;
                     previousMonthlySecurityDelayData = monthlySecurityDelayData;
                     previousMonthlyLateAircraftDelayData = monthlyLateAircraftDelayData;
                     previousMonthlyNASDelayData = monthlyNASDelayData;
+                    previousMonthlyCarrierDelayData = monthlyCarrierDelayData;
 
                     previousMonthlyAirportDelayCount = monthlyAirportDelayCount;
                     previousMonthlyWeatherDelayCount = monthlyWeatherDelayCount;
                     previousMonthlySecurityDelayCount = monthlySecurityDelayCount;
                     previousMonthlyLateAircraftDelayCount = monthlyLateAircraftDelayCount;
                     previousMonthlyNASDelayCount = monthlyNASDelayCount;
+                    previousMonthlyCarrierDelayCount = monthlyCarrierDelayCount;
 
                 }
             }
@@ -239,6 +259,8 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
 
             appendDelayData(nasDelayDataForTimeSeries, monthlyNASDelayData, key, year, month);
 
+            appendDelayData(carrierDelayDataForTimeSeries, monthlyCarrierDelayData, key, year, month);
+
             appendDelayData(airportDelayCountForTimeSeries, monthlyAirportDelayCount, key, year, month);
 
             appendDelayData(weatherDelayCountForTimeSeries, monthlyWeatherDelayCount, key, year, month);
@@ -248,6 +270,8 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
             appendDelayData(lateAircraftDelayCountForTimeSeries, monthlyLateAircraftDelayCount, key, year, month);
 
             appendDelayData(nasDelayCountForTimeSeries, monthlyNASDelayCount, key, year, month);
+
+            appendDelayData(carrierDelayCountForTimeSeries, monthlyCarrierDelayCount, key, year, month);
 
         } else {
 
@@ -261,6 +285,8 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
 
             appendDelayData(nasDelayDataForTimeSeries, previousMonthlyNASDelayData, key, year, month);
 
+            appendDelayData(carrierDelayDataForTimeSeries, previousMonthlyCarrierDelayData, key, year, month);
+
             appendDelayData(airportDelayCountForTimeSeries, previousMonthlyAirportDelayCount, key, year, month);
 
             appendDelayData(weatherDelayCountForTimeSeries, previousMonthlyWeatherDelayCount, key, year, month);
@@ -270,6 +296,8 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
             appendDelayData(lateAircraftDelayCountForTimeSeries, previousMonthlyLateAircraftDelayCount, key, year, month);
 
             appendDelayData(nasDelayCountForTimeSeries, previousMonthlyNASDelayCount, key, year, month);
+
+            appendDelayData(carrierDelayCountForTimeSeries, previousMonthlyCarrierDelayCount, key, year, month);
 
         }
     }
@@ -281,11 +309,13 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
         previousMonthlySecurityDelayData,
         previousMonthlyLateAircraftDelayData,
         previousMonthlyNASDelayData,
+        previousMonthlyCarrierDelayData,
         previousMonthlyAirportDelayCount,
         previousMonthlyWeatherDelayCount,
         previousMonthlySecurityDelayCount,
         previousMonthlyLateAircraftDelayCount,
-        previousMonthlyNASDelayCount
+        previousMonthlyNASDelayCount,
+        previousMonthlyCarrierDelayCount
     };
 }
 
