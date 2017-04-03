@@ -68,7 +68,6 @@ function configureSlider() {
 }
 //Table for Similar Airports
 function tabulate(data, columns) {
-    console.log(data);
     $("#similar_airport_container").find("tr").remove();
     var table = d3.select("#similar_airport_container").attr("class", "table-title");
     var thead = table.append('thead');
@@ -105,14 +104,12 @@ function tabulate(data, columns) {
 
 function displayVisualization() {
     if (selected_airport === undefined) {
-        console.log("no airport selected");
     } else {
         var cluster = clusterToAirportMapping.get(airportToClusterMapping.get(selected_airport).get_cluster);
         var maxLength = cluster.length > 5 ? 5 : cluster.length;
         var similar_airports = [];
         for (var index = 0; index < maxLength; index++) {
             if (selected_airport === cluster[index].get_airport_id) {
-                console.log("same airport detected. Ignoring them");
                 maxLength += 1;
             } else {
                 var cityStateAirportName = cluster[index].get_airport_name;
@@ -130,12 +127,10 @@ function displayVisualization() {
 
 function highlightAirport(airportData) {
     var selectedAirportID = airportData.substr(airportData.indexOf(":") + 1);
-    console.log(selectedAirportID);
     svg.selectAll('.selected_cities_from_table')
         .data(airportInformationByAirportID.get(selectedAirportID))
         .enter()
         .attr("d", path.pointRadius(function (airport) {
-            console.log(airport.properties);
             return airport_radius(airport.properties.TOT_ENP);
         }))
         .attr('class', 'selected_cities_from_table');

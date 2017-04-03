@@ -92,7 +92,6 @@ function buildDataForVisualization(dateRange) {
         });
 
     kMeansCluster();
-    debugDelayTrendData();
 }
 
 function formatData(dataSet, year, month, monthlyDelayedFlightCount) {
@@ -101,19 +100,6 @@ function formatData(dataSet, year, month, monthlyDelayedFlightCount) {
 
 function kMeansCluster() {
     run();
-}
-
-function debugDelayTrendData() {
-    console.log(airportDelayDataForTimeSeries);
-    console.log(airportDelayCountForTimeSeries);
-    console.log(weatherDelayDataForTimeSeries);
-    console.log(lateAircraftDelayDataForTimeSeries);
-    console.log(nasDelayDataForTimeSeries);
-    console.log(weatherDelayCountForTimeSeries);
-    console.log(securityDelayDataForTimeSeries);
-    console.log(securityDelayCountForTimeSeries);
-    console.log(lateAircraftDelayCountForTimeSeries);
-    console.log(nasDelayCountForTimeSeries);
 }
 
 function run() {
