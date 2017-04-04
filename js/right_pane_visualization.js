@@ -120,7 +120,6 @@ function displayVisualization() {
             }
         }
         display_time_Series();
-        display_airline_delay_trend();
         tabulate(similar_airports, ["Similar Airports"]);
     }
 

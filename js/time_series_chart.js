@@ -18,6 +18,7 @@ function display_time_Series() {
         secondCriteria = $('#delay_info_options').val();
     });
 
+    display_airline_delay_trend();
     var data;
 
     if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
