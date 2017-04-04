@@ -68,11 +68,11 @@ function buildDataForVisualization(dateRange) {
                 if (airportData.has(year)) {
                     var yearWiseData = airportData.get(year);
 
-                    buildBarChartData(yearWiseData, airlineInformation);
 
                     if (!startYearCalculationDone) {
                         result = buildData(startMonth, 12, yearWiseData, delayedFlightCount, flightsDelayPerAirport, key, year,
                             NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN);
+                        buildBarChartData(yearWiseData, airlineInformation, startMonth, 12);
                         startYearCalculationDone = true;
                     }
                     else {
@@ -84,6 +84,9 @@ function buildDataForVisualization(dateRange) {
                             result.previousMonthlyAirportDelayCount, result.previousMonthlyWeatherDelayCount,
                             result.previousMonthlySecurityDelayCount, result.previousMonthlyLateAircraftDelayCount,
                             result.previousMonthlyNASDelayCount, result.previousMonthlyCarrierDelayCount);
+
+                        buildBarChartData(yearWiseData, airlineInformation, 1, 12);
+
                     }
                 } else {
                 }
@@ -94,7 +97,7 @@ function buildDataForVisualization(dateRange) {
             if (year === endYear) {
                 if (airportData.has(year)) {
                     var yearWiseData = airportData.get(year);
-                    buildBarChartData(yearWiseData, airlineInformation);
+                    buildBarChartData(yearWiseData, airlineInformation, startMonth, endMonth);
                     result = buildData(startMonth, endMonth, yearWiseData, result.delayedFlightCount, result.flightsDelayPerAirport, key, year,
                         result.previousMonthlyAirportDelayData, result.previousMonthlyWeatherDelayData,
                         result.previousMonthlySecurityDelayData, result.previousMonthlyLateAircraftDelayData,
@@ -325,9 +328,9 @@ function appendDelayData(dataForTimeSeries, monthlyDelayData, key, year, month) 
     dataForTimeSeries.set(key, delayDataSet);
 }
 
-function buildBarChartData(yearWiseData, airlineInformation) {
+function buildBarChartData(yearWiseData, airlineInformation, startMonth, endMonth) {
     var dataSize = yearWiseData.size();
-    for (var index = 1; index <= dataSize; index++) {
+    for (var index = startMonth; index <= endMonth; index++) {
         if (yearWiseData.has(index)) {
             var airlinesCount = yearWiseData.get(index).keys().length;
             for (var airlineIndex = 0; airlineIndex < airlinesCount; airlineIndex++) {
