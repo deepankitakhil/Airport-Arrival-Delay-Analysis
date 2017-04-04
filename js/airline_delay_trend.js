@@ -19,15 +19,6 @@ function display_airline_delay_trend() {
     var data = selectData();
     console.log(data);
 
-    var data = [
-        {name: 'First', value: 1000},
-        {name: 'Second', value: 2000},
-        {name: 'Third', value: 3000},
-        {name: 'Fourth', value: 3000},
-        {name: 'Fifth', value: 3000},
-        {name: 'Sixth', value: 3000},
-    ];
-
     plotData(x, y, svg, height, data);
 }
 
@@ -65,37 +56,54 @@ function plotData(x, y, svg, height, data) {
 }
 
 function selectData() {
-    var data;
+    var filteredData;
 
     if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
-        data = airportDelayDataForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), TOTAL, MINUTES);
     else if (firstCriteria === 'total_delay' && secondCriteria === 'by_count')
-        data = airportDelayCountForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), TOTAL, COUNT);
 
     else if (firstCriteria === 'security_delay' && secondCriteria === 'by_minutes')
-        data = securityDelayDataForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), SECURITY, MINUTES);
     else if (firstCriteria === 'security_delay' && secondCriteria === 'by_count')
-        data = securityDelayCountForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), SECURITY, COUNT);
 
     else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_minutes')
-        data = nasDelayDataForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), NAS, MINUTES);
+
     else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_count')
-        data = nasDelayCountForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), NAS, COUNT);
 
     else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_minutes')
-        data = weatherDelayDataForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), WEATHER, MINUTES);
+
     else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_count')
-        data = weatherDelayCountForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), WEATHER, COUNT);
 
     else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_minutes')
-        data = lateAircraftDelayDataForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), LATE_AIRCRAFT, MINUTES);
+
     else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_count')
-        data = lateAircraftDelayCountForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), LATE_AIRCRAFT, COUNT);
 
     else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_minutes')
-        data = carrierDelayDataForTimeSeries.get(selected_airport);
-    else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_count')
-        data = carrierDelayCountForTimeSeries.get(selected_airport);
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), CARRIER, MINUTES);
 
+    else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_count')
+        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), CARRIER, COUNT);
+
+    return filteredData;
+}
+
+function filterEntries(input, delay_type, option) {
+    var data = [];
+    var input_length = input.length;
+
+    for (var index = 0; index < input_length; index++) {
+        var element = {};
+        element["name"] = input[index].key;
+        element["value"] = input[index].value.get(option).get(delay_type);
+        data.push(element);
+    }
     return data;
 }
