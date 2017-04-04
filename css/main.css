@@ -100,7 +100,7 @@ td {
     padding: 1px;
 }
 
-#similar_airport_container {
+#airline_delay_trend_container {
     border-top: double;
     border-bottom: double;
     position: absolute;
@@ -112,7 +112,7 @@ td {
     top: 37.33%
 }
 
-#airline_delay_trend_container {
+#similar_airport_container {
     position: absolute;
     left: 0;
     right: 0;
