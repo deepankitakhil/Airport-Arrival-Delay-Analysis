@@ -142,3 +142,5 @@ rect.background {
     stroke: #fff;
     stroke-width: 2px;
 }
+
+.bar { fill: steelblue; }
