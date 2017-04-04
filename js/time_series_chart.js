@@ -52,7 +52,6 @@ function display_time_Series() {
 
     var element = document.getElementById("delay_options");
     var delay_type = element.options[element.selectedIndex].text;
-    console.log(delay_type);
     Highcharts.chart('chart_container', {
         chart: {
             zoomType: 'x',

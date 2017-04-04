@@ -119,7 +119,6 @@ function buildDataForVisualization(dateRange) {
             airportDelayCountDataForClustering.push([key, airportNameByID.get(key), result.delayedFlightCount]);
             airportDelayDataForClustering.push([key, airportNameByID.get(key), result.flightsDelayPerAirport / result.delayedFlightCount]);
         });
-    console.log(airlineInformationByAirportID);
     kMeansCluster();
 }
 
