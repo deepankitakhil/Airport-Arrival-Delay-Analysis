@@ -1,8 +1,57 @@
 /*
  Source : http://www.highcharts.com/demo/line-time-series
  */
+var firstCriteria = 'total_delay';
+var secondCriteria = 'by_minutes';
+
 function display_time_Series() {
-    var data = airportDelayDataForTimeSeries.get(selected_airport);
+
+    firstCriteria = $('#delay_options').val();
+    secondCriteria = $('#delay_info_options').val();
+
+
+    $('#delay_options').on('change', function () {
+        firstCriteria = $('#delay_options').val();
+    });
+
+    $('#delay_info_options').on('change', function () {
+        secondCriteria = $('#delay_info_options').val();
+    });
+
+    var data;
+
+    if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
+        data = airportDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'total_delay' && secondCriteria === 'by_count')
+        data = airportDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'security_delay' && secondCriteria === 'by_minutes')
+        data = securityDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'security_delay' && secondCriteria === 'by_count')
+        data = securityDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_minutes')
+        data = nasDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_count')
+        data = nasDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_minutes')
+        data = weatherDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_count')
+        data = weatherDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_minutes')
+        data = lateAircraftDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_count')
+        data = lateAircraftDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_minutes')
+        data = carrierDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_count')
+        data = carrierDelayCountForTimeSeries.get(selected_airport);
+
+    var element = document.getElementById("delay_options");
+    var delay_type = element.options[element.selectedIndex].text;
     Highcharts.chart('chart_container', {
         chart: {
             zoomType: 'x',
@@ -68,7 +117,7 @@ function display_time_Series() {
 
         series: [{
             type: 'area',
-            name: 'Airport Delay',
+            name: delay_type,
             data: data
         }]
     });
