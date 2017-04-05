@@ -9,7 +9,9 @@ var selected_airport;
 var airportInformationByAirportID = d3.map();
 
 function left_pane_visualization_init() {
-    svg = d3.select('#us_map').append('svg')
+    svg = d3.select('#us_map')
+        .append('svg')
+        .attr('id','usmapsvg')
         .attr('width', width)
         .attr('height', height);
 
@@ -54,6 +56,7 @@ function createMap(error, states, airport_data) {
         .domain([min_passenger_value, max_passenger_value])
         .range([10, 30]);
 
+
     svg.selectAll(".states")
         .data(states.features)
         .enter()
@@ -87,6 +90,7 @@ function createMap(error, states, airport_data) {
         })
         .on('click', function (airport) {
             d3.selectAll(".highlighted_cities").remove();
+            d3.selectAll(".selected_city_from_table").remove();
             window.selected_airport = airport.properties.LOCID;
             d3.selectAll('.cities').on('mouseout', function () {
                 d3.select(this).style("fill-opacity", .5);
@@ -165,6 +169,7 @@ function configureSearch(error, airport_data) {
                     tooltip.classed('hidden', true);
                 })
                 .on('click', function (airport) {
+                    d3.selectAll(".selected_city_from_table").remove();
                     d3.selectAll('.cities').style("fill", "steelblue");
                     d3.selectAll('.cities').style("fill-opacity", 0.5);
                     d3.selectAll('.highlighted_cities').style("fill", "steelblue");
