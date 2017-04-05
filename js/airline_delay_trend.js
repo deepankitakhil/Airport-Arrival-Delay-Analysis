@@ -3,11 +3,11 @@ function display_airline_delay_trend() {
         width = 500 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
-    var x = d3.scaleBand()
-        .range([0, width])
-        .padding(0.1);
-    var y = d3.scaleLinear()
+    var y = d3.scaleBand()
         .range([height, 0]);
+
+    var x = d3.scaleSqrt()
+        .range([0, width]);
 
     var svg = d3.select("#airline_delay_trend_container").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -23,32 +23,22 @@ function display_airline_delay_trend() {
 }
 
 function plotData(x, y, svg, height, data) {
-    y.domain([0, d3.max(data, function (d) {
-        return d.value;
-    })]);
-
-    x.domain(data.map(function (d) {
-        return d.name;
-    }));
+    x.domain([0, d3.max(data, function(d) { return d.value; })]);
+    y.domain(data.map(function(d) { return d.name; })).padding(0.1);
 
     svg.selectAll(".bar")
         .data(data)
         .enter().append("rect")
         .attr("class", "bar")
-        .attr("x", function (delayData) {
-            return x(delayData.name);
-        })
-        .attr("width", x.bandwidth())
-        .attr("y", function (delayData) {
-            return y(delayData.value);
-        })
-        .attr("height", function (delayData) {
-            return height - y(delayData.value);
-        });
+        .attr("x",0)
+        .attr("height", y.bandwidth())
+        .attr("y", function(d) { return y(d.name); })
+        .attr("width", function(d) { return x(d.value); })
+
 
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).ticks(5).tickFormat(function(d) { return parseInt(d / 1000); }).tickSizeInner([-height]));
 
     svg.append("g")
         .call(d3.axisLeft(y));

@@ -127,12 +127,35 @@ function displayVisualization() {
 
 function highlightAirport(airportData) {
     var selectedAirportID = airportData.substr(airportData.indexOf(":") + 1);
-    svg.selectAll('.selected_cities_from_table')
-        .data(airportInformationByAirportID.get(selectedAirportID))
+    var objectArray = [];
+    objectArray.push(airportInformationByAirportID.get(selectedAirportID));
+    window.selected_airport = airportInformationByAirportID.get(selectedAirportID).properties.LOCID;
+    d3.selectAll(".highlighted_cities").remove();
+    d3.selectAll('.cities').style("fill", "steelblue");
+    d3.selectAll('.cities').style("fill-opacity", 0.5);
+    svg.selectAll('.selected_city_from_table').remove();
+    svg.selectAll('.selected_city_from_table')
+        .data(objectArray)
         .enter()
+        .append('path')
         .attr("d", path.pointRadius(function (airport) {
             return airport_radius(airport.properties.TOT_ENP);
         }))
-        .attr('class', 'selected_cities_from_table');
+        .attr('class', 'selected_city_from_table')
+        .on('mousemove',function(airport){
+            d3.mouse(svg.node()).map(function (value) {
+            return parseInt(value);
+        });
+            tooltip.classed('hidden', false)
+                .attr('style', 'left:' + (300) +
+                    'px; top:' + (50) + 'px;right:' + (100) + 'px;')
+                .html(airport.properties.NAME);
+
+        })
+        .on('mouseout', function () {
+            tooltip.classed('hidden', true);
+        });
+
+    displayVisualization();
 }
 
