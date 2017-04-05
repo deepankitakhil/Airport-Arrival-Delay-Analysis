@@ -17,93 +17,157 @@ function display_airline_delay_trend() {
             "translate(" + margin.left + "," + margin.top + ")");
 
     var data = selectData();
-    console.log(data);
 
-    plotData(x, y, svg, height, data);
+    plotData(data);
 }
 
-function plotData(x, y, svg, height, data) {
-    y.domain([0, d3.max(data, function (d) {
-        return d.value;
-    })]);
+function plotData(data) {
 
-    x.domain(data.map(function (d) {
-        return d.name;
-    }));
+    if (firstCriteria === 'total_delay')
+        var text_value = 'Click the columns to view versions.';
 
-    svg.selectAll(".bar")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", function (delayData) {
-            return x(delayData.name);
-        })
-        .attr("width", x.bandwidth())
-        .attr("y", function (delayData) {
-            return y(delayData.value);
-        })
-        .attr("height", function (delayData) {
-            return height - y(delayData.value);
-        });
+    Highcharts.chart('airline_delay_trend_container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Delay Information'
+        },
+        subtitle: {
+            text: text_value
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Total Delay'
+            }
 
-    svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}'
+                }
+            }
+        },
 
-    svg.append("g")
-        .call(d3.axisLeft(y));
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> of total<br/>'
+        },
 
+        series: [{
+            name: 'Delay',
+            colorByPoint: true,
+            data: data.filteredData
+        }],
+
+        drilldown: {
+            series: [{
+                name: 'Delay Distribution',
+                data: data.drillDownData
+            }]
+        }
+
+    });
 }
 
 function selectData() {
     var filteredData;
+    if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes') {
+        filteredData = filterEntriesWithDrillDownData(airlineInformationByAirportID.get(selected_airport).entries(), TOTAL, MINUTES);
+    }
 
-    if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), TOTAL, MINUTES);
-    else if (firstCriteria === 'total_delay' && secondCriteria === 'by_count')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), TOTAL, COUNT);
+    else if (firstCriteria === 'total_delay' && secondCriteria === 'by_count') {
+        filteredData = filterEntriesWithDrillDownData(airlineInformationByAirportID.get(selected_airport).entries(), TOTAL, COUNT);
+    }
 
     else if (firstCriteria === 'security_delay' && secondCriteria === 'by_minutes')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), SECURITY, MINUTES);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), SECURITY, MINUTES);
+
     else if (firstCriteria === 'security_delay' && secondCriteria === 'by_count')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), SECURITY, COUNT);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), SECURITY, COUNT);
 
     else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_minutes')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), NAS, MINUTES);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), NAS, MINUTES);
 
     else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_count')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), NAS, COUNT);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), NAS, COUNT);
 
     else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_minutes')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), WEATHER, MINUTES);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), WEATHER, MINUTES);
 
     else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_count')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), WEATHER, COUNT);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), WEATHER, COUNT);
 
     else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_minutes')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), LATE_AIRCRAFT, MINUTES);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), LATE_AIRCRAFT, MINUTES);
 
     else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_count')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), LATE_AIRCRAFT, COUNT);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), LATE_AIRCRAFT, COUNT);
 
     else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_minutes')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), CARRIER, MINUTES);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), CARRIER, MINUTES);
 
     else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_count')
-        filteredData = filterEntries(airlineInformationByAirportID.get(selected_airport).entries(), CARRIER, COUNT);
+        filteredData = filterEntriesWithNullDrillDown(airlineInformationByAirportID.get(selected_airport).entries(), CARRIER, COUNT);
 
     return filteredData;
 }
 
-function filterEntries(input, delay_type, option) {
-    var data = [];
+function filterEntriesWithNullDrillDown(input, delay_type, option) {
+    var filteredData = [];
+    var drillDownData = [];
     var input_length = input.length;
 
     for (var index = 0; index < input_length; index++) {
         var element = {};
         element["name"] = input[index].key;
-        element["value"] = input[index].value.get(option).get(delay_type);
-        data.push(element);
+        element["y"] = input[index].value.get(option).get(delay_type);
+        element["drilldown"] = null;
+        filteredData.push(element);
     }
-    return data;
+    return {
+        filteredData,
+        drillDownData
+    };
+}
+
+function filterEntriesWithDrillDownData(input, delay_type, option) {
+    var drillDownData = [];
+    var filteredData = [];
+    var input_length = input.length;
+
+    for (var index = 0; index < input_length; index++) {
+        var element = {};
+        element["name"] = input[index].key;
+        element["y"] = input[index].value.get(option).get(delay_type);
+        element["drilldown"] = input[index].key;
+        filteredData.push(element);
+
+        var drillDownElement = {};
+
+        drillDownElement["name"] = input[index].key;
+        drillDownElement["id"] = input[index].key;
+
+        var drillDownRawData = input[index].value.get(option).entries();
+        var drillDownRawLength = drillDownRawData.length;
+        var data = [];
+        for (var drillDownIndex = 1; drillDownIndex < drillDownRawLength; drillDownIndex++) {
+            data.push([drillDownRawData[drillDownIndex].key, drillDownRawData[drillDownIndex].value]);
+        }
+        drillDownElement["data"] = data;
+        drillDownData.push(drillDownElement);
+    }
+    return {
+        filteredData,
+        drillDownData
+    };
 }
