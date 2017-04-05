@@ -24,7 +24,7 @@ function display_airline_delay_trend() {
 function plotData(data) {
 
     if (firstCriteria === 'total_delay')
-        var text_value = 'Click the columns to view versions.';
+        var text_value = 'Click the columns to total delay distribution.';
 
     Highcharts.chart('airline_delay_trend_container', {
         chart: {
@@ -64,18 +64,17 @@ function plotData(data) {
         },
 
         series: [{
-            name: 'Delay',
+            name: 'Airlines',
             colorByPoint: true,
+            visible: true,
+            type: 'column',
+            drilldown: true,
             data: data.filteredData
         }],
 
         drilldown: {
-            series: [{
-                name: 'Delay Distribution',
-                data: data.drillDownData
-            }]
+            series: data.drillDownData
         }
-
     });
 }
 
@@ -146,25 +145,22 @@ function filterEntriesWithDrillDownData(input, delay_type, option) {
     var input_length = input.length;
 
     for (var index = 0; index < input_length; index++) {
-        var element = {};
-        element["name"] = input[index].key;
-        element["y"] = input[index].value.get(option).get(delay_type);
-        element["drilldown"] = input[index].key;
-        filteredData.push(element);
+        filteredData.push({
+            name: input[index].key,
+            y: input[index].value.get(option).get(delay_type),
+            drilldown: input[index].key
+        });
 
-        var drillDownElement = {};
-
-        drillDownElement["name"] = input[index].key;
-        drillDownElement["id"] = input[index].key;
-
-        var drillDownRawData = input[index].value.get(option).entries();
-        var drillDownRawLength = drillDownRawData.length;
-        var data = [];
-        for (var drillDownIndex = 1; drillDownIndex < drillDownRawLength; drillDownIndex++) {
-            data.push([drillDownRawData[drillDownIndex].key, drillDownRawData[drillDownIndex].value]);
-        }
-        drillDownElement["data"] = data;
-        drillDownData.push(drillDownElement);
+        drillDownData.push({
+            id: input[index].key,
+            data: [
+                ["NAS", input[index].value.get(option).get(NAS)],
+                ["Late Aircraft", input[index].value.get(option).get(LATE_AIRCRAFT)],
+                ["Security", input[index].value.get(option).get(SECURITY)],
+                ["Weather", input[index].value.get(option).get(WEATHER)],
+                ["Carrier", input[index].value.get(option).get(CARRIER)]
+            ]
+        });
     }
     return {
         filteredData,
