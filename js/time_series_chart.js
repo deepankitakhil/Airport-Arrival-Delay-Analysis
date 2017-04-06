@@ -7,6 +7,7 @@ var secondCriteria = 'by_minutes';
 function display_time_Series() {
 
     firstCriteria = $('#delay_options').val();
+
     secondCriteria = $('#delay_info_options').val();
 
 
@@ -85,6 +86,9 @@ function display_time_Series() {
             title: {
                 text: 'Airport Delay'
             },
+        },
+        credits: {
+            enabled: false
         },
         legend: {
             enabled: false

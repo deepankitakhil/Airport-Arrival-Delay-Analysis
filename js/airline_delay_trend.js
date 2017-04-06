@@ -36,9 +36,13 @@ function plotData(data) {
         subtitle: {
             text: text_value
         },
+        credits: {
+            enabled: false
+        },
         xAxis: {
             type: 'category'
         },
+        exporting: {enabled: false},
         yAxis: {
             title: {
                 text: 'Total Delay'
