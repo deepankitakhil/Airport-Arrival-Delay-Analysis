@@ -7,9 +7,18 @@ var TOTAL = "TOTAL";
 var COUNT = "COUNT";
 var MINUTES = "MINUTES";
 
-var airportDelayCountDataForClustering = [];
 var airportDelayDataForClustering = [];
-
+var nasDelayDataForClustering = [];
+var lateAircraftDelayDataForClustering = [];
+var carrierDelayDataForClustering = [];
+var weatherDelayDataForClustering = [];
+var securityDelayDataForClustering = [];
+var airportDelayCountForClustering = [];
+var nasDelayCountForClustering = [];
+var lateAircraftDelayCountForClustering = [];
+var carrierDelayCountForClustering = [];
+var weatherDelayCountForClustering = [];
+var securityDelayCountForClustering = [];
 
 var airportDelayDataForTimeSeries = d3.map();
 var weatherDelayDataForTimeSeries = d3.map();
@@ -31,7 +40,6 @@ function buildDataForVisualization(dateRange) {
     var startDate = dateRange[0].split(',');
     var endDate = dateRange[1].split(',');
     var airportData;
-    airportDelayCountDataForClustering = [];
     Object.keys(filteredDataByAirportID)
         .sort()
         .forEach(function (airportCode) {
@@ -116,8 +124,18 @@ function buildDataForVisualization(dateRange) {
                         result.previousMonthlyNASDelayCount, result.previousMonthlyCarrierDelayCount);
                 }
             }
-            airportDelayCountDataForClustering.push([key, airportNameByID.get(key), result.delayedFlightCount]);
-            airportDelayDataForClustering.push([key, airportNameByID.get(key), result.flightsDelayPerAirport / result.delayedFlightCount]);
+            airportDelayDataForClustering.push([key, airportNameByID.get(key), result.flightsDelayPerAirport]);
+            nasDelayDataForClustering.push([key, airportNameByID.get(key), result.previousMonthlyNASDelayData]);
+            lateAircraftDelayDataForClustering.push([key, airportNameByID.get(key), result.previousMonthlyLateAircraftDelayData]);
+            carrierDelayDataForClustering.push([key, airportNameByID.get(key), result.previousMonthlyCarrierDelayData]);
+            weatherDelayDataForClustering.push([key, airportNameByID.get(key), result.previousMonthlyWeatherDelayData]);
+            securityDelayDataForClustering.push([key, airportNameByID.get(key), result.previousMonthlySecurityDelayData]);
+            airportDelayCountForClustering.push([key, airportNameByID.get(key), result.previousMonthlyAirportDelayCount]);
+            nasDelayCountForClustering.push([key, airportNameByID.get(key), result.previousMonthlyNASDelayCount]);
+            lateAircraftDelayCountForClustering.push([key, airportNameByID.get(key), result.previousMonthlyLateAircraftDelayCount]);
+            carrierDelayCountForClustering.push([key, airportNameByID.get(key), result.previousMonthlyCarrierDelayCount]);
+            weatherDelayCountForClustering.push([key, airportNameByID.get(key), result.previousMonthlyWeatherDelayCount]);
+            securityDelayCountForClustering.push([key, airportNameByID.get(key), result.previousMonthlySecurityDelayCount]);
         });
     kMeansCluster();
 }
@@ -139,7 +157,7 @@ function run() {
 
 function initialize() {
     var num_clusters = 15;
-    var k = new KMeansClusterAlgorithm(num_clusters, airportDelayCountDataForClustering);
+    var k = new KMeansClusterAlgorithm(num_clusters, airportDelayDataForClustering);
     return k;
 }
 
