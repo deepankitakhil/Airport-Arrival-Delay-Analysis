@@ -123,7 +123,7 @@ function configureSearch(error, airport_data) {
         airport_name_list.push({ID: String(airport_name)});
 
         var airport_id = airport_data.features[index].properties.LOCID;
-        airport_id_list.push({ID: String(airport_id)});
+        airport_id_list.push({ID: String(airport_name), VALUE: String(airport_id)});
     }
 
     d3.select('#airport_search_by_name_container').on('keyup', function () {
@@ -166,7 +166,7 @@ function filterAirportsByID(airport_id_list) {
 
     if (filterText !== null && filterText !== "") {
         filteredAirportName.push(airport_id_list.filter(function (airport) {
-            return (airport.ID.toLowerCase().indexOf(filterText.toLowerCase()) === 0);
+            return (airport.VALUE.toLowerCase().indexOf(filterText.toLowerCase()) === 0);
         }));
     }
     return filteredAirportName;
