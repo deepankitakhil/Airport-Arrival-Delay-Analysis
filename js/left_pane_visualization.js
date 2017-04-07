@@ -120,14 +120,14 @@ function configureSearch(error, airport_data) {
         airport_name_list.push({ID: String(airport_name)});
     }
 
-    d3.select('#airport_search_container').on('keyup', filterResult);
+    d3.select('#airport_search_by_name_container').on('keyup', filterResult);
 
     function filterResult() {
 
         svg.selectAll('.highlighted_cities').remove();
 
         var filteredAirportName = [];
-        var filterText = document.getElementById('airport_search_container').value;
+        var filterText = document.getElementById('airport_search_by_name_container').value;
 
         if (filterText !== null && filterText !== "") {
             filteredAirportName.push(airport_name_list.filter(function (airport) {
