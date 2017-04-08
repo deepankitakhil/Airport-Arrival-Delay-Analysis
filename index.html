@@ -47,7 +47,7 @@
 
 <div id="slider"></div>
 <div id="drop-down">
-    <select id="delay_options" onchange="display_time_Series(this)">
+    <select id="delay_options" onchange="identifyUserInputForDelayType()">
         <option value="total_delay" selected="selected">Total Delay</option>
         <option value="weather_delay">Weather Delay</option>
         <option value="security_delay">Security Delay</option>
@@ -55,7 +55,7 @@
         <option value="late_aircraft_delay">Late Aircraft Delay</option>
         <option value="carrier_delay">Carrier Delay</option>
     </select>
-    <select id="delay_info_options" onchange="display_time_Series(this)">
+    <select id="delay_info_options" onchange="identifyUserInputForDelayType()">
         <option value="by_minutes" selected="selected">By Minutes</option>
         <option value="by_count">By Count</option>
     </select>

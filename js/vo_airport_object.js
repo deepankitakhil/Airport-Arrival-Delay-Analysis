@@ -15,7 +15,7 @@ function createAirportDelayObjectFromCustomMap(error, airport_delay_data, filter
     mapDataToKeyValuePair(airport_delay_data);
     filterDataForConsistency(dataByAirportID, filtered_airport_data);
     configureSlider();
-
+    identifyUserInputForDelayType();
 }
 
 function mapDataToKeyValuePair(airport_delay_data) {
@@ -75,4 +75,23 @@ function filterDataForConsistency(dataByAirportID, filtered_airport_data) {
             filteredDataByAirportID.set(airport_name, dataByAirportID.get(airport_name));
         }
     }
+}
+
+function identifyUserInputForDelayType() {
+    firstCriteria = $('#delay_options').val();
+
+    secondCriteria = $('#delay_info_options').val();
+
+
+    $('#delay_options').on('change', function () {
+        firstCriteria = $('#delay_options').val();
+    });
+
+    $('#delay_info_options').on('change', function () {
+        secondCriteria = $('#delay_info_options').val();
+    });
+
+    console.log(firstCriteria);
+    console.log(secondCriteria);
+    displayVisualization();
 }
