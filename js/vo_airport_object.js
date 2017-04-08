@@ -91,7 +91,5 @@ function identifyUserInputForDelayType() {
         secondCriteria = $('#delay_info_options').val();
     });
 
-    console.log(firstCriteria);
-    console.log(secondCriteria);
     displayVisualization();
 }

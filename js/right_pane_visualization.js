@@ -104,7 +104,6 @@ function tabulate(data, columns) {
 
 function buildTableData() {
     var cluster = clusterToAirportMapping.get(airportToClusterMapping.get(selected_airport).get_cluster);
-    console.log(cluster);
     var maxLength = cluster.length > 5 ? 5 : cluster.length;
     var similar_airports = [];
     for (var index = 0; index < maxLength; index++) {
