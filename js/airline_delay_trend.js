@@ -24,14 +24,15 @@ function display_airline_delay_trend() {
 function plotData(data) {
 
     if (firstCriteria === 'total_delay')
-        var text_value = 'Click the columns to total delay distribution.';
+        var text_value = 'Click the columns for delay distribution.';
 
     Highcharts.chart('airline_delay_trend_container', {
         chart: {
             type: 'column'
+
         },
         title: {
-            text: 'Delay Information'
+            text: 'Carrier Arrival Delay'
         },
         subtitle: {
             text: text_value
@@ -77,7 +78,17 @@ function plotData(data) {
         }],
 
         drilldown: {
-            series: data.drillDownData
+            series: data.drillDownData,
+            subtitle:'',
+            drillUpButton: {
+                position: {
+                    align: 'right', // by default
+                    verticalAlign: 'top', // by default
+                    x: -10,
+                    y: 10
+                },
+                relativeTo: 'chart'
+            },
         }
     });
 }

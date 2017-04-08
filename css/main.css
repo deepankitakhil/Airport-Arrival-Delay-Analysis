@@ -57,6 +57,7 @@
 
 #slider {
     position: absolute;
+    top: 2%;
     left: 0;
     right: 0;
     margin-left: 59%;
@@ -101,7 +102,6 @@ td {
 }
 
 #airline_delay_trend_container {
-    border-top: double;
     border-bottom: double;
     position: absolute;
     left: 0;

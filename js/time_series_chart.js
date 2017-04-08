@@ -67,8 +67,12 @@ function display_time_Series() {
                 relativeTo: 'chart'
             }
         },
+        tooltip: {
+            xDateFormat: '%b,%Y',
+            shared: true
+        },
         title: {
-            text: 'Airport Arrival Delay over time'
+            text: 'Airport Arrival Delay'
         },
         exporting: {enabled: false},   // To remove download button
         subtitle: {
@@ -85,7 +89,8 @@ function display_time_Series() {
         yAxis: {
             title: {
                 text: 'Airport Delay'
-            },
+            }
+
         },
         credits: {
             enabled: false
