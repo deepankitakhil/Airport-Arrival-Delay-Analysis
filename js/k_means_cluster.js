@@ -46,7 +46,7 @@ class KMeansClusterAlgorithm {
     fit(max_count) {
         var max_count = max_count || 100;
         var count = 0;
-        while (this.isStillMoving == 1 && count < max_count) {
+        while (this.isStillMoving === 1 && count < max_count) {
             this.recalculate_centroids();
             this.update_clusters();
             count += 1;

@@ -106,6 +106,7 @@ function displayVisualization() {
     if (selected_airport === undefined) {
     } else {
         var cluster = clusterToAirportMapping.get(airportToClusterMapping.get(selected_airport).get_cluster);
+        console.log(cluster);
         var maxLength = cluster.length > 5 ? 5 : cluster.length;
         var similar_airports = [];
         for (var index = 0; index < maxLength; index++) {
@@ -142,10 +143,10 @@ function highlightAirport(airportData) {
             return airport_radius(airport.properties.TOT_ENP);
         }))
         .attr('class', 'selected_city_from_table')
-        .on('mousemove',function(airport){
+        .on('mousemove', function (airport) {
             d3.mouse(svg.node()).map(function (value) {
-            return parseInt(value);
-        });
+                return parseInt(value);
+            });
             tooltip.classed('hidden', false)
                 .attr('style', 'left:' + (300) +
                     'px; top:' + (50) + 'px;right:' + (100) + 'px;')

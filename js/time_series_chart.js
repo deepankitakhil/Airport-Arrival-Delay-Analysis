@@ -19,9 +19,10 @@ function display_time_Series() {
         secondCriteria = $('#delay_info_options').val();
     });
 
+    kMeansCluster();
     display_airline_delay_trend();
-    var data;
 
+    var data;
     if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
         data = airportDelayDataForTimeSeries.get(selected_airport);
     else if (firstCriteria === 'total_delay' && secondCriteria === 'by_count')
