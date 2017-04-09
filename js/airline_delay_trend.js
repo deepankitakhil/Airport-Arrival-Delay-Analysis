@@ -23,8 +23,9 @@ function display_airline_delay_trend() {
 
 function plotData(data) {
 
+    var text_value = " Average delay distribution";
     if (firstCriteria === 'total_delay')
-        var text_value = 'Click the columns for delay distribution.';
+        text_value = 'Click the columns for delay distribution.';
 
     Highcharts.chart('airline_delay_trend_container', {
         chart: {
@@ -47,7 +48,8 @@ function plotData(data) {
         yAxis: {
             title: {
                 text: 'Total Delay'
-            }
+            },
+            min: 0
 
         },
         legend: {
@@ -58,7 +60,7 @@ function plotData(data) {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}'
+                    format: '{point.y:.2f}'
                 }
             }
         },
@@ -79,7 +81,7 @@ function plotData(data) {
 
         drilldown: {
             series: data.drillDownData,
-            subtitle:'',
+            subtitle: '',
             drillUpButton: {
                 position: {
                     align: 'right', // by default
@@ -144,7 +146,7 @@ function filterEntriesWithNullDrillDown(input, delay_type, option) {
     for (var index = 0; index < input_length; index++) {
         var element = {};
         element["name"] = input[index].key;
-        element["y"] = input[index].value.get(option).get(delay_type);
+        element["y"] = calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES));
         element["drilldown"] = null;
         filteredData.push(element);
     }
@@ -162,18 +164,18 @@ function filterEntriesWithDrillDownData(input, delay_type, option) {
     for (var index = 0; index < input_length; index++) {
         filteredData.push({
             name: input[index].key,
-            y: input[index].value.get(option).get(delay_type),
+            y: calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES)),
             drilldown: input[index].key
         });
 
         drillDownData.push({
             id: input[index].key,
             data: [
-                ["NAS", input[index].value.get(option).get(NAS)],
-                ["Late Aircraft", input[index].value.get(option).get(LATE_AIRCRAFT)],
-                ["Security", input[index].value.get(option).get(SECURITY)],
-                ["Weather", input[index].value.get(option).get(WEATHER)],
-                ["Carrier", input[index].value.get(option).get(CARRIER)]
+                ["NAS", calculateRatio(input[index].value.get(option).get(NAS), input[index].value.get(option).get(NUMBER_OF_ENTRIES))],
+                ["Late Aircraft", calculateRatio(input[index].value.get(option).get(LATE_AIRCRAFT), input[index].value.get(option).get(NUMBER_OF_ENTRIES))],
+                ["Security", calculateRatio(input[index].value.get(option).get(SECURITY), input[index].value.get(option).get(NUMBER_OF_ENTRIES))],
+                ["Weather", calculateRatio(input[index].value.get(option).get(WEATHER), input[index].value.get(option).get(NUMBER_OF_ENTRIES))],
+                ["Carrier", calculateRatio(input[index].value.get(option).get(CARRIER), input[index].value.get(option).get(NUMBER_OF_ENTRIES))]
             ]
         });
     }

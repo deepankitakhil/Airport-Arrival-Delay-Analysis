@@ -54,6 +54,7 @@ function display_time_Series() {
         },
         tooltip: {
             xDateFormat: '%b,%Y',
+            pointFormat: "Value: {point.y:2f}",
             shared: true
         },
         title: {
@@ -74,7 +75,8 @@ function display_time_Series() {
         yAxis: {
             title: {
                 text: 'Airport Delay'
-            }
+            },
+            min: 0
 
         },
         credits: {
