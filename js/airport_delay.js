@@ -64,7 +64,22 @@ function buildDataForVisualization(dateRange) {
             var airlineInformation = d3.map();
             airlineInformationByAirportID.set(key, airlineInformation);
 
-            var result;
+            var result = [
+                {delayedFlightCount: 1},
+                {flightsDelayPerAirport: 1},
+                {previousMonthlyAirportDelayData: 1},
+                {previousMonthlyWeatherDelayData: 1},
+                {previousMonthlySecurityDelayData: 1},
+                {previousMonthlyLateAircraftDelayData: 1},
+                {previousMonthlyNASDelayData: 1},
+                {previousMonthlyCarrierDelayData: 1},
+                {previousMonthlyAirportDelayCount: 1},
+                {previousMonthlyWeatherDelayCount: 1},
+                {previousMonthlySecurityDelayCount: 1},
+                {previousMonthlyLateAircraftDelayCount: 1},
+                {previousMonthlyNASDelayCount: 1},
+                {previousMonthlyCarrierDelayCount: 1}];
+
             var delayedFlightCount = 0;
             var flightsDelayPerAirport = 0;
             var startMonth = Number(startDate[0].trim());

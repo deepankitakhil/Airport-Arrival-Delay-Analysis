@@ -51,7 +51,14 @@ function mapDataToKeyValuePair(airport_delay_data) {
                     dataByMonth.set(month, dataByCarrier);
                 }
             } else {
-                dataByYear.set(year, d3.map());
+                var dataByMonth = d3.map();
+                var dataByCarrier = d3.map();
+                var dataSet = [];
+                dataSet.push(airport_delay_data[rowIndex]);
+                dataByCarrier.set(carrier, dataSet);
+                dataByMonth.set(month, dataByCarrier);
+                dataByYear.set(year, dataByMonth);
+                dataByAirportID.set(airportID, dataByYear);
             }
         } else {
             var dataByYear = d3.map();
