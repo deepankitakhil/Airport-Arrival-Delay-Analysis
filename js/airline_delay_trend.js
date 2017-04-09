@@ -67,7 +67,7 @@ function plotData(data) {
 
         tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> of total<br/>'
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> % <br/>'
         },
 
         series: [{
@@ -146,7 +146,7 @@ function filterEntriesWithNullDrillDown(input, delay_type, option) {
     for (var index = 0; index < input_length; index++) {
         var element = {};
         element["name"] = input[index].key;
-        element["y"] = calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES));
+        element["y"] = calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * 100;
         element["drilldown"] = null;
         filteredData.push(element);
     }
@@ -164,18 +164,18 @@ function filterEntriesWithDrillDownData(input, delay_type, option) {
     for (var index = 0; index < input_length; index++) {
         filteredData.push({
             name: input[index].key,
-            y: calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES)),
+            y: calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * 100,
             drilldown: input[index].key
         });
 
         drillDownData.push({
             id: input[index].key,
             data: [
-                ["NAS", calculateRatio(input[index].value.get(option).get(NAS), input[index].value.get(option).get(NUMBER_OF_ENTRIES))],
-                ["Late Aircraft", calculateRatio(input[index].value.get(option).get(LATE_AIRCRAFT), input[index].value.get(option).get(NUMBER_OF_ENTRIES))],
-                ["Security", calculateRatio(input[index].value.get(option).get(SECURITY), input[index].value.get(option).get(NUMBER_OF_ENTRIES))],
-                ["Weather", calculateRatio(input[index].value.get(option).get(WEATHER), input[index].value.get(option).get(NUMBER_OF_ENTRIES))],
-                ["Carrier", calculateRatio(input[index].value.get(option).get(CARRIER), input[index].value.get(option).get(NUMBER_OF_ENTRIES))]
+                ["NAS", calculateRatio(input[index].value.get(option).get(NAS), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * 100],
+                ["Late Aircraft", calculateRatio(input[index].value.get(option).get(LATE_AIRCRAFT), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * 100],
+                ["Security", calculateRatio(input[index].value.get(option).get(SECURITY), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * 100],
+                ["Weather", calculateRatio(input[index].value.get(option).get(WEATHER), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * 100],
+                ["Carrier", calculateRatio(input[index].value.get(option).get(CARRIER), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * 100]
             ]
         });
     }
