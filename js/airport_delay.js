@@ -267,42 +267,35 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
             for (var flightEntryIndex = 0; flightEntryIndex < multipleFlightEntryData.length; flightEntryIndex++) {
                 for (var carrierIndex = 0; carrierIndex < multipleFlightEntryData[flightEntryIndex].value.length; carrierIndex++) {
 
-                    delayedFlightCount = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                    delayedFlightCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
 
-                    flightsDelayPerAirport = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
+                    flightsDelayPerAirport += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
 
-                    monthlyAirportDelayData = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
+                    monthlyAirportDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_delay);
 
-                    monthlyWeatherDelayData = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_delay);
+                    monthlyWeatherDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_delay);
 
-                    monthlySecurityDelayData = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].security_delay);
+                    monthlySecurityDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].security_delay);
 
-                    monthlyLateAircraftDelayData = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].late_aircraft_delay);
+                    monthlyLateAircraftDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].late_aircraft_delay);
 
-                    monthlyNASDelayData = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].nas_delay);
+                    monthlyNASDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].nas_delay);
 
-                    monthlyCarrierDelayData = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].carrier_delay);
+                    monthlyCarrierDelayData += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].carrier_delay);
 
-                    monthlyAirportDelayCount = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
+                    monthlyAirportDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_del15);
 
-                    monthlyWeatherDelayCount = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_ct);
+                    monthlyWeatherDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].weather_ct);
 
-                    monthlySecurityDelayCount = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].security_ct);
+                    monthlySecurityDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].security_ct);
 
-                    monthlyLateAircraftDelayCount = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].late_aircraft_ct);
+                    monthlyLateAircraftDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].late_aircraft_ct);
 
-                    monthlyNASDelayCount = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].nas_ct);
+                    monthlyNASDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].nas_ct);
 
-                    monthlyCarrierDelayCount = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].carrier_ct);
+                    monthlyCarrierDelayCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].carrier_ct);
 
-                    monthlyTotalCarrierCount = Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_flights);
-
-                    monthlyAirportDelayData = calculateRatio(monthlyAirportDelayData, monthlyAirportDelayCount);
-                    monthlyWeatherDelayData = calculateRatio(monthlyWeatherDelayData, monthlyWeatherDelayCount);
-                    monthlySecurityDelayData = calculateRatio(monthlySecurityDelayData, monthlySecurityDelayCount);
-                    monthlyLateAircraftDelayData = calculateRatio(monthlyLateAircraftDelayData, monthlyLateAircraftDelayCount);
-                    monthlyNASDelayData = calculateRatio(monthlyNASDelayData, monthlyNASDelayCount);
-                    monthlyCarrierDelayData = calculateRatio(monthlyCarrierDelayData, monthlyCarrierDelayCount);
+                    monthlyTotalCarrierCount += Number(multipleFlightEntryData[flightEntryIndex].value[carrierIndex].arr_flights);
 
                     previousMonthlyAirportDelayData = monthlyAirportDelayData;
                     previousMonthlyWeatherDelayData = monthlyWeatherDelayData;
@@ -310,13 +303,6 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
                     previousMonthlyLateAircraftDelayData = monthlyLateAircraftDelayData;
                     previousMonthlyNASDelayData = monthlyNASDelayData;
                     previousMonthlyCarrierDelayData = monthlyCarrierDelayData;
-
-                    monthlyAirportDelayCount = calculateRatio(monthlyAirportDelayCount, delayedFlightCount);
-                    monthlyWeatherDelayCount = calculateRatio(monthlyWeatherDelayCount, delayedFlightCount);
-                    monthlySecurityDelayCount = calculateRatio(monthlySecurityDelayCount, delayedFlightCount);
-                    monthlyLateAircraftDelayCount = calculateRatio(monthlyLateAircraftDelayCount, delayedFlightCount);
-                    monthlyNASDelayCount = calculateRatio(monthlyNASDelayCount, delayedFlightCount);
-                    monthlyCarrierDelayCount = calculateRatio(monthlyCarrierDelayCount, delayedFlightCount);
 
                     previousMonthlyAirportDelayCount = monthlyAirportDelayCount;
                     previousMonthlyWeatherDelayCount = monthlyWeatherDelayCount;
@@ -328,55 +314,55 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
                 }
             }
 
-            appendDelayData(airportDelayDataForTimeSeries, monthlyAirportDelayData, key, year, month);
+            appendDelayData(airportDelayDataForTimeSeries, calculateRatio(monthlyAirportDelayData, monthlyAirportDelayCount), key, year, month);
 
-            appendDelayData(weatherDelayDataForTimeSeries, monthlyWeatherDelayData, key, year, month);
+            appendDelayData(weatherDelayDataForTimeSeries, calculateRatio(monthlyWeatherDelayData, monthlyAirportDelayCount), key, year, month);
 
-            appendDelayData(securityDelayDataForTimeSeries, monthlySecurityDelayData, key, year, month);
+            appendDelayData(securityDelayDataForTimeSeries, calculateRatio(monthlySecurityDelayData, monthlyAirportDelayCount), key, year, month);
 
-            appendDelayData(lateAircraftDelayDataForTimeSeries, monthlyLateAircraftDelayData, key, year, month);
+            appendDelayData(lateAircraftDelayDataForTimeSeries, calculateRatio(monthlyLateAircraftDelayData, monthlyAirportDelayCount), key, year, month);
 
-            appendDelayData(nasDelayDataForTimeSeries, monthlyNASDelayData, key, year, month);
+            appendDelayData(nasDelayDataForTimeSeries, calculateRatio(monthlyNASDelayData, monthlyAirportDelayCount), key, year, month);
 
-            appendDelayData(carrierDelayDataForTimeSeries, monthlyCarrierDelayData, key, year, month);
+            appendDelayData(carrierDelayDataForTimeSeries, calculateRatio(monthlyCarrierDelayData, monthlyAirportDelayCount), key, year, month);
 
-            appendDelayData(airportDelayCountForTimeSeries, monthlyAirportDelayCount, key, year, month);
+            appendDelayData(airportDelayCountForTimeSeries, calculateRatio(monthlyAirportDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(weatherDelayCountForTimeSeries, monthlyWeatherDelayCount, key, year, month);
+            appendDelayData(weatherDelayCountForTimeSeries, calculateRatio(monthlyWeatherDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(securityDelayCountForTimeSeries, monthlySecurityDelayCount, key, year, month);
+            appendDelayData(securityDelayCountForTimeSeries, calculateRatio(monthlySecurityDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(lateAircraftDelayCountForTimeSeries, monthlyLateAircraftDelayCount, key, year, month);
+            appendDelayData(lateAircraftDelayCountForTimeSeries, calculateRatio(monthlyLateAircraftDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(nasDelayCountForTimeSeries, monthlyNASDelayCount, key, year, month);
+            appendDelayData(nasDelayCountForTimeSeries, calculateRatio(monthlyNASDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(carrierDelayCountForTimeSeries, monthlyCarrierDelayCount, key, year, month);
+            appendDelayData(carrierDelayCountForTimeSeries, calculateRatio(monthlyCarrierDelayCount, monthlyTotalCarrierCount), key, year, month);
 
         } else {
 
-            appendDelayData(airportDelayDataForTimeSeries, previousMonthlyAirportDelayData, key, year, month);
+            appendDelayData(airportDelayDataForTimeSeries, calculateRatio(previousMonthlyAirportDelayData, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(weatherDelayDataForTimeSeries, previousMonthlyWeatherDelayData, key, year, month);
+            appendDelayData(weatherDelayDataForTimeSeries, calculateRatio(previousMonthlyWeatherDelayData, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(securityDelayDataForTimeSeries, previousMonthlySecurityDelayData, key, year, month);
+            appendDelayData(securityDelayDataForTimeSeries, calculateRatio(previousMonthlySecurityDelayData, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(lateAircraftDelayDataForTimeSeries, previousMonthlyLateAircraftDelayData, key, year, month);
+            appendDelayData(lateAircraftDelayDataForTimeSeries, calculateRatio(previousMonthlyLateAircraftDelayData, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(nasDelayDataForTimeSeries, previousMonthlyNASDelayData, key, year, month);
+            appendDelayData(nasDelayDataForTimeSeries, calculateRatio(previousMonthlyNASDelayData, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(carrierDelayDataForTimeSeries, previousMonthlyCarrierDelayData, key, year, month);
+            appendDelayData(carrierDelayDataForTimeSeries, calculateRatio(previousMonthlyCarrierDelayData, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(airportDelayCountForTimeSeries, previousMonthlyAirportDelayCount, key, year, month);
+            appendDelayData(airportDelayCountForTimeSeries, calculateRatio(previousMonthlyAirportDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(weatherDelayCountForTimeSeries, previousMonthlyWeatherDelayCount, key, year, month);
+            appendDelayData(weatherDelayCountForTimeSeries, calculateRatio(previousMonthlyWeatherDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(securityDelayCountForTimeSeries, previousMonthlySecurityDelayCount, key, year, month);
+            appendDelayData(securityDelayCountForTimeSeries, calculateRatio(previousMonthlySecurityDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(lateAircraftDelayCountForTimeSeries, previousMonthlyLateAircraftDelayCount, key, year, month);
+            appendDelayData(lateAircraftDelayCountForTimeSeries, calculateRatio(previousMonthlyLateAircraftDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(nasDelayCountForTimeSeries, previousMonthlyNASDelayCount, key, year, month);
+            appendDelayData(nasDelayCountForTimeSeries, calculateRatio(previousMonthlyNASDelayCount, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(carrierDelayCountForTimeSeries, previousMonthlyCarrierDelayCount, key, year, month);
+            appendDelayData(carrierDelayCountForTimeSeries, calculateRatio(previousMonthlyCarrierDelayCount, monthlyTotalCarrierCount), key, year, month);
 
         }
     }
