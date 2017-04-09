@@ -189,7 +189,7 @@ function kMeansCluster() {
 }
 
 function run(data) {
-    var num_clusters = 15;
+    var num_clusters = 10;
     var k = initialize(num_clusters, data);
     for (var i = 0; i < 50; i++)
         step(k);
