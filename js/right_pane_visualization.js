@@ -125,10 +125,8 @@ function displayVisualization() {
     } else {
         display_time_Series();
         display_airline_delay_trend();
-        kMeansCluster();
-        var similar_airports = buildTableData();
-        tabulate(similar_airports, ["Similar Airports"]);
-        draw_bee_swarm();
+        display_table();
+        display_bee_swarm();
     }
 
 }
@@ -165,5 +163,11 @@ function highlightAirport(airportData) {
         });
 
     displayVisualization();
+}
+
+function display_table() {
+    kMeansCluster();
+    var similar_airports = buildTableData();
+    tabulate(similar_airports, ["Similar Airports"]);
 }
 
