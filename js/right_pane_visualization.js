@@ -128,6 +128,7 @@ function displayVisualization() {
         kMeansCluster();
         var similar_airports = buildTableData();
         tabulate(similar_airports, ["Similar Airports"]);
+        draw_bee_swarm();
     }
 
 }

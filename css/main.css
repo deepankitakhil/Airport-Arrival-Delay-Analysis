@@ -5,6 +5,14 @@
     width: 60%;
     height: 70%;
 }
+#mean_data{
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 60%;
+    top:80%;
+    height: 30%;
+}
 
 .states {
     fill: #DFDFDF;
@@ -18,7 +26,14 @@
     stroke: #fff;
     stroke-width: 2px;
 }
+.cells path {
+    fill: none;
+    pointer-events: all;
+}
 
+.cells :hover circle {
+    fill: red;
+}
 .highlighted_cities {
     fill: red;
     fill-opacity: 1;
