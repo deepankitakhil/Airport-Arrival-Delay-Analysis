@@ -31,15 +31,23 @@
 
 
 <div id="us_map">
-    Search US Airports by Name:
-    <input type="text" id="airport_search_container"/>
-    <div id="filtered_airport"></div>
+    <div id="left_div_for_airport_search" style="width: 47%; float:left">
+        Search US Airports by Name:
+        <input type="text" id="airport_search_by_name_container"/>
+        <div id="filtered_airport_by_name"></div>
+    </div>
+    <div id="right_div_for_airport_search" style="width: 43%; float:left">
+        Search US Airports by ID:
+        <input type="text" id="airport_search_by_id_container"/>
+        <div id="filtered_airport_by_id"></div>
+    </div>
+    <br style="clear:both;"/>
 </div>
 
 
 <div id="slider"></div>
 <div id="drop-down">
-    <select id="delay_options" onchange="display_time_Series(this)">
+    <select id="delay_options" onchange="identifyUserInputForDelayType()">
         <option value="total_delay" selected="selected">Total Delay</option>
         <option value="weather_delay">Weather Delay</option>
         <option value="security_delay">Security Delay</option>
@@ -47,7 +55,7 @@
         <option value="late_aircraft_delay">Late Aircraft Delay</option>
         <option value="carrier_delay">Carrier Delay</option>
     </select>
-    <select id="delay_info_options" onchange="display_time_Series(this)">
+    <select id="delay_info_options" onchange="identifyUserInputForDelayType()">
         <option value="by_minutes" selected="selected">By Minutes</option>
         <option value="by_count">By Count</option>
     </select>

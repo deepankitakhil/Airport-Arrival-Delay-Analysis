@@ -7,18 +7,18 @@ var TOTAL = "TOTAL";
 var COUNT = "COUNT";
 var MINUTES = "MINUTES";
 
-var airportDelayDataForClustering = [];
-var nasDelayDataForClustering = [];
-var lateAircraftDelayDataForClustering = [];
-var carrierDelayDataForClustering = [];
-var weatherDelayDataForClustering = [];
-var securityDelayDataForClustering = [];
-var airportDelayCountForClustering = [];
-var nasDelayCountForClustering = [];
-var lateAircraftDelayCountForClustering = [];
-var carrierDelayCountForClustering = [];
-var weatherDelayCountForClustering = [];
-var securityDelayCountForClustering = [];
+var airportDelayDataForClustering;
+var nasDelayDataForClustering;
+var lateAircraftDelayDataForClustering;
+var carrierDelayDataForClustering;
+var weatherDelayDataForClustering;
+var securityDelayDataForClustering;
+var airportDelayCountForClustering;
+var nasDelayCountForClustering;
+var lateAircraftDelayCountForClustering;
+var carrierDelayCountForClustering;
+var weatherDelayCountForClustering;
+var securityDelayCountForClustering;
 
 var airportDelayDataForTimeSeries = d3.map();
 var weatherDelayDataForTimeSeries = d3.map();
@@ -37,6 +37,7 @@ var carrierDelayCountForTimeSeries = d3.map();
 var airlineInformationByAirportID = d3.map();
 
 function buildDataForVisualization(dateRange) {
+    clearOldEntriesForClustering();
     var startDate = dateRange[0].split(',');
     var endDate = dateRange[1].split(',');
     var airportData;
@@ -145,19 +146,51 @@ function formatData(dataSet, year, month, monthlyDelayedFlightCount) {
 }
 
 function kMeansCluster() {
-    run();
+    var data = null;
+
+    if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
+        data = airportDelayDataForClustering;
+    else if (firstCriteria === 'total_delay' && secondCriteria === 'by_count')
+        data = airportDelayCountForClustering;
+
+    else if (firstCriteria === 'security_delay' && secondCriteria === 'by_minutes')
+        data = securityDelayDataForClustering;
+    else if (firstCriteria === 'security_delay' && secondCriteria === 'by_count')
+        data = securityDelayCountForClustering;
+
+    else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_minutes')
+        data = nasDelayDataForClustering;
+    else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_count')
+        data = nasDelayCountForClustering;
+
+    else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_minutes')
+        data = weatherDelayDataForClustering;
+    else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_count')
+        data = weatherDelayCountForClustering;
+
+    else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_minutes')
+        data = lateAircraftDelayDataForClustering;
+    else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_count')
+        data = lateAircraftDelayCountForClustering;
+
+    else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_minutes')
+        data = carrierDelayDataForClustering;
+    else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_count')
+        data = carrierDelayCountForClustering;
+    run(data);
 }
 
-function run() {
-    var k = initialize();
+function run(data) {
+    var num_clusters = 15;
+    var k = initialize(num_clusters, data);
     for (var i = 0; i < 50; i++)
         step(k);
     k.updateClusterInformation();
 }
 
-function initialize() {
-    var num_clusters = 15;
-    var k = new KMeansClusterAlgorithm(num_clusters, airportDelayDataForClustering);
+function initialize(num_clusters, data) {
+
+    var k = new KMeansClusterAlgorithm(num_clusters, data);
     return k;
 }
 
@@ -400,4 +433,20 @@ function loadDataStructureForBarChart(delayInformation) {
     loadDelayInformationMapWithDefaultValues(delayInformationByData);
     delayInformation.set(COUNT, delayInformationByCount);
     delayInformation.set(MINUTES, delayInformationByData);
+}
+
+
+function clearOldEntriesForClustering() {
+    airportDelayDataForClustering = [];
+    nasDelayDataForClustering = [];
+    lateAircraftDelayDataForClustering = [];
+    carrierDelayDataForClustering = [];
+    weatherDelayDataForClustering = [];
+    securityDelayDataForClustering = [];
+    airportDelayCountForClustering = [];
+    nasDelayCountForClustering = [];
+    lateAircraftDelayCountForClustering = [];
+    carrierDelayCountForClustering = [];
+    weatherDelayCountForClustering = [];
+    securityDelayCountForClustering = [];
 }

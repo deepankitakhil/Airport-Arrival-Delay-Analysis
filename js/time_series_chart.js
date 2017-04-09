@@ -6,22 +6,7 @@ var secondCriteria = 'by_minutes';
 
 function display_time_Series() {
 
-    firstCriteria = $('#delay_options').val();
-
-    secondCriteria = $('#delay_info_options').val();
-
-
-    $('#delay_options').on('change', function () {
-        firstCriteria = $('#delay_options').val();
-    });
-
-    $('#delay_info_options').on('change', function () {
-        secondCriteria = $('#delay_info_options').val();
-    });
-
-    display_airline_delay_trend();
     var data;
-
     if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
         data = airportDelayDataForTimeSeries.get(selected_airport);
     else if (firstCriteria === 'total_delay' && secondCriteria === 'by_count')
