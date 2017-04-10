@@ -109,11 +109,13 @@ function buildDataForBeeSwarm() {
         data = carrierDelayDataForTimeSeries;
     else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_count')
         data = carrierDelayCountForTimeSeries;
-    console.log(data);
     calculateAverageForBuildingBeeSwarm(data);
 }
 
 function calculateAverageForBuildingBeeSwarm(data) {
+    var proportionIndex = 1;
+    if (secondCriteria === 'by_count')
+        proportionIndex = 100;
     Object.keys(data)
         .sort()
         .forEach(function (airportCode) {
@@ -127,9 +129,9 @@ function calculateAverageForBuildingBeeSwarm(data) {
             }
             swarmBeeDataByAirportID.push({
                 id: key,
-                value: calculateRatio(totalDelay, index)
+                value: calculateRatio(totalDelay, index) * proportionIndex
             });
         });
-
+    console.log(swarmBeeDataByAirportID);
     display_bee_swarm();
 }
