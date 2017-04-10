@@ -2,18 +2,22 @@
  * Created by dhruvarora on 4/8/17.
  */
 function draw_bee_swarm() {
-    var svg = d3.select("#mean_data").append('svg'),
-        margin = {top: 40, right: 40, bottom: 40, left: 40},
-        width = 960 - margin.left - margin.right,
-        height = 100 - margin.top - margin.bottom;
+    var margin = {top: 40, right: 40, bottom: 40, left: 40},
+        width = 845,
+        height = 100;
+
+    var svg = d3.select("#mean_data").append('svg')
+        .attr('width',width)
+        .attr('height',height);
+
 
     var formatValue = d3.format(",d");
 
     var x = d3.scaleLog()
         .range([0, width]);
 
-    var g = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var g = svg.append("g");
+        //.attr("transform", "translate(" + margin.left + ")");
 
     d3.csv("./data/flare.csv", type, function(error, data) {
         if (error) throw error;
@@ -31,7 +35,7 @@ function draw_bee_swarm() {
 
         g.append("g")
             .attr("class", "axis axis--x")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(0," + 80 + ")")
 
             //.attr("d", "M" + width + ",0L" + (width + 20) + ",0L" + (width + 20) + ",-5L" + (width + 30) + ",0L"  + (width + 20) + ",5L" + (width + 20) + ",0L")
 
@@ -52,7 +56,7 @@ function draw_bee_swarm() {
             .attr("cy", function(d) { return d.data.y; });
 
         cell.append("path")
-            .attr("d", function(d) { console.log(d);return "M" + d.join("L") + "Z"; });
+            .attr("d", function(d) { return "M" + d.join("L") + "Z"; });
 
         cell.append("title")
             .text(function(d) { return d.data.id + "\n" + formatValue(d.data.value); });
