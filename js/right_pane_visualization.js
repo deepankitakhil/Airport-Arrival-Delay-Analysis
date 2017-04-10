@@ -107,14 +107,19 @@ function buildTableData() {
     var maxLength = cluster.length > 5 ? 5 : cluster.length;
     var similar_airports = [];
     for (var index = 0; index < maxLength; index++) {
-        if (selected_airport === cluster[index].get_airport_id) {
-            maxLength += 1;
-        } else {
-            var cityStateAirportName = cluster[index].get_airport_name;
-            similar_airports.push({
-                'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1),
-                'Similar Airport ID': cluster[index].get_airport_id
-            })
+        if (cluster[index] === undefined) {
+            console.log("outlier found!");
+        }
+        else {
+            if (selected_airport === cluster[index].get_airport_id) {
+                maxLength += 1;
+            } else {
+                var cityStateAirportName = cluster[index].get_airport_name;
+                similar_airports.push({
+                    'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1),
+                    'Similar Airport ID': cluster[index].get_airport_id
+                });
+            }
         }
     }
     return similar_airports;
