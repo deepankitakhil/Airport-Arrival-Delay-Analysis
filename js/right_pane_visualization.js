@@ -135,7 +135,6 @@ function buildTableData() {
 }
 
 function displayVisualization() {
-    display_bee_swarm();
     if (selected_airport === undefined) {
     } else {
         display_time_Series();

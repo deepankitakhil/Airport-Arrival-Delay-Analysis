@@ -109,7 +109,7 @@ function buildDataForBeeSwarm() {
         data = carrierDelayDataForTimeSeries;
     else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_count')
         data = carrierDelayCountForTimeSeries;
-
+    console.log(data);
     calculateAverageForBuildingBeeSwarm(data);
 }
 
@@ -130,4 +130,6 @@ function calculateAverageForBuildingBeeSwarm(data) {
                 value: calculateRatio(totalDelay, index)
             });
         });
+
+    display_bee_swarm();
 }

@@ -98,5 +98,6 @@ function identifyUserInputForDelayType() {
         secondCriteria = $('#delay_info_options').val();
     });
 
+    buildDataForBeeSwarm();
     displayVisualization();
 }
