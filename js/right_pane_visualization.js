@@ -106,6 +106,7 @@ function buildTableData() {
     var cluster = clusterToAirportMapping.get(airportToClusterMapping.get(selected_airport).get_cluster);
     var maxLength = cluster.length > 5 ? 5 : cluster.length;
     var similar_airports = [];
+    var count = 0;
     for (var index = 0; index < maxLength; index++) {
         if (cluster[index] === undefined) {
             console.log("outlier found!");
@@ -115,12 +116,19 @@ function buildTableData() {
                 maxLength += 1;
             } else {
                 var cityStateAirportName = cluster[index].get_airport_name;
+                count++;
                 similar_airports.push({
                     'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1),
                     'Similar Airport ID': cluster[index].get_airport_id
                 });
             }
         }
+    }
+    if (count === 0) {
+        similar_airports.push({
+            'Similar Airports': 'No Similar airport found!',
+            'Similar Airport ID': 'No Similar airport found!'
+        });
     }
     return similar_airports;
 }
