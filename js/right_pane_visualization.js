@@ -62,6 +62,7 @@ function configureSlider() {
         var endMonth = monthToNumber[endDate[0].trim()];
         var dateRange = [startMonth + "," + startDate[1].trim(), endMonth + "," + endDate[1].trim()];
         buildDataForVisualization(dateRange);
+        buildDataForBeeSwarm();
         displayVisualization();
     });
 
@@ -134,12 +135,12 @@ function buildTableData() {
 }
 
 function displayVisualization() {
+    display_bee_swarm();
     if (selected_airport === undefined) {
     } else {
         display_time_Series();
         display_airline_delay_trend();
         display_table();
-        display_bee_swarm();
     }
 
 }
