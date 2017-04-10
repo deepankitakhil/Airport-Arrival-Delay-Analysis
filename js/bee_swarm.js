@@ -3,6 +3,8 @@ function display_bee_swarm() {
         width = 845,
         height = 100;
 
+    $('#mean_data').empty();
+
     var svg = d3.select("#mean_data").append('svg')
         .attr('width', width)
         .attr('height', height);
