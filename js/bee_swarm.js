@@ -28,6 +28,7 @@ function displaySwarm(data) {
         return d.value;
     }));
     ticks=[];
+    var objectArray=[];
     ticks.push(mean);
     var simulation = d3.forceSimulation(data)
         .force("x", d3.forceX(function (d) {
@@ -58,10 +59,29 @@ function displaySwarm(data) {
             })
             .polygons(data)).enter().append("g")
             .on("mousemove",function (d) {
+                objectArray=[];
+            objectArray.push(airportInformationByAirportID.get(d.data.id));
+            console.log(objectArray);
+            svg.selectAll('.highlighted_cities')
+                .data(objectArray)
+                .enter()
+                .append('path')
+                .attr("d", path.pointRadius(function (airport) {
+                    tooltip.classed('hidden', false)
+                        .attr('style', 'left:' + (300) +
+                            'px; top:' + (50) + 'px;right:' + (100) + 'px;')
+                        .html(airport.properties.NAME)
+                    return airport_radius(airport.properties.TOT_ENP);
+                }))
+                .attr('class', 'highlighted_cities');
             d3.select(this).style("fill","red");
+
+
 
             })
             .on("mouseout",function (d) {
+                tooltip.classed('hidden', true);
+                svg.selectAll('.highlighted_cities').remove();
                 d3.select(this).style("fill","black");
             });
 
@@ -83,7 +103,8 @@ function displaySwarm(data) {
     cell.append("title")
         .text(function (d) {
             return d.data.id + "\n" + formatValue(d.data.value);
-        });
+        })
+        .style("font-size","50px");
 
 }
 
