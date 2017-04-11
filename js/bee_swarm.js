@@ -27,7 +27,7 @@ function displaySwarm(data) {
     x.domain(d3.extent(data, function (d) {
         return d.value;
     }));
-    ticks=[];
+    ticks = [];
     ticks.push(mean);
     var simulation = d3.forceSimulation(data)
         .force("x", d3.forceX(function (d) {
@@ -43,7 +43,7 @@ function displaySwarm(data) {
     g.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + 80 + ")")
-        .call(d3.axisBottom(x).scale(x).ticks(3,".0s").tickValues(ticks).tickFormat('Mean'));
+        .call(d3.axisBottom(x).scale(x).ticks(3, ".0s").tickValues(ticks).tickFormat('Mean'));
 
     var cell = g.append("g")
         .attr("class", "cells")
@@ -57,13 +57,13 @@ function displaySwarm(data) {
                 return d.y;
             })
             .polygons(data)).enter().append("g")
-            .on("mousemove",function (d) {
-            d3.select(this).style("fill","red");
+        .on("mousemove", function (d) {
+            d3.select(this).style("fill", "red");
 
-            })
-            .on("mouseout",function (d) {
-                d3.select(this).style("fill","black");
-            });
+        })
+        .on("mouseout", function (d) {
+            d3.select(this).style("fill", "black");
+        });
 
     cell.append("circle")
         .attr("r", 3)
@@ -136,14 +136,17 @@ function calculateAverageForBuildingBeeSwarm(data) {
             var length = airportDelayData.length;
             var totalDelay = 0;
             var index;
+
             for (index = 0; index < length; index++) {
-                totalDelay += airportDelayData[index][1];
+                totalDelay += Number(airportDelayData[index][1]);
             }
             var computedValue = calculateRatio(totalDelay, index) * proportionIndex;
 
             averageValue += computedValue;
             count++;
-
+            if (computedValue === "" || computedValue === undefined || Number.isNaN(computedValue) || computedValue === 0) {
+                computedValue = 1;
+            }
             swarmBeeDataByAirportID.push({
                 id: key,
                 value: computedValue
