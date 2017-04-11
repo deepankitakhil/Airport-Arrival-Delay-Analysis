@@ -44,7 +44,7 @@ function displaySwarm(data) {
     g.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + 80 + ")")
-        .call(d3.axisBottom(x).scale(x).ticks(3, ".0s").tickValues(ticks).tickFormat('Mean'));
+        .call(d3.axisBottom(x).scale(x).ticks(3, ".0s").tickValues(ticks).tickFormat('Mean '+$('#delay_options option:selected').text()));
 
     var cell = g.append("g")
         .attr("class", "cells")
@@ -82,7 +82,29 @@ function displaySwarm(data) {
             tooltip.classed('hidden', true);
             svg.selectAll('.highlighted_cities').remove();
             d3.select(this).style("fill", "black");
-        });
+        })
+        .on("click",function (d) {
+            d3.selectAll(".bee_swarm_cities").remove();
+
+            d3.selectAll(".selected_city_from_table").remove();
+            d3.selectAll('.cities').style("fill", "steelblue");
+            d3.selectAll('.cities').style("fill-opacity", 0.5);
+            window.selected_airport=d.data.id;
+            objectArray = [];
+            objectArray.push(airportInformationByAirportID.get(d.data.id));
+            console.log(objectArray);
+            svg.selectAll('.bee_swarm_cities')
+                .data(objectArray)
+                .enter()
+                .append('path')
+                .attr("d", path.pointRadius(function (airport) {
+                    return airport_radius(airport.properties.TOT_ENP);
+                }))
+                .attr('class', 'bee_swarm_cities')
+                .style('fill','black');
+            d3.selectAll(".highlighted_cities").remove();
+            displayVisualization();
+        })
 
     cell.append("circle")
         .attr("r", 3)
@@ -101,7 +123,7 @@ function displaySwarm(data) {
 
     cell.append("title")
         .text(function (d) {
-            return d.data.id + "\n" + formatValue(d.data.value);
+            return d.data.id + "\n" + parseFloat(Math.round(d.data.value * 100) / 100).toFixed(2);
         })
         .style("font-size", "50px");
 

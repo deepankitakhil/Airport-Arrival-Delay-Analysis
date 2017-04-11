@@ -149,6 +149,7 @@ function highlightAirport(airportData) {
     var objectArray = [];
     objectArray.push(airportInformationByAirportID.get(selectedAirportID));
     window.selected_airport = airportInformationByAirportID.get(selectedAirportID).properties.LOCID;
+    d3.selectAll(".bee_swarm_cities").remove();
     d3.selectAll(".highlighted_cities").remove();
     d3.selectAll('.cities').style("fill", "steelblue");
     d3.selectAll('.cities').style("fill-opacity", 0.5);
