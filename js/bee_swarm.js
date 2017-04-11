@@ -4,9 +4,9 @@ var bee_swarm_margin;
 var mean;
 
 function display_bee_swarm() {
-    bee_swarm_margin = {top: 40, right: 40, bottom: 40, left: 40},
-        width = 845,
-        height = 100;
+    bee_swarm_margin = {top: 40, right: 40, bottom: 40, left: 40};
+    width = 845;
+    height = 100;
 
     $('#mean_data').empty();
 
@@ -27,8 +27,8 @@ function displaySwarm(data) {
     x.domain(d3.extent(data, function (d) {
         return d.value;
     }));
-    ticks=[];
-    var objectArray=[];
+    var ticks = [];
+    var objectArray = [];
     ticks.push(mean);
     var simulation = d3.forceSimulation(data)
         .force("x", d3.forceX(function (d) {
@@ -44,7 +44,7 @@ function displaySwarm(data) {
     g.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + 80 + ")")
-        .call(d3.axisBottom(x).scale(x).ticks(3,".0s").tickValues(ticks).tickFormat('Mean'));
+        .call(d3.axisBottom(x).scale(x).ticks(3, ".0s").tickValues(ticks).tickFormat('Mean'));
 
     var cell = g.append("g")
         .attr("class", "cells")
@@ -58,8 +58,8 @@ function displaySwarm(data) {
                 return d.y;
             })
             .polygons(data)).enter().append("g")
-            .on("mousemove",function (d) {
-                objectArray=[];
+        .on("mousemove", function (d) {
+            objectArray = [];
             objectArray.push(airportInformationByAirportID.get(d.data.id));
             console.log(objectArray);
             svg.selectAll('.highlighted_cities')
@@ -70,20 +70,19 @@ function displaySwarm(data) {
                     tooltip.classed('hidden', false)
                         .attr('style', 'left:' + (300) +
                             'px; top:' + (50) + 'px;right:' + (100) + 'px;')
-                        .html(airport.properties.NAME)
+                        .html(airport.properties.NAME);
                     return airport_radius(airport.properties.TOT_ENP);
                 }))
                 .attr('class', 'highlighted_cities');
-            d3.select(this).style("fill","red");
+            d3.select(this).style("fill", "red");
 
 
-
-            })
-            .on("mouseout",function (d) {
-                tooltip.classed('hidden', true);
-                svg.selectAll('.highlighted_cities').remove();
-                d3.select(this).style("fill","black");
-            });
+        })
+        .on("mouseout", function (d) {
+            tooltip.classed('hidden', true);
+            svg.selectAll('.highlighted_cities').remove();
+            d3.select(this).style("fill", "black");
+        });
 
     cell.append("circle")
         .attr("r", 3)
@@ -104,7 +103,7 @@ function displaySwarm(data) {
         .text(function (d) {
             return d.data.id + "\n" + formatValue(d.data.value);
         })
-        .style("font-size","50px");
+        .style("font-size", "50px");
 
 }
 
@@ -157,14 +156,17 @@ function calculateAverageForBuildingBeeSwarm(data) {
             var length = airportDelayData.length;
             var totalDelay = 0;
             var index;
+
             for (index = 0; index < length; index++) {
-                totalDelay += airportDelayData[index][1];
+                totalDelay += Number(airportDelayData[index][1]);
             }
             var computedValue = calculateRatio(totalDelay, index) * proportionIndex;
 
             averageValue += computedValue;
             count++;
-
+            if (computedValue === "" || computedValue === undefined || Number.isNaN(computedValue) || computedValue === 0) {
+                computedValue = 1;
+            }
             swarmBeeDataByAirportID.push({
                 id: key,
                 value: computedValue
