@@ -44,7 +44,7 @@ function displaySwarm(data) {
     g.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + 80 + ")")
-        .call(d3.axisBottom(x).scale(x).ticks(3, ".0s").tickValues(ticks).tickFormat('Mean '+$('#delay_options option:selected').text()));
+        .call(d3.axisBottom(x).scale(x).ticks(3, ".0s").tickValues(ticks).tickFormat('Mean ' + $('#delay_options option:selected').text()));
 
     var cell = g.append("g")
         .attr("class", "cells")
@@ -83,13 +83,13 @@ function displaySwarm(data) {
             svg.selectAll('.highlighted_cities').remove();
             d3.select(this).style("fill", "black");
         })
-        .on("click",function (d) {
+        .on("click", function (d) {
             d3.selectAll(".bee_swarm_cities").remove();
 
             d3.selectAll(".selected_city_from_table").remove();
             d3.selectAll('.cities').style("fill", "steelblue");
             d3.selectAll('.cities').style("fill-opacity", 0.5);
-            window.selected_airport=d.data.id;
+            window.selected_airport = d.data.id;
             objectArray = [];
             objectArray.push(airportInformationByAirportID.get(d.data.id));
             console.log(objectArray);
@@ -101,7 +101,7 @@ function displaySwarm(data) {
                     return airport_radius(airport.properties.TOT_ENP);
                 }))
                 .attr('class', 'bee_swarm_cities')
-                .style('fill','black');
+                .style('fill', 'black');
             d3.selectAll(".highlighted_cities").remove();
             displayVisualization();
         })
@@ -187,12 +187,13 @@ function calculateAverageForBuildingBeeSwarm(data) {
             averageValue += computedValue;
             count++;
             if (computedValue === "" || computedValue === undefined || Number.isNaN(computedValue) || computedValue === 0) {
-                computedValue = 1;
+                console.log("Average value is 0. Ignoring airport: " + key + " !");
+            } else {
+                swarmBeeDataByAirportID.push({
+                    id: key,
+                    value: computedValue
+                });
             }
-            swarmBeeDataByAirportID.push({
-                id: key,
-                value: computedValue
-            });
         });
     mean = calculateRatio(averageValue, count);
     display_bee_swarm();
