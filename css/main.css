@@ -29,11 +29,10 @@
 .cells path {
     fill: none;
     pointer-events: all;
+
 }
 
-.cells :hover circle {
-    fill: red;
-}
+
 .highlighted_cities {
     fill: red;
     fill-opacity: 1;

@@ -27,7 +27,8 @@ function displaySwarm(data) {
     x.domain(d3.extent(data, function (d) {
         return d.value;
     }));
-
+    ticks=[];
+    ticks.push(mean);
     var simulation = d3.forceSimulation(data)
         .force("x", d3.forceX(function (d) {
             return x(d.value);
@@ -40,9 +41,9 @@ function displaySwarm(data) {
         simulation.tick();
 
     g.append("g")
-        .attr("class", "axis axis--x")
+        .attr("class", "axis")
         .attr("transform", "translate(0," + 80 + ")")
-        .call(d3.axisBottom(x).ticks(20, ".0s"));
+        .call(d3.axisBottom(x).scale(x).ticks(3,".0s").tickValues(ticks).tickFormat('Mean'));
 
     var cell = g.append("g")
         .attr("class", "cells")
@@ -55,7 +56,14 @@ function displaySwarm(data) {
             .y(function (d) {
                 return d.y;
             })
-            .polygons(data)).enter().append("g");
+            .polygons(data)).enter().append("g")
+            .on("mousemove",function (d) {
+            d3.select(this).style("fill","red");
+
+            })
+            .on("mouseout",function (d) {
+                d3.select(this).style("fill","black");
+            });
 
     cell.append("circle")
         .attr("r", 3)
@@ -65,6 +73,7 @@ function displaySwarm(data) {
         .attr("cy", function (d) {
             return d.data.y;
         });
+
 
     cell.append("path")
         .attr("d", function (d) {
