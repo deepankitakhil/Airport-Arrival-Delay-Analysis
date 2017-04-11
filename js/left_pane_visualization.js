@@ -10,6 +10,7 @@ var airportInformationByAirportID = d3.map();
 var airportNameByAirportID = d3.map();
 
 function left_pane_visualization_init() {
+
     svg = d3.select('#us_map')
         .append('svg')
         .attr('id', 'usmapsvg')
@@ -126,11 +127,15 @@ function configureSearch(error, airport_data) {
         airport_id_list.push({ID: String(airport_name), VALUE: String(airport_id)});
     }
 
-    d3.select('#airport_search_by_name_container').on('keyup', function () {
-        filterResultByAirportName(airport_name_list, airport_data, tooltip);
-    });
-    d3.select('#airport_search_by_id_container').on('keyup', function () {
-        filterResultByAirportID(airport_id_list, airport_data, tooltip);
+    d3.select('#airport_search_container').on('keyup', function () {
+
+        if($('input[name="search_type"]:checked').val()==1){
+            filterResultByAirportName(airport_name_list, airport_data, tooltip);
+        }
+        else{
+            filterResultByAirportID(airport_id_list, airport_data, tooltip);
+        }
+
     });
 }
 
@@ -150,7 +155,7 @@ function filterResultByAirportID(airport_id_list, airport_data, tooltip) {
 
 function filterAirportsByName(airport_name_list) {
     var filteredAirportName = [];
-    var filterText = document.getElementById('airport_search_by_name_container').value;
+    var filterText = document.getElementById('airport_search_container').value;
 
     if (filterText !== null && filterText !== "") {
         filteredAirportName.push(airport_name_list.filter(function (airport) {
@@ -162,7 +167,7 @@ function filterAirportsByName(airport_name_list) {
 
 function filterAirportsByID(airport_id_list) {
     var filteredAirportName = [];
-    var filterText = document.getElementById('airport_search_by_id_container').value;
+    var filterText = document.getElementById('airport_search_container').value;
 
     if (filterText !== null && filterText !== "") {
         filteredAirportName.push(airport_id_list.filter(function (airport) {
