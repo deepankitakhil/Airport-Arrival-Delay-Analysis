@@ -115,8 +115,8 @@ function buildDataForBeeSwarm() {
 
 function calculateAverageForBuildingBeeSwarm(data) {
     var proportionIndex = 1;
-    var maxValue = -Infinity;
-    var minValue = +Infinity;
+    var averageValue = 0;
+    var count = 0;
     if (secondCriteria === 'by_count')
         proportionIndex = 100;
     Object.keys(data)
@@ -126,22 +126,20 @@ function calculateAverageForBuildingBeeSwarm(data) {
             var airportDelayData = data.get(key);
             var length = airportDelayData.length;
             var totalDelay = 0;
-            var index = 0;
+            var index;
             for (index = 0; index < length; index++) {
                 totalDelay += airportDelayData[index][1];
             }
             var computedValue = calculateRatio(totalDelay, index) * proportionIndex;
 
-            if (minValue > computedValue)
-                minValue = computedValue;
-            if (maxValue < computedValue)
-                maxValue = computedValue;
+            averageValue += computedValue;
+            count++;
 
             swarmBeeDataByAirportID.push({
                 id: key,
                 value: computedValue
             });
         });
-    mean = (minValue + maxValue) / 2;
+    mean = calculateRatio(averageValue, count);
     display_bee_swarm();
 }
