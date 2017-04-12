@@ -4,7 +4,7 @@ var bee_swarm_margin;
 var mean;
 
 function display_bee_swarm() {
-    bee_swarm_margin = {top: 40, right: 40, bottom: 40, left: 40};
+    bee_swarm_margin = {top: 40, right: 40, bottom: 40, left: 45};
     width = 845;
     height = 100;
 
@@ -12,7 +12,8 @@ function display_bee_swarm() {
 
     bee_swarm_svg = d3.select("#mean_data").append('svg')
         .attr('width', width)
-        .attr('height', height);
+        .attr('height', height)
+        .attr("transform","translate("+bee_swarm_margin.left+")");
 
     displaySwarm(swarmBeeDataByAirportID);
 }
@@ -20,7 +21,7 @@ function display_bee_swarm() {
 function displaySwarm(data) {
     var formatValue = d3.format(",d");
     var x = d3.scaleLog()
-        .range([0, width]);
+        .range([0, width/1.2]);
     var g = bee_swarm_svg.append("g");
     var margin = bee_swarm_margin;
 
