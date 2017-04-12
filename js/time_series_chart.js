@@ -7,6 +7,7 @@ var secondCriteria = 'by_minutes';
 function display_time_Series() {
 
     var data;
+    var meanData;
     if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
         data = airportDelayDataForTimeSeries.get(selected_airport);
     else if (firstCriteria === 'total_delay' && secondCriteria === 'by_count')
@@ -36,6 +37,8 @@ function display_time_Series() {
         data = carrierDelayDataForTimeSeries.get(selected_airport);
     else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_count')
         data = carrierDelayCountForTimeSeries.get(selected_airport);
+
+    meanData = meanDelayDataForTimeSeries.get(selected_airport);
 
     var element = document.getElementById("delay_options");
     var delay_type = element.options[element.selectedIndex].text;
@@ -76,7 +79,13 @@ function display_time_Series() {
             title: {
                 text: 'Airport Delay'
             },
-            min: 0
+            min: 0,
+            plotLines: [{
+                color: '#10266B',
+                width: 2,
+                title: 'Mean Delay',
+                value: meanData
+            }],
 
         },
         credits: {

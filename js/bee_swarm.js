@@ -1,4 +1,5 @@
 var swarmBeeDataByAirportID = [];
+var meanDelayDataForTimeSeries = d3.map();
 var bee_swarm_svg;
 var bee_swarm_margin;
 var mean;
@@ -13,7 +14,7 @@ function display_bee_swarm() {
     bee_swarm_svg = d3.select("#mean_data").append('svg')
         .attr('width', width)
         .attr('height', height)
-        .attr("transform","translate("+bee_swarm_margin.left+")");
+        .attr("transform", "translate(" + bee_swarm_margin.left + ")");
 
     displaySwarm(swarmBeeDataByAirportID);
 }
@@ -21,7 +22,7 @@ function display_bee_swarm() {
 function displaySwarm(data) {
     var formatValue = d3.format(",d");
     var x = d3.scaleLog()
-        .range([0, width/1.2]);
+        .range([0, width / 1.2]);
     var g = bee_swarm_svg.append("g");
     var margin = bee_swarm_margin;
 
@@ -62,7 +63,6 @@ function displaySwarm(data) {
         .on("mousemove", function (d) {
             objectArray = [];
             objectArray.push(airportInformationByAirportID.get(d.data.id));
-            console.log(objectArray);
             svg.selectAll('.highlighted_cities')
                 .data(objectArray)
                 .enter()
@@ -194,6 +194,7 @@ function calculateAverageForBuildingBeeSwarm(data) {
                     id: key,
                     value: computedValue
                 });
+                meanDelayDataForTimeSeries.set(key, computedValue);
             }
         });
     mean = calculateRatio(averageValue, count);
