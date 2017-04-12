@@ -7,6 +7,7 @@ var TOTAL = "TOTAL";
 var COUNT = "COUNT";
 var MINUTES = "MINUTES";
 var NUMBER_OF_ENTRIES = "NUMBER_OF_ENTRIES";
+var NUMBER_OF_FLIGHTS = "NUMBER_OF_FLIGHTS";
 
 var airportDelayDataForClustering;
 var nasDelayDataForClustering;
@@ -409,6 +410,7 @@ function buildBarChartData(yearWiseData, airlineInformation, startMonth, endMont
                     airlineDelayByCount.set(WEATHER, airlineDelayByCount.get(WEATHER) + calculateRatio(Number(airlineDelay.weather_ct), Number(airlineDelay.arr_flights)));
                     airlineDelayByCount.set(TOTAL, airlineDelayByCount.get(TOTAL) + calculateRatio(Number(airlineDelay.arr_del15), Number(airlineDelay.arr_flights)));
                     airlineDelayByCount.set(CARRIER, airlineDelayByCount.get(CARRIER) + calculateRatio(Number(airlineDelay.carrier_ct), Number(airlineDelay.arr_flights)));
+                    airlineDelayByCount.set(NUMBER_OF_FLIGHTS, airlineDelayByCount.get(NUMBER_OF_FLIGHTS) + Number(airlineDelay.arr_flights));
                     airlineDelayByCount.set(NUMBER_OF_ENTRIES, airlineDelayByCount.get(NUMBER_OF_ENTRIES) + 1);
 
                     airlineDelayByMinutes.set(NAS, airlineDelayByMinutes.get(NAS) + calculateRatio(Number(airlineDelay.nas_delay), Number(airlineDelay.arr_del15)));
@@ -417,6 +419,7 @@ function buildBarChartData(yearWiseData, airlineInformation, startMonth, endMont
                     airlineDelayByMinutes.set(WEATHER, airlineDelayByMinutes.get(WEATHER) + calculateRatio(Number(airlineDelay.weather_delay), Number(airlineDelay.arr_del15)));
                     airlineDelayByMinutes.set(TOTAL, airlineDelayByMinutes.get(TOTAL) + calculateRatio(Number(airlineDelay.arr_delay), Number(airlineDelay.arr_del15)));
                     airlineDelayByMinutes.set(CARRIER, airlineDelayByMinutes.get(CARRIER) + calculateRatio(Number(airlineDelay.carrier_delay), Number(airlineDelay.arr_del15)));
+                    airlineDelayByMinutes.set(NUMBER_OF_FLIGHTS, airlineDelayByMinutes.get(NUMBER_OF_FLIGHTS) + Number(airlineDelay.arr_del15));
                     airlineDelayByMinutes.set(NUMBER_OF_ENTRIES, airlineDelayByMinutes.get(NUMBER_OF_ENTRIES) + 1);
 
                 } else {
@@ -439,6 +442,7 @@ function loadDelayInformationMapWithDefaultValues(map) {
     map.set(LATE_AIRCRAFT, 0);
     map.set(CARRIER, 0);
     map.set(NUMBER_OF_ENTRIES, 0);
+    map.set(NUMBER_OF_FLIGHTS, 0);
 }
 
 function loadDataStructureForBarChart(delayInformation) {
@@ -493,6 +497,7 @@ function updateMapEntries(delayInformation, delayData) {
             delayInfoByTotal.set(LATE_AIRCRAFT, calculateRatio(Number(delayInfo.late_aircraft_delay), Number(delayInfo.arr_del15)));
             delayInfoByTotal.set(WEATHER, calculateRatio(Number(delayInfo.weather_delay), Number(delayInfo.arr_del15)));
             delayInfoByTotal.set(CARRIER, calculateRatio(Number(delayInfo.carrier_delay), Number(delayInfo.arr_del15)));
+            delayInfoByTotal.set(NUMBER_OF_FLIGHTS, Number(delayInfo.arr_del15));
             delayInfoByTotal.set(NUMBER_OF_ENTRIES, 1);
 
             delayInfoByCount.set(TOTAL, calculateRatio(Number(delayInfo.arr_del15), Number(delayInfo.arr_flights)));
@@ -501,6 +506,7 @@ function updateMapEntries(delayInformation, delayData) {
             delayInfoByCount.set(LATE_AIRCRAFT, calculateRatio(Number(delayInfo.late_aircraft_ct), Number(delayInfo.arr_flights)));
             delayInfoByCount.set(WEATHER, calculateRatio(Number(delayInfo.weather_ct), Number(delayInfo.arr_flights)));
             delayInfoByCount.set(CARRIER, calculateRatio(Number(delayInfo.carrier_ct), Number(delayInfo.arr_flights)));
+            delayInfoByCount.set(NUMBER_OF_FLIGHTS, Number(delayInfo.arr_flights));
             delayInfoByCount.set(NUMBER_OF_ENTRIES, 1);
         }
 }

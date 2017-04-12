@@ -73,8 +73,8 @@ function plotData(data) {
         },
 
         tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.fullName}</span>: <b>{point.y:.2f}</b> ' + tooltipText + ' <br/>'
+            headerFormat: '<span style="font-size:11px">{}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.fullName}</span>: <b>{point.y:.2f}</b> ' + tooltipText + '<br> ' + '{point.totalEntries} <br/>'
         },
 
         title: {text: titleText},
@@ -150,12 +150,18 @@ function filterEntriesWithNullDrillDown(input, delay_type, option) {
     var drillDownData = [];
     var input_length = input.length;
     var percentageBase = option === COUNT ? 100 : 1;
+    var prefixWord = "";
+    if (secondCriteria === 'by_count')
+        prefixWord = 'Total flights: ';
+    else
+        prefixWord = 'Delayed flights: ';
 
     for (var index = 0; index < input_length; index++) {
         var element = {};
         element["name"] = input[index].key;
         element["y"] = calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * percentageBase;
         element["fullName"] = carrierNameByID.get(input[index].key);
+        element["totalEntries"] = prefixWord + input[index].value.get(option).get(NUMBER_OF_FLIGHTS);
         element["drilldown"] = null;
         filteredData.push(element);
     }
@@ -170,12 +176,18 @@ function filterEntriesWithDrillDownData(input, delay_type, option) {
     var filteredData = [];
     var input_length = input.length;
     var percentageBase = option === COUNT ? 100 : 1;
+    var prefixWord = "";
+    if (secondCriteria === 'by_count')
+        prefixWord = 'Total flights: ';
+    else
+        prefixWord = 'Delayed flights: ';
 
     for (var index = 0; index < input_length; index++) {
         filteredData.push({
             name: input[index].key,
             y: calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * percentageBase,
             fullName: carrierNameByID.get(input[index].key),
+            totalEntries: prefixWord + input[index].value.get(option).get(NUMBER_OF_FLIGHTS),
             drilldown: input[index].key
         });
 
