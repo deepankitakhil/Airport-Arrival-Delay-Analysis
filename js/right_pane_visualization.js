@@ -12,6 +12,8 @@ var monthToNumber = {
     'November': 11,
     'December': 12
 };
+var airportInformationToHighlightSimilarAirport;
+
 function right_pane_visualization_init() {
     triggerDataConfiguration();
 }
@@ -104,6 +106,7 @@ function tabulate(data, columns) {
 }
 
 function buildTableData() {
+    var airportIdToHighlightSimilarAirport = [];
     var cluster = clusterToAirportMapping.get(airportToClusterMapping.get(selected_airport).get_cluster);
     var maxLength = cluster.length > 5 ? 5 : cluster.length;
     var similar_airports = [];
@@ -117,6 +120,7 @@ function buildTableData() {
                 maxLength += 1;
             } else {
                 var cityStateAirportName = cluster[index].get_airport_name;
+                airportIdToHighlightSimilarAirport.push(cluster[index].get_airport_id);
                 count++;
                 similar_airports.push({
                     'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1),
@@ -131,6 +135,7 @@ function buildTableData() {
             'Similar Airport ID': 'No Similar airport found!'
         });
     }
+    buildSimilarAirportPlottingInformation(airportIdToHighlightSimilarAirport);
     return similar_airports;
 }
 
@@ -185,3 +190,17 @@ function display_table() {
     tabulate(similar_airports, ["Similar Airports"]);
 }
 
+function buildSimilarAirportPlottingInformation(airportIdToHighlightSimilarAirport) {
+    airportInformationToHighlightSimilarAirport = [];
+    if (airportIdToHighlightSimilarAirport === undefined) {
+
+    } else {
+        var length = airportIdToHighlightSimilarAirport.length;
+        for (var index = 0; index < length; index++) {
+            if (airportInformationByAirportID.has(airportIdToHighlightSimilarAirport[index])) {
+                airportInformationToHighlightSimilarAirport.push(
+                    [airportInformationByAirportID.get(airportIdToHighlightSimilarAirport[index])]);
+            }
+        }
+    }
+}
