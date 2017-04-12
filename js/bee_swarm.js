@@ -166,11 +166,9 @@ function buildDataForBeeSwarm() {
 }
 
 function calculateAverageForBuildingBeeSwarm(data) {
-    var proportionIndex = 1;
     var averageValue = 0;
     var count = 0;
-    if (secondCriteria === 'by_count')
-        proportionIndex = 100;
+
     Object.keys(data)
         .sort()
         .forEach(function (airportCode) {
@@ -183,7 +181,7 @@ function calculateAverageForBuildingBeeSwarm(data) {
             for (index = 0; index < length; index++) {
                 totalDelay += Number(airportDelayData[index][1]);
             }
-            var computedValue = calculateRatio(totalDelay, index) * proportionIndex;
+            var computedValue = calculateRatio(totalDelay, index);
 
             averageValue += computedValue;
             count++;

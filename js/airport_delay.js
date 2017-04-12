@@ -326,17 +326,17 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
 
             appendDelayData(carrierDelayDataForTimeSeries, calculateRatio(monthlyCarrierDelayData, monthlyAirportDelayCount), key, year, month);
 
-            appendDelayData(airportDelayCountForTimeSeries, calculateRatio(monthlyAirportDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(airportDelayCountForTimeSeries, calculateRatio(monthlyAirportDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(weatherDelayCountForTimeSeries, calculateRatio(monthlyWeatherDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(weatherDelayCountForTimeSeries, calculateRatio(monthlyWeatherDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(securityDelayCountForTimeSeries, calculateRatio(monthlySecurityDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(securityDelayCountForTimeSeries, calculateRatio(monthlySecurityDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(lateAircraftDelayCountForTimeSeries, calculateRatio(monthlyLateAircraftDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(lateAircraftDelayCountForTimeSeries, calculateRatio(monthlyLateAircraftDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(nasDelayCountForTimeSeries, calculateRatio(monthlyNASDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(nasDelayCountForTimeSeries, calculateRatio(monthlyNASDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(carrierDelayCountForTimeSeries, calculateRatio(monthlyCarrierDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(carrierDelayCountForTimeSeries, calculateRatio(monthlyCarrierDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
         } else {
 
@@ -352,17 +352,17 @@ function buildData(startMonth, endMonth, yearWiseData, delayedFlightCount, fligh
 
             appendDelayData(carrierDelayDataForTimeSeries, calculateRatio(previousMonthlyCarrierDelayData, monthlyTotalCarrierCount), key, year, month);
 
-            appendDelayData(airportDelayCountForTimeSeries, calculateRatio(previousMonthlyAirportDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(airportDelayCountForTimeSeries, calculateRatio(previousMonthlyAirportDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(weatherDelayCountForTimeSeries, calculateRatio(previousMonthlyWeatherDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(weatherDelayCountForTimeSeries, calculateRatio(previousMonthlyWeatherDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(securityDelayCountForTimeSeries, calculateRatio(previousMonthlySecurityDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(securityDelayCountForTimeSeries, calculateRatio(previousMonthlySecurityDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(lateAircraftDelayCountForTimeSeries, calculateRatio(previousMonthlyLateAircraftDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(lateAircraftDelayCountForTimeSeries, calculateRatio(previousMonthlyLateAircraftDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(nasDelayCountForTimeSeries, calculateRatio(previousMonthlyNASDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(nasDelayCountForTimeSeries, calculateRatio(previousMonthlyNASDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
-            appendDelayData(carrierDelayCountForTimeSeries, calculateRatio(previousMonthlyCarrierDelayCount, monthlyTotalCarrierCount), key, year, month);
+            appendDelayData(carrierDelayCountForTimeSeries, calculateRatio(previousMonthlyCarrierDelayCount, monthlyTotalCarrierCount) * 100, key, year, month);
 
         }
     }

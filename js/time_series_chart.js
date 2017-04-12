@@ -83,7 +83,10 @@ function display_time_Series() {
             plotLines: [{
                 color: '#10266B',
                 width: 2,
-                title: 'Mean Delay',
+                label: {
+                    font: 'bold 22 px',
+                    text: 'Mean Delay'
+                },
                 value: meanData
             }],
 
