@@ -23,23 +23,27 @@ function display_airline_delay_trend() {
 
 function plotData(data) {
 
-    var text_value = " Average delay distribution";
+    var titleText = " Airlines performance at " + airportNameByAirportID.get(selected_airport);
+
     var tooltipText = 'minutes';
-    if (firstCriteria === 'total_delay')
-        text_value = 'Click the columns for delay distribution.';
     if (secondCriteria === 'by_count')
         tooltipText = '%';
 
     Highcharts.chart('airline_delay_trend_container', {
         chart: {
-            type: 'column'
-
-        },
-        title: {
-            text: 'Carrier Arrival Delay'
-        },
-        subtitle: {
-            text: text_value
+            type: 'column',
+            events: {
+                drillup: function (e) {
+                    if (e.seriesOptions.name === 'Airlines') {
+                        this.setTitle({text: titleText}, {text: ''});
+                    }
+                },
+                drilldown: function (e) {
+                    if (e.seriesOptions.name === undefined) {
+                        this.setTitle({text: 'Further Breakdown of Delay'}, {text: ''});
+                    }
+                }
+            },
         },
         credits: {
             enabled: false
@@ -73,6 +77,7 @@ function plotData(data) {
             pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> ' + tooltipText + ' <br/>'
         },
 
+        title: {text: titleText},
         series: [{
             name: 'Airlines',
             colorByPoint: true,
@@ -84,7 +89,6 @@ function plotData(data) {
 
         drilldown: {
             series: data.drillDownData,
-            subtitle: '',
             drillUpButton: {
                 position: {
                     align: 'right', // by default

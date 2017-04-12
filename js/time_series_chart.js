@@ -58,7 +58,7 @@ function display_time_Series() {
             shared: true
         },
         title: {
-            text: 'Airport Arrival Delay'
+            text: 'Airport Arrival Delay at ' + airportNameByAirportID.get(selected_airport)
         },
         exporting: {enabled: false},   // To remove download button
         subtitle: {

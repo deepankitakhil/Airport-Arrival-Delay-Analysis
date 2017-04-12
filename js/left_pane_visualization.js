@@ -130,10 +130,10 @@ function configureSearch(error, airport_data) {
 
     d3.select('#airport_search_container').on('keyup', function () {
 
-        if($('input[name="search_type"]:checked').val()==1){
+        if ($('input[name="search_type"]:checked').val() === 1) {
             filterResultByAirportName(airport_name_list, airport_data, tooltip);
         }
-        else{
+        else {
             filterResultByAirportID(airport_id_list, airport_data, tooltip);
         }
 
