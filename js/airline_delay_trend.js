@@ -74,7 +74,7 @@ function plotData(data) {
 
         tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> ' + tooltipText + ' <br/>'
+            pointFormat: '<span style="color:{point.color}">{point.fullName}</span>: <b>{point.y:.2f}</b> ' + tooltipText + ' <br/>'
         },
 
         title: {text: titleText},
@@ -155,6 +155,7 @@ function filterEntriesWithNullDrillDown(input, delay_type, option) {
         var element = {};
         element["name"] = input[index].key;
         element["y"] = calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * percentageBase;
+        element["fullName"] = carrierNameByID.get(input[index].key);
         element["drilldown"] = null;
         filteredData.push(element);
     }
@@ -174,6 +175,7 @@ function filterEntriesWithDrillDownData(input, delay_type, option) {
         filteredData.push({
             name: input[index].key,
             y: calculateRatio(input[index].value.get(option).get(delay_type), input[index].value.get(option).get(NUMBER_OF_ENTRIES)) * percentageBase,
+            fullName: carrierNameByID.get(input[index].key),
             drilldown: input[index].key
         });
 
