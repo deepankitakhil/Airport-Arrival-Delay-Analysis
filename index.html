@@ -29,7 +29,9 @@
 
 </head>
 <body onload="left_pane_visualization_init()">
-
+<div id="loading">
+    <img id="loading-image" src="./images/loading_image.svg" alt="Loading..."/>
+</div>
 
 <div id="us_map">
     <div id="left_div_for_airport_search" style="width: 47%">
@@ -74,7 +76,9 @@
 
 <div id="airline_delay_trend_container"></div>
 
-<script>right_pane_visualization_init();
+<script>
+    displayLoading(5000);
+    right_pane_visualization_init();
 </script>
 </body>
 </html>

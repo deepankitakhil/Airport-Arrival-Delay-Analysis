@@ -5,13 +5,14 @@
     width: 60%;
     height: 70%;
 }
-#mean_data{
+
+#mean_data {
     position: absolute;
     left: 0;
     right: 0;
     width: 60%;
-    top:80%;
-    height:30%;
+    top: 80%;
+    height: 30%;
 }
 
 .states {
@@ -26,12 +27,12 @@
     stroke: #fff;
     stroke-width: 2px;
 }
+
 .cells path {
     fill: none;
     pointer-events: all;
 
 }
-
 
 .highlighted_cities {
     fill: red;
@@ -39,6 +40,7 @@
     stroke: #fff;
     stroke-width: 2px;
 }
+
 .bee_swarm_cities {
     fill: black;
     fill-opacity: 1;
@@ -83,13 +85,15 @@
     margin-left: 59%;
     height: 100%;
 }
-#drop-down{
+
+#drop-down {
     margin-left: 60%;
     position: absolute;
     left: 2%;
     right: 0;
-    height:4%;
+    height: 4%;
 }
+
 #chart_container {
     position: absolute;
     left: 0;
@@ -163,4 +167,26 @@ rect.background {
     stroke-width: 2px;
 }
 
-.bar { fill: steelblue; }
+.bar {
+    fill: steelblue;
+}
+
+#loading {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: block;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 99;
+    text-align: center;
+}
+
+#loading-image {
+    position: absolute;
+    top: 300px;
+    left: 600px;
+    z-index: 100;
+}

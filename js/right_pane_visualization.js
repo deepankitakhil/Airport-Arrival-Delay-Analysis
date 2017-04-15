@@ -18,6 +18,18 @@ function right_pane_visualization_init() {
     triggerDataConfiguration();
 }
 
+function displayLoading(timeLimit) {
+
+    var loadingDiv = document.getElementById("loading"),
+        show = function () {
+            loadingDiv.style.display = "block";
+            setTimeout(hide, timeLimit); // 5 seconds
+        },
+        hide = function () {
+            loadingDiv.style.display = "none";
+        };
+    show();
+}
 function configureSlider() {
 
     var html5Slider = document.getElementById('slider');
@@ -57,6 +69,7 @@ function configureSlider() {
         }
     });
     html5Slider.noUiSlider.on('update', function (values, handle) {
+        displayLoading(2000);
         dateValues = values;
         var startDate = dateValues[0].split(",");
         var endDate = dateValues[1].split(",");
