@@ -77,7 +77,7 @@ function display_time_Series() {
         },
         yAxis: {
             title: {
-                text: 'Airport Delay'
+                text: 'Average Airport Delay'
             },
             min: 0,
             plotLines: [{

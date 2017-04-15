@@ -54,7 +54,7 @@ function plotData(data) {
         exporting: {enabled: false},
         yAxis: {
             title: {
-                text: 'Total Delay'
+                text: 'Average Delay'
             },
             min: 0
 
