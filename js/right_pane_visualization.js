@@ -158,6 +158,7 @@ function displayVisualization() {
         display_time_Series();
         display_airline_delay_trend();
         display_table();
+        display_spark_lines();
     }
 
 }

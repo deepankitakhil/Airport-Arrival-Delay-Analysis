@@ -93,7 +93,6 @@ function displaySwarm(data) {
             window.selected_airport = d.data.id;
             objectArray = [];
             objectArray.push(airportInformationByAirportID.get(d.data.id));
-            console.log(objectArray);
             svg.selectAll('.bee_swarm_cities')
                 .data(objectArray)
                 .enter()
