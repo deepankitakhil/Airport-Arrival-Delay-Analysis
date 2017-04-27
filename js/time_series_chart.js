@@ -5,7 +5,9 @@ var firstCriteria = 'total_delay';
 var secondCriteria = 'by_minutes';
 
 function display_time_Series() {
-
+    var tooltipText = 'minutes';
+    if (secondCriteria === 'by_count')
+        tooltipText = '%';
     var data;
     var meanData;
     if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
@@ -57,7 +59,7 @@ function display_time_Series() {
         },
         tooltip: {
             xDateFormat: '%b,%Y',
-            pointFormat: "Value: {point.y:2f}",
+            pointFormat: "Value: {point.y:2f}"+" "+tooltipText,
             shared: true
         },
         title: {

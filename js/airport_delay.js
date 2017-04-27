@@ -151,7 +151,7 @@ function buildDataForVisualization(dateRange) {
 }
 
 function formatData(dataSet, year, month, monthlyDelayedFlightCount) {
-    dataSet.push([Date.parse(year + "-" + month), +monthlyDelayedFlightCount]);
+    dataSet.push([Date.parse(year + "-" + month), +Math.round(monthlyDelayedFlightCount*100)/100]);
 }
 
 function kMeansCluster() {
