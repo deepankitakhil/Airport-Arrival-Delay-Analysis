@@ -50,7 +50,7 @@ function display_time_Series() {
                     align: 'right', // by default
                     verticalAlign: 'top', // by default
                     x: -10,
-                    y: 10
+                    y: 30
                 },
                 relativeTo: 'chart'
             }

@@ -185,7 +185,7 @@ function calculateAverageForBuildingBeeSwarm(data) {
             averageValue += computedValue;
             count++;
             if (computedValue === "" || computedValue === undefined || Number.isNaN(computedValue) || computedValue === 0) {
-                console.log("Average value is 0. Ignoring airport: " + key + " !");
+                //console.log("Average value is 0. Ignoring airport: " + key + " !");
             } else {
                 swarmBeeDataByAirportID.push({
                     id: key,

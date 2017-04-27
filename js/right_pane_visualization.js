@@ -15,9 +15,6 @@ var monthToNumber = {
 var airportInformationToHighlightSimilarAirport;
 var sparkLineData;
 
-var line = d3.svg.line()
-    .x(function(d){return xScale(d.year);})
-    .y(function(d){return yScale(d.value);});
 function right_pane_visualization_init() {
     triggerDataConfiguration();
 }
@@ -118,17 +115,6 @@ function tabulate(data, columns) {
                 highlightAirport(airportName.value);
             }
         );
-    rows.selectAll("td.Trend")
-        .selectAll(".spark")
-        .append("svg")
-        .attr("class", "spark")
-        .attr("height", 25)
-        .attr("width", 100)
-        .append("path")
-        .attr("d", function(d,i){ d.line = this; return line(d.values); })
-        .attr("stroke-width", 1)
-        .attr("stroke", "#c00000")
-        .attr("fill", "none");
 
 
     return table;
@@ -143,7 +129,7 @@ function buildTableData() {
     var count = 0;
     for (var index = 0; index < maxLength; index++) {
         if (cluster[index] === undefined) {
-            console.log("outlier found!");
+            //console.log("outlier found!");
         }
         else {
             if (selected_airport === cluster[index].get_airport_id) {
@@ -154,8 +140,7 @@ function buildTableData() {
                 count++;
                 similar_airports.push({
                     'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1),
-                    'Similar Airport ID': cluster[index].get_airport_id,
-                    'Trend':data
+                    'Similar Airport ID': cluster[index].get_airport_id
                 });
             }
         }
@@ -217,9 +202,9 @@ function highlightAirport(airportData) {
 
 function display_table() {
     kMeansCluster();
+    buildSparkLineData();
     var similar_airports = buildTableData();
-     buildSparkLineData();
-    tabulate(similar_airports, ["Similar Airports","Trend"]);
+    tabulate(similar_airports, ["Similar Airports"]);
 }
 
 function buildSimilarAirportPlottingInformation(airportIdToHighlightSimilarAirport) {
@@ -274,7 +259,7 @@ function buildSparkLineData() {
         console.log("No data found for spark line!");
     } else {
         for (var index = 0; index < data.length; index++) {
-            sparkLineData.push(data[index][1]);
+            sparkLineData.push(Math.round(data[index][1]));
         }
     }
 }
