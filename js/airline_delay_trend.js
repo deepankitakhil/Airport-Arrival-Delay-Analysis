@@ -22,6 +22,9 @@ function display_airline_delay_trend() {
 }
 
 function plotData(data) {
+    var subTitleText = "";
+    if (firstCriteria === 'total_delay')
+        subTitleText = "Click on the bar to view delay distribution";
 
     var titleText = " Airlines performance at " + airportNameByAirportID.get(selected_airport);
 
@@ -35,7 +38,7 @@ function plotData(data) {
             events: {
                 drillup: function (e) {
                     if (e.seriesOptions.name === 'Airlines') {
-                        this.setTitle({text: titleText}, {text: ''});
+                        this.setTitle({text: titleText}, {text: subTitleText});
                     }
                 },
                 drilldown: function (e) {
@@ -78,6 +81,7 @@ function plotData(data) {
         },
 
         title: {text: titleText},
+        subtitle: {text: subTitleText},
         series: [{
             name: 'Airlines',
             colorByPoint: true,
