@@ -13,6 +13,7 @@ var monthToNumber = {
     'December': 12
 };
 var airportInformationToHighlightSimilarAirport;
+var sparkLineData;
 
 function right_pane_visualization_init() {
     triggerDataConfiguration();
@@ -83,7 +84,7 @@ function configureSlider() {
 
 }
 //Table for Similar Airports
-function tabulate(data, columns) {
+function tabulate(data, sparkLineData, columns) {
     $("#similar_airport_container").find("tr").remove();
     var table = d3.select("#similar_airport_container").attr("class", "table-title");
     var thead = table.append('thead');
@@ -158,7 +159,6 @@ function displayVisualization() {
         display_time_Series();
         display_airline_delay_trend();
         display_table();
-        display_spark_lines();
     }
 
 }
@@ -201,7 +201,8 @@ function highlightAirport(airportData) {
 function display_table() {
     kMeansCluster();
     var similar_airports = buildTableData();
-    tabulate(similar_airports, ["Similar Airports"]);
+    var sparkLineData = buildSparkLineData();
+    tabulate(similar_airports, sparkLineData, ["Similar Airports"]);
 }
 
 function buildSimilarAirportPlottingInformation(airportIdToHighlightSimilarAirport) {
@@ -215,6 +216,48 @@ function buildSimilarAirportPlottingInformation(airportIdToHighlightSimilarAirpo
                 airportInformationToHighlightSimilarAirport.push(
                     [airportInformationByAirportID.get(airportIdToHighlightSimilarAirport[index])]);
             }
+        }
+    }
+}
+
+function buildSparkLineData() {
+    var data;
+    if (firstCriteria === 'total_delay' && secondCriteria === 'by_minutes')
+        data = airportDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'total_delay' && secondCriteria === 'by_count')
+        data = airportDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'security_delay' && secondCriteria === 'by_minutes')
+        data = securityDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'security_delay' && secondCriteria === 'by_count')
+        data = securityDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_minutes')
+        data = nasDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'nas_delay' && secondCriteria === 'by_count')
+        data = nasDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_minutes')
+        data = weatherDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'weather_delay' && secondCriteria === 'by_count')
+        data = weatherDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_minutes')
+        data = lateAircraftDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'late_aircraft_delay' && secondCriteria === 'by_count')
+        data = lateAircraftDelayCountForTimeSeries.get(selected_airport);
+
+    else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_minutes')
+        data = carrierDelayDataForTimeSeries.get(selected_airport);
+    else if (firstCriteria === 'carrier_delay' && secondCriteria === 'by_count')
+        data = carrierDelayCountForTimeSeries.get(selected_airport);
+
+    sparkLineData = [];
+    if (data === undefined) {
+        console.log("No data found for spark line!");
+    } else {
+        for (var index = 0; index < data.length; index++) {
+            sparkLineData.push(data[index][1]);
         }
     }
 }
