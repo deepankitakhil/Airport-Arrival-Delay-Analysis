@@ -15,6 +15,9 @@ var monthToNumber = {
 var airportInformationToHighlightSimilarAirport;
 var sparkLineData;
 
+var line = d3.svg.line()
+    .x(function(d){return xScale(d.year);})
+    .y(function(d){return yScale(d.value);});
 function right_pane_visualization_init() {
     triggerDataConfiguration();
 }
@@ -84,7 +87,7 @@ function configureSlider() {
 
 }
 //Table for Similar Airports
-function tabulate(data, sparkLineData, columns) {
+function tabulate(data, columns) {
     $("#similar_airport_container").find("tr").remove();
     var table = d3.select("#similar_airport_container").attr("class", "table-title");
     var thead = table.append('thead');
@@ -115,6 +118,19 @@ function tabulate(data, sparkLineData, columns) {
                 highlightAirport(airportName.value);
             }
         );
+    rows.selectAll("td.Trend")
+        .selectAll(".spark")
+        .append("svg")
+        .attr("class", "spark")
+        .attr("height", 25)
+        .attr("width", 100)
+        .append("path")
+        .attr("d", function(d,i){ d.line = this; return line(d.values); })
+        .attr("stroke-width", 1)
+        .attr("stroke", "#c00000")
+        .attr("fill", "none");
+
+
     return table;
 
 }
@@ -138,7 +154,8 @@ function buildTableData() {
                 count++;
                 similar_airports.push({
                     'Similar Airports': cityStateAirportName.substring(cityStateAirportName.indexOf(":") + 1),
-                    'Similar Airport ID': cluster[index].get_airport_id
+                    'Similar Airport ID': cluster[index].get_airport_id,
+                    'Trend':data
                 });
             }
         }
@@ -201,8 +218,8 @@ function highlightAirport(airportData) {
 function display_table() {
     kMeansCluster();
     var similar_airports = buildTableData();
-    var sparkLineData = buildSparkLineData();
-    tabulate(similar_airports, sparkLineData, ["Similar Airports"]);
+     buildSparkLineData();
+    tabulate(similar_airports, ["Similar Airports","Trend"]);
 }
 
 function buildSimilarAirportPlottingInformation(airportIdToHighlightSimilarAirport) {

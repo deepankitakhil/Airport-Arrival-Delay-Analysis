@@ -190,13 +190,3 @@ rect.background {
     left: 600px;
     z-index: 100;
 }
-
-#spark_line_container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 4%;
-    width: 40%;
-    margin-left: 60%;
-    height: 33.33%
-}
