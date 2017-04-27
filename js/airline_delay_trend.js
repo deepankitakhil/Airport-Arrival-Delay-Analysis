@@ -1,3 +1,4 @@
+/*https://www.highcharts.com/demo/column-drilldown*/
 function display_airline_delay_trend() {
     var margin = {top: 10, right: 10, bottom: 20, left: 50},
         width = 500 - margin.left - margin.right,

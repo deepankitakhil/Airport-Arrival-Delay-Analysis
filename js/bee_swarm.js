@@ -20,6 +20,12 @@ function display_bee_swarm() {
 }
 
 function displaySwarm(data) {
+    var toolTipText = "";
+    if(secondCriteria === 'by_minutes')
+        toolTipText = "mins";
+    if(secondCriteria === 'by_count')
+        toolTipText = "%";
+
     var formatValue = d3.format(",d");
     var x = d3.scaleLog()
         .range([0, width / 1.2]);
@@ -123,7 +129,7 @@ function displaySwarm(data) {
 
     cell.append("title")
         .text(function (d) {
-            return d.data.id + "\n" + parseFloat(Math.round(d.data.value * 100) / 100).toFixed(2);
+            return d.data.id + "\n" + parseFloat(Math.round(d.data.value * 100) / 100).toFixed(2)+ " "+toolTipText;
         })
         .style("font-size", "50px");
 
