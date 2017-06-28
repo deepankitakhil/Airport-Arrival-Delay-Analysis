@@ -2,7 +2,7 @@ var svg;
 var tooltip;
 var projection;
 var path;
-var height = 900;
+var height = 700;
 var width = 1120;
 var airport_radius;
 var selected_airport;
