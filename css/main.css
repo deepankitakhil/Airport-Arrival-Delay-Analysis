@@ -109,7 +109,7 @@
 }
 #footer {
     position: absolute;
-    margin-top: 820px; /* negative value of footer height */
+    margin-top: 620px; /* negative value of footer height */
     height: 180px;
     clear: both;
 }
